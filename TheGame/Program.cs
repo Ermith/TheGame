@@ -1,9 +1,12 @@
 ﻿using System;
 
-namespace TheGame {
-  public static class Program {
+namespace TheGame
+{
+  public static class Program
+  {
     [STAThread]
-    static void Main() {
+    static void Main()
+    {
       using (var game = new TheGame())
         game.Run();
     }

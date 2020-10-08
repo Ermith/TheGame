@@ -2,8 +2,10 @@
 using TheGame.GameStuff.Actions;
 
 
-namespace TheGame.GameStuff.Entities {
-  abstract class Entity : IGameComponent {
+namespace TheGame.GameStuff.Entities
+{
+  abstract class Entity : IGameComponent
+  {
     public Action Action { get; protected set; } = null;
     public Vector2 Position;
 

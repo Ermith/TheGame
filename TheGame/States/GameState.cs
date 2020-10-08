@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using TheGame.GameStuff;
 using TheGame.GameStuff.Entities;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
-namespace TheGame.States {
-  class GameState : State {
+namespace TheGame.States
+{
+  class GameState : State
+  {
     EntityManager entityManager;
     Player Player = new Player();
 
@@ -16,21 +17,25 @@ namespace TheGame.States {
     private int wid = 200;
     private int hei = 200;
 
-    public GameState() {
+    public GameState()
+    {
       Map = new Color[200, 200];
 
       entityManager = new EntityManager();
 
       Random rnd = new Random(32);
 
-      for (int i = 0; i < 200; i++) {
-        for (int j = 0; j < 200; j++) {
+      for (int i = 0; i < 200; i++)
+      {
+        for (int j = 0; j < 200; j++)
+        {
           Map[i, j] = new Color(rnd.Next(255), rnd.Next(255), rnd.Next(255));
         }
       }
     }
 
-    public override void Render(RenderArguments arguments) {
+    public override void Render(RenderArguments arguments)
+    {
       Utilities.IsMouseVisible = false;
 
       // Background
@@ -42,7 +47,8 @@ namespace TheGame.States {
 
       /**/
       for (int x = 0; x < wid; x++)
-        for (int y = 0; y < hei; y++) {
+        for (int y = 0; y < hei; y++)
+        {
 
           int xx = x * tileSize + xStart;
           int yy = y * tileSize + yStart;
@@ -69,7 +75,8 @@ namespace TheGame.States {
       entityManager.Render(arguments);
     }
 
-    public override void Update(UpdateArguments arguments) {
+    public override void Update(UpdateArguments arguments)
+    {
 
       // Background
 

@@ -1,14 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace TheGame.UI {
-  abstract class UIControl {
+namespace TheGame.UI
+{
+  abstract class UIControl
+  {
     public Point Location;
 
-    public UIControl(Point location) {
+    public UIControl(Point location)
+    {
       Location = location;
     }
 
-    public UIControl(int x, int y) {
+    public UIControl(int x, int y)
+    {
       Location = new Point(x, y);
     }
 

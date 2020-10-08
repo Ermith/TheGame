@@ -1,8 +1,7 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-
-namespace TheGame.States {
-  abstract class State : IGameComponent {
+﻿namespace TheGame.States
+{
+  abstract class State : IGameComponent
+  {
     public static State GameState { get; set; }
     public static State MenuState { get; set; }
     public static State CurrentState { get; set; }

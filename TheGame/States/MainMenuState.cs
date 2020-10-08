@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using TheGame.UI;
 
-namespace TheGame.States {
-  class MainMenuState : State {
+namespace TheGame.States
+{
+  class MainMenuState : State
+  {
     private UIControlManager manager;
 
-    public MainMenuState() {
+    public MainMenuState()
+    {
       manager = new UIControlManager();
 
       var buttons = new List<Button> {
@@ -17,7 +20,8 @@ namespace TheGame.States {
 
       int buttonsHeight = 0;
 
-      foreach (Button button in buttons) {
+      foreach (Button button in buttons)
+      {
         buttonsHeight += button.Rectangle.Height;
       }
 
@@ -28,7 +32,8 @@ namespace TheGame.States {
       freeSpace /= buttons.Count + 1;
       int y = 0;
 
-      foreach (Button button in buttons) {
+      foreach (Button button in buttons)
+      {
         y += freeSpace;
         int x = screenSize.X / 2 - button.Rectangle.Width / 2;
 
@@ -39,7 +44,8 @@ namespace TheGame.States {
       }
     }
 
-    public override void Render(RenderArguments arguments) {
+    public override void Render(RenderArguments arguments)
+    {
       Utilities.IsMouseVisible = true;
       manager.Render(arguments);
     }

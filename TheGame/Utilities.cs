@@ -1,31 +1,37 @@
 ﻿using Microsoft.Xna.Framework;
-using System.Diagnostics;
 
-namespace TheGame {
-  static class Utilities {
+namespace TheGame
+{
+  static class Utilities
+  {
     private static TheGame _game;
 
-    public static bool IsMouseVisible {
+    public static bool IsMouseVisible
+    {
       get { return _game.IsMouseVisible; }
       set { _game.IsMouseVisible = value; }
     }
 
-    public static void Init(TheGame game) {
+    public static void Init(TheGame game)
+    {
       _game = game;
     }
 
-    public static void Exit() {
+    public static void Exit()
+    {
       _game.Exit();
     }
 
-    public static Point ScreenSize() {
+    public static Point ScreenSize()
+    {
       return new Point(
         _game.Graphics.PreferredBackBufferWidth,
         _game.Graphics.PreferredBackBufferHeight
         );
     }
 
-    public static class Settings {
+    public static class Settings
+    {
       public static float MusicVolume = 0.5f;
       public static float MenuVolume = 0.5f;
       public static float EffectsVolume = 0.5f;
