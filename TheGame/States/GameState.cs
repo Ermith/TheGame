@@ -1,16 +1,11 @@
 ﻿using System;
 using TheGame.GameStuff;
+using TheGame.GameStuff.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace TheGame.States {
-  class Player {
-    public Texture2D Texture = Assets.placeHolder;
-    public int X = 32 * 1;
-    public int Y = 32 * 1;
-  }
-
   class GameState : State {
     EntityManager entityManager;
     Player Player = new Player();
@@ -22,8 +17,8 @@ namespace TheGame.States {
     private int hei = 200;
 
     public GameState() {
-      Map = new Color[200,200];
-      
+      Map = new Color[200, 200];
+
       entityManager = new EntityManager();
 
       Random rnd = new Random(32);
@@ -44,7 +39,7 @@ namespace TheGame.States {
 
       int wid = Camera.Width / tileSize + 1;
       int hei = Camera.Height / tileSize + 1;
-      
+
       /**/
       for (int x = 0; x < wid; x++)
         for (int y = 0; y < hei; y++) {
@@ -69,12 +64,7 @@ namespace TheGame.States {
       /**/
 
       // Player
-      Camera.AbsoluteToRelative(Player.X, Player.Y, out int xo, out int yo);
-      arguments.SpriteBatch.Draw(
-        Assets.placeHolder,
-        new Vector2(xo, yo),
-        Color.White
-        );
+
 
       // Entities
       entityManager.Render(arguments);
@@ -83,35 +73,6 @@ namespace TheGame.States {
     public override void Update(UpdateArguments arguments) {
 
       // Background
-
-      // Player
-      if (arguments.Keyboard.IsKeyDown(Keys.D))
-        Player.X++;
-      else if (arguments.Keyboard.IsKeyDown(Keys.A))
-        Player.X--;
-      else if (arguments.Keyboard.IsKeyDown(Keys.W))
-        Player.Y--;
-      else if (arguments.Keyboard.IsKeyDown(Keys.S)) {
-        Player.Y++;
-      }
-
-      Camera.Center(Player.X, Player.Y);
-      //Camera.Offset.X = Player.X;
-      //Camera.Offset.Y = Player.Y;
-
-      
-
-
-      /*/
-      if (arguments.Keyboard.IsKeyDown(Keys.D))
-        Camera.Offset = new Point(Camera.Offset.X + 1, Camera.Offset.Y);
-      else if (arguments.Keyboard.IsKeyDown(Keys.A))
-        Camera.Offset = new Point(Camera.Offset.X - 1, Camera.Offset.Y);
-      else if (arguments.Keyboard.IsKeyDown(Keys.W))
-        Camera.Offset = new Point(Camera.Offset.X, Camera.Offset.Y - 1);
-      else if (arguments.Keyboard.IsKeyDown(Keys.S))
-        Camera.Offset = new Point(Camera.Offset.X, Camera.Offset.Y + 1);
-      /**/
 
       // Entities
       entityManager.Update(arguments);
