@@ -3,7 +3,7 @@ using TheGame.GameStuff.Entities;
 
 namespace TheGame.GameStuff {
   class EntityManager : IGameComponent {
-    private Player player;
+    private Player player = new Player();
     private List<Entity> entities;
 
     public EntityManager() {
@@ -21,11 +21,11 @@ namespace TheGame.GameStuff {
 
     public void Update(UpdateArguments arguments) {
       player.Update(arguments);
-      player.Action?.Invoke();
+      player.Action?.Execute();
 
       foreach (Entity entity in entities) {
         entity.Update(arguments);
-        entity.Action?.Invoke();
+        entity.Action?.Execute();
       }
     }
   }

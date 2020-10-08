@@ -1,11 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
+using TheGame.GameStuff.Actions;
 
 
 namespace TheGame.GameStuff.Entities {
   abstract class Entity : IGameComponent {
-    public Action Action { get; private set; } = null;
-    public Point Position;
+    public Action Action { get; protected set; } = null;
+    public Vector2 Position;
 
     public abstract void Render(RenderArguments arguments);
 

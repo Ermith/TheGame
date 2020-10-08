@@ -20,8 +20,8 @@ namespace TheGame.GameStuff {
 
     public static void Center(int x, int y) {
       Offset = new Point(x - Width / 2, y - Height / 2);
-      Offset.X = Math.Clamp(Offset.X, 0, Width - 1);
-      Offset.Y = Math.Clamp(Offset.Y, 0, Height - 1);
+      Offset.X = System.Math.Clamp(Offset.X, 0, Width - 1);
+      Offset.Y = System.Math.Clamp(Offset.Y, 0, Height - 1);
     }
   }
 }

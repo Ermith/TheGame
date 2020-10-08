@@ -65,7 +65,6 @@ namespace TheGame.States {
 
       // Player
 
-
       // Entities
       entityManager.Render(arguments);
     }
