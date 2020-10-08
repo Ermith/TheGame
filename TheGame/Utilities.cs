@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace TheGame
 {
@@ -36,6 +37,20 @@ namespace TheGame
       public static float MenuVolume = 0.5f;
       public static float EffectsVolume = 0.5f;
       public static float VoiceVolume = 0.5f;
+      public static int tileSize = 32;
+    }
+
+    public static void ForMatrix(int width, int height, Action<int, int> action)
+    {
+
+      for (int i = 0; i < width; i++)
+      {
+        for (int j = 0; j < height; j++)
+        {
+          action(i, j);
+        }
+      }
+
     }
   }
 }

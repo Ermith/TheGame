@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using TheGame.GameStuff;
 using TheGame.GameStuff.Entities;
+using CaveGenerator;
 
 namespace TheGame.States
 {
@@ -10,65 +11,72 @@ namespace TheGame.States
   {
     EntityManager entityManager;
     Player Player = new Player();
+    World world = new World();
 
     // Prototype
-    private Color[,] Map;
-    private const int tileSize = 32;
-    private int wid = 200;
-    private int hei = 200;
+    private TileType[,] Map;
+    private Color[,] ColorMap;
+    private MapGenerator mapgen;
+    private int mapWid = 100;
+    private int mapHei = 100;
 
     public GameState()
     {
-      Map = new Color[200, 200];
+      mapgen = new MapGenerator(mapWid, mapHei, 1);
+      Map = mapgen.Generate(GeneratorOption.BasicRock1);
+      ColorMap = new Color[mapWid, mapHei];
+
+      Camera.MapWidth = mapWid * Utilities.Settings.tileSize;
+      Camera.MapHeight = mapHei * Utilities.Settings.tileSize;
 
       entityManager = new EntityManager();
 
-      Random rnd = new Random(32);
 
-      for (int i = 0; i < 200; i++)
+      for (int i = 0; i < mapWid; i++)
       {
-        for (int j = 0; j < 200; j++)
+        for (int j = 0; j < mapHei; j++)
         {
-          Map[i, j] = new Color(rnd.Next(255), rnd.Next(255), rnd.Next(255));
+          ColorMap[i, j] = Map[i, j] is RockTile ? Color.Black : Color.LightGray;
         }
       }
+
+      world.CreateNew();
     }
 
     public override void Render(RenderArguments arguments)
     {
       Utilities.IsMouseVisible = false;
 
+      world.Render(arguments);
+
       // Background
-      int xStart = Camera.Offset.X - (Camera.Offset.X % tileSize);
-      int yStart = Camera.Offset.Y - (Camera.Offset.Y % tileSize);
+      /*/
+      int xStart = Camera.OffsetX - (Camera.OffsetX % tileSize);
+      int yStart = Camera.OffsetY - (Camera.OffsetY % tileSize);
 
       int wid = Camera.Width / tileSize + 1;
       int hei = Camera.Height / tileSize + 1;
 
+      Utilities.ForMatrix(wid, hei, (int x, int y) =>
+      {
+        int xx = x * tileSize + xStart;
+        int yy = y * tileSize + yStart;
+
+        Camera.AbsoluteToRelative(xx, yy, out int ox, out int oy);
+
+        Texture2D rect = new Texture2D(arguments.Graphics, tileSize, tileSize);
+        Color[] data = new Color[tileSize * tileSize];
+        Color col = ColorMap[x + Camera.OffsetX / tileSize, y + Camera.OffsetY / tileSize];
+
+        for (int i = 0; i < tileSize * tileSize; i++) data[i] = col;
+        rect.SetData(data);
+
+        arguments.SpriteBatch.Draw(rect,
+          new Vector2(ox, oy),
+          Color.White
+          );
+      });
       /**/
-      for (int x = 0; x < wid; x++)
-        for (int y = 0; y < hei; y++)
-        {
-
-          int xx = x * tileSize + xStart;
-          int yy = y * tileSize + yStart;
-
-          Camera.AbsoluteToRelative(xx, yy, out int ox, out int oy);
-
-          Texture2D rect = new Texture2D(arguments.Graphics, tileSize, tileSize);
-          Color[] data = new Color[tileSize * tileSize];
-          Color col = Map[x + Camera.Offset.X / tileSize, y + Camera.Offset.Y / tileSize];
-
-          for (int i = 0; i < tileSize * tileSize; i++) data[i] = col;
-          rect.SetData(data);
-
-          arguments.SpriteBatch.Draw(rect,
-            new Vector2(ox, oy),
-            Color.White
-            );
-        }
-      /**/
-
       // Player
 
       // Entities
@@ -77,7 +85,6 @@ namespace TheGame.States
 
     public override void Update(UpdateArguments arguments)
     {
-
       // Background
 
       // Entities

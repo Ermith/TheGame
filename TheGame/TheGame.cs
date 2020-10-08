@@ -9,7 +9,6 @@ namespace TheGame
   {
     public GraphicsDeviceManager Graphics;
     private SpriteBatch _spriteBatch;
-    Texture2D iceTile;
 
     public TheGame()
     {
@@ -21,11 +20,9 @@ namespace TheGame
     protected override void Initialize()
     {
       // TODO: Add your initialization logic here
-      Assets.Load(Content);
+      
       Utilities.Init(this);
-      Mouse.SetCursor(MouseCursor.FromTexture2D(Assets.placeHolder, 0, 0));
-
-      State.CurrentState = new MainMenuState();
+      
 
       base.Initialize();
     }
@@ -33,9 +30,11 @@ namespace TheGame
     protected override void LoadContent()
     {
       _spriteBatch = new SpriteBatch(GraphicsDevice);
+      Assets.Load(Content);
+      Mouse.SetCursor(MouseCursor.FromTexture2D(Assets.placeHolder, 0, 0));
+      State.CurrentState = new MainMenuState();
 
       // TODO: use this.Content to load your game content here
-      iceTile = Assets.placeHolder;
     }
 
     protected override void Update(GameTime gameTime)
@@ -71,8 +70,6 @@ namespace TheGame
         GraphicsManager = Graphics,
         SpriteBatch = _spriteBatch
       });
-
-      //_spriteBatch.Draw(iceTile, new Rectangle(mouse.Position, new Point(iceTile.Width, iceTile.Height)), Color.White);
 
       _spriteBatch.End();
 

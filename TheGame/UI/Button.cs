@@ -6,6 +6,8 @@ using TheGame.States;
 
 namespace TheGame.UI
 {
+
+
   class Button : UIControl
   {
     private MouseState previousMouse;
@@ -17,8 +19,7 @@ namespace TheGame.UI
     public SpriteFont Font { get; set; }
     public string Text { get; set; }
     public Rectangle Rectangle => new Rectangle(Location, Font.MeasureString(Text).ToPoint());
-    public event EventHandler Click;
-
+    public event Action Click;
 
     // Methods
     public Button(Point location, string text, SpriteFont font) : base(location)
@@ -51,7 +52,7 @@ namespace TheGame.UI
 
         if (previousMouse.LeftButton == ButtonState.Pressed && arguments.Mouse.LeftButton == ButtonState.Released)
         {
-          Click?.Invoke(this, new EventArgs());
+          Click?.Invoke();
         }
       }
       else
@@ -67,7 +68,7 @@ namespace TheGame.UI
     public static Button Exit()
     {
       Button exit = new Button(new Point(), "Exit", Assets.testFont);
-      exit.Click += (Object sender, EventArgs args) => { Utilities.Exit(); };
+      exit.Click += Utilities.Exit;
 
       return exit;
     }
@@ -75,23 +76,29 @@ namespace TheGame.UI
     public static Button NewGame()
     {
       Button newGame = new Button(new Point(), "New Game", Assets.testFont);
-      newGame.Click += (Object sender, EventArgs args) =>
-      {
-        State.GameState = new GameState();
-        State.CurrentState = State.GameState;
-      };
+      newGame.Click += NewGame_Click; 
 
       return newGame;
+    }
+
+    private static void NewGame_Click()
+    {
+      State.GameState = new GameState();
+      State.CurrentState = State.GameState;
     }
 
     public static Button ResumeGame()
     {
       Button resumeGame = new Button(new Point(), "Resume Game", Assets.testFont);
-      resumeGame.Click += (Object sender, EventArgs args) => { State.CurrentState = State.GameState; };
+      resumeGame.Click += ResumeGame_Click;
       resumeGame.IsActive = () => { return State.GameState != null; };
 
       return resumeGame;
     }
 
+    private static void ResumeGame_Click()
+    {
+      State.CurrentState = State.GameState;
+    }
   }
 }
