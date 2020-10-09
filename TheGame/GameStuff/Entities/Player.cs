@@ -3,13 +3,14 @@ using Microsoft.Xna.Framework.Input;
 using System.Linq;
 using TheGame.GameStuff.Actions;
 using TheGame.Math;
+using TheGame.States;
 
 namespace TheGame.GameStuff.Entities
 {
   class Player : Entity
   {
     Vector2 Velocity = new Vector2(1.5f, 1.5f);
-    float speed = 5f;
+    float speed = 300f;
 
     public override void Render(RenderArguments arguments)
     {
@@ -40,7 +41,7 @@ namespace TheGame.GameStuff.Entities
       if (arguments.Keyboard.IsKeyDown(Keys.D))
         Velocity += CommonVectors.Right;
 
-      Action = new Move(this, Velocity * speed);
+      Action = new Move(this, Velocity * speed * (float)arguments.Time.ElapsedGameTime.TotalSeconds);
     }
   }
 }

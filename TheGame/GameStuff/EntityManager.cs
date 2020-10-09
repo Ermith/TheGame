@@ -5,7 +5,7 @@ namespace TheGame.GameStuff
 {
   class EntityManager : IGameComponent
   {
-    private Player player = new Player();
+    public Player player = new Player();
     private List<Entity> entities;
 
     public EntityManager()

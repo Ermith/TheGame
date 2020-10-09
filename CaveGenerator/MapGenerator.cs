@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Numerics;
 
 namespace CaveGenerator
 {
@@ -18,6 +18,7 @@ namespace CaveGenerator
     public int rockPercentage = 50;
     public int[,] CompArr { get; private set; }
     public int Comps { get; private set; }
+    List<Point>[] Components;
     private Random rnd;
 
     public MapGenerator(int blockWidth, int blockHeight, int blocks)
@@ -367,7 +368,6 @@ namespace CaveGenerator
       return new Stack<Point>();
     }
 
-
     private void Paths(TileType[,] map, int components, int[,] compArr)
     {
       TileType tile, neighbor;
@@ -463,8 +463,24 @@ namespace CaveGenerator
       }
 
       ConnectComponents(Map);
+      Components = new List<Point>[Comps];
+      for (int i = 0; i < Comps; i++)
+        Components[i] = new List<Point>();
+
+      for (int x = 0; x < Width; x++)
+        for (int y = 0; y < Height; y++)
+          Components[CompArr[x, y]].Add(new Point(x, y));
+      
 
       return Map;
+    }
+
+    public void GenerateSpawn(out int x, out int y)
+    {
+      var list = Components[rnd.Next(1, Comps)];
+      Point p = list[rnd.Next(list.Count)];
+      x = p.X;
+      y = p.Y;
     }
   }
 }

@@ -62,6 +62,8 @@ namespace TheGame.GameStuff
     public void CreateNew()
     {
       tiles = mapGenerator.Generate(GeneratorOption.BasicRock1);
+      mapGenerator.Fill(tiles, 0, 0, GeneratorOption.Mushrooms);
+      mapGenerator.LayWalls(tiles);
     }
 
     public void Render(RenderArguments arguments)
@@ -89,6 +91,12 @@ namespace TheGame.GameStuff
             Color.White
             );
         });
+    }
+
+    public Vector2 GenerateSpawnPoint()
+    {
+      mapGenerator.GenerateSpawn(out int x, out int y);
+      return new Vector2(x * Utilities.Settings.tileSize, y* Utilities.Settings.tileSize);
     }
   }
 }
