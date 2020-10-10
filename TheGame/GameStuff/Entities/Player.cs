@@ -12,6 +12,12 @@ namespace TheGame.GameStuff.Entities
     Vector2 Velocity = new Vector2(1.5f, 1.5f);
     float speed = 300f;
 
+    public Player(World world) : base(world)
+    {
+      Width = 32;
+      Height = 32;
+    }
+
     public override void Render(RenderArguments arguments)
     {
       Camera.Center(

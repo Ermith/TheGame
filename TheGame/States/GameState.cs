@@ -41,7 +41,8 @@ namespace TheGame.States
       }
 
       world.CreateNew();
-      entityManager.player.Position = world.GenerateSpawnPoint();
+      entityManager.Player = new Player(world);
+      entityManager.Player.Position = world.GenerateSpawnPoint();
     }
 
     public override void Render(RenderArguments arguments)

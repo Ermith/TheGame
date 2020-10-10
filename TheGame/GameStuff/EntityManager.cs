@@ -5,7 +5,7 @@ namespace TheGame.GameStuff
 {
   class EntityManager : IGameComponent
   {
-    public Player player = new Player();
+    public Player Player;
     private List<Entity> entities;
 
     public EntityManager()
@@ -17,7 +17,7 @@ namespace TheGame.GameStuff
 
     public void Render(RenderArguments arguments)
     {
-      player.Render(arguments);
+      Player.Render(arguments);
 
       foreach (Entity entity in entities)
         entity.Render(arguments);
@@ -25,8 +25,8 @@ namespace TheGame.GameStuff
 
     public void Update(UpdateArguments arguments)
     {
-      player.Update(arguments);
-      player.Action?.Execute();
+      Player.Update(arguments);
+      Player.Action?.Execute();
 
       foreach (Entity entity in entities)
       {

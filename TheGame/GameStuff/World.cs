@@ -98,5 +98,23 @@ namespace TheGame.GameStuff
       mapGenerator.GenerateSpawn(out int x, out int y);
       return new Vector2(x * Utilities.Settings.tileSize, y* Utilities.Settings.tileSize);
     }
+
+    public bool CheckPosition(Rectangle rect)
+    {
+      int tileSize = Utilities.Settings.tileSize;
+
+      int xStart = rect.X / tileSize;
+      int yStart = rect.Y / tileSize;
+
+      int xEnd = (rect.X + rect.Width) / tileSize;
+      int yEnd = (rect.Y + rect.Height) / tileSize;
+
+      for (int x = xStart; x <= xEnd; x++)
+        for (int y = yStart; y <= yEnd; y++)
+          if (tiles[x, y].Solid)
+            return false;
+
+      return true;
+    }
   }
 }

@@ -42,7 +42,6 @@ namespace TheGame
 
     public static void ForMatrix(int width, int height, Action<int, int> action)
     {
-
       for (int i = 0; i < width; i++)
       {
         for (int j = 0; j < height; j++)
@@ -50,7 +49,6 @@ namespace TheGame
           action(i, j);
         }
       }
-
     }
   }
 }
