@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Markup;
 using TheGame.GameStuff.Actions;
 using TheGame.Math;
 using TheGame.States;
@@ -9,8 +11,14 @@ namespace TheGame.GameStuff.Entities
 {
   class Player : Entity
   {
+    
+
+
     Vector2 Velocity = new Vector2(1.5f, 1.5f);
     float speed = 300f;
+    private Vector2 Movement;
+    private Animation animUp, animLeft, animDown, animRight;
+    private Animation currAnim;
 
     public Player(World world) : base(world)
     {
@@ -39,15 +47,32 @@ namespace TheGame.GameStuff.Entities
       Velocity = new Vector2(0, 0);
 
       if (arguments.Keyboard.IsKeyDown(Keys.W))
+      {
         Velocity += CommonVectors.Up;
+        currAnim = animUp;
+      }
       if (arguments.Keyboard.IsKeyDown(Keys.A))
+      {
         Velocity += CommonVectors.Left;
+        currAnim = animLeft;
+      }
       if (arguments.Keyboard.IsKeyDown(Keys.S))
+      {
         Velocity += CommonVectors.Down;
+        currAnim = animDown;
+      }
       if (arguments.Keyboard.IsKeyDown(Keys.D))
+      {
         Velocity += CommonVectors.Right;
+        currAnim = animRight;
+      }
 
-      Action = new Move(this, Velocity * speed * (float)arguments.Time.ElapsedGameTime.TotalSeconds);
+      if (Velocity.Length() != 0)
+        Velocity.Normalize();
+
+      Movement = Velocity * speed * (float)arguments.Time.ElapsedGameTime.TotalSeconds;
+
+      Action = new Move(this, Movement);
     }
   }
 }

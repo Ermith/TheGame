@@ -15,16 +15,31 @@ namespace TheGame.GameStuff.Actions
     }
     public override void Execute()
     {
-      Vector2 newPosition = entity.Position + movement;
+      Vector2 newPosition = entity.Position;
+
+      // Vertical movement
       if (entity.World.CheckPosition(
         new Rectangle(
-          (int)newPosition.X,
-          (int)newPosition.Y,
+          (int)(entity.Position.X + movement.X),
+          (int)entity.Position.Y,
           entity.Width,
           entity.Height
           )
         ))
-        entity.Position += movement;
+        newPosition.X += movement.X;
+
+      // Horizontal movement
+      if (entity.World.CheckPosition(
+        new Rectangle(
+          (int)entity.Position.X,
+          (int)(entity.Position.Y + movement.Y),
+          entity.Width,
+          entity.Height
+          )
+        ))
+        newPosition.Y += movement.Y;
+
+      entity.Position = newPosition;
     }
   }
 }

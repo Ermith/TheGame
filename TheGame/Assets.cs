@@ -24,6 +24,8 @@ namespace TheGame
     public static Texture2D FleshTileTexture;
     public static Texture2D FleshFloorTileTexture;
 
+    public static Texture2D PlayerSprite;
+
 
     static public void Load(ContentManager content)
     {
@@ -45,6 +47,7 @@ namespace TheGame
       FleshTileTexture = content.Load<Texture2D>("Tiles\\FleshTile");
       FleshFloorTileTexture = content.Load<Texture2D>("Tiles\\FleshFloorTile");
 
+      PlayerSprite = content.Load<Texture2D>("PlayerSprite");
     }
   }
 }
