@@ -1,8 +1,8 @@
-﻿using TheGame.GameStuff.Entities;
+﻿using TheGame.GameStuff.ECS;
 using System.Collections.Generic;
 using TheGame.Math;
 
-namespace TheGame.GameStuff.Components
+namespace TheGame.GameStuff.ECS.Components
 {
   class CLocation : Component
   {
@@ -10,7 +10,7 @@ namespace TheGame.GameStuff.Components
     public static void AddLocationComponent(Entity entity)
     {
       entities.Add(entity);
-      entity.Components[Components.Location] = new CLocation();
+      entity.Components[ComponentTypes.Location] = new CLocation();
     }
     public float X { get; set; }
     public float Y { get; set; }

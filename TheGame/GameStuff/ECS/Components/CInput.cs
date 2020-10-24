@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using TheGame.GameStuff.Entities;
+using TheGame.GameStuff.ECS;
 using Microsoft.Xna.Framework.Input;
 
-namespace TheGame.GameStuff.Components
+namespace TheGame.GameStuff.ECS.Components
 {
   class CInput : Component
   {
@@ -10,7 +10,7 @@ namespace TheGame.GameStuff.Components
     public static void AddInputComponent(Entity entity)
     {
       entities.Add(entity);
-      entity.Components[Components.Input] = new CInput();
+      entity.Components[ComponentTypes.Input] = new CInput();
     }
 
     // Controls

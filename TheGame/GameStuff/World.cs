@@ -49,9 +49,9 @@ namespace TheGame.GameStuff
   {
     private MapGenerator mapGenerator;
     private TileFactory factory;
-    TileType[,] tiles;
-    int Width = 100;
-    int Height = 100;
+    private TileType[,] tiles;
+    public int Width = 100;
+    public int Height = 100;
 
     public World()
     {

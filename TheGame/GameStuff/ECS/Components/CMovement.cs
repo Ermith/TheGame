@@ -1,8 +1,8 @@
 ﻿
 using System.Collections.Generic;
-using TheGame.GameStuff.Entities;
+using TheGame.GameStuff.ECS;
 
-namespace TheGame.GameStuff.Components
+namespace TheGame.GameStuff.ECS.Components
 {
   class CMovement : Component
   {
@@ -11,7 +11,7 @@ namespace TheGame.GameStuff.Components
     public static void AddMovementComponent(Entity entity)
     {
       entities.Add(entity);
-      entity.Components[Components.Movement] = new CMovement();
+      entity.Components[ComponentTypes.Movement] = new CMovement();
     }
     public float dX { get; set; }
     public float dY { get; set; }

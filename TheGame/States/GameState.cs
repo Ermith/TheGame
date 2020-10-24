@@ -2,48 +2,32 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using TheGame.GameStuff;
-using TheGame.GameStuff.Entities;
+using TheGame.GameStuff.ECS;
 using CaveGenerator;
 using Microsoft.Xna.Framework.Input;
-using TheGame.GameStuff.Components;
+using TheGame.GameStuff.ECS.Components;
 
 namespace TheGame.States
 {
   class GameState : State
   {
     EntityManager entityManager;
-    World world = new World();
-
-    // Prototype
-    private TileType[,] Map;
-    private Color[,] ColorMap;
-    private MapGenerator mapgen;
-    private int mapWid = 100;
-    private int mapHei = 100;
+    World world;
 
     public GameState()
     {
-      mapgen = new MapGenerator(mapWid, mapHei, 1);
-      Map = mapgen.Generate(GeneratorOption.BasicRock1);
-      ColorMap = new Color[mapWid, mapHei];
-
-      Camera.MapWidth = mapWid * Utilities.Settings.tileSize;
-      Camera.MapHeight = mapHei * Utilities.Settings.tileSize;
-
+      // constructors
+      world = new World();
       entityManager = new EntityManager(world);
 
-
-      for (int i = 0; i < mapWid; i++)
-      {
-        for (int j = 0; j < mapHei; j++)
-        {
-          ColorMap[i, j] = Map[i, j] is RockTile ? Color.Black : Color.LightGray;
-        }
-      }
-
+      // world and camera
       world.CreateNew();
+      Camera.MapWidth = world.Width * Utilities.Settings.tileSize;
+      Camera.MapHeight = world.Height * Utilities.Settings.tileSize;
+
+      // entities
       var spawnPoint = world.GenerateSpawnPoint();
-      CLocation location = entityManager.Player.Components[Component.Components.Location] as CLocation;
+      CLocation location = entityManager.Player.Components[ComponentTypes.Location] as CLocation;
       location.X = (int)spawnPoint.X;
       location.Y = (int)spawnPoint.Y;
     }
@@ -53,21 +37,21 @@ namespace TheGame.States
       Utilities.IsMouseVisible = false;
 
       world.Render(arguments);
-
-      // Entities
       entityManager.Render(arguments);
     }
 
     public override void Update(UpdateArguments arguments)
     {
+      // Pause the game
       if (arguments.Keyboard.IsKeyDown(Keys.Escape))
       {
-        State.CurrentState = State.MenuState;
+        CurrentState = MenuState;
         return;
       }
+
       // Entities
       entityManager.Update(arguments);
-      var l = entityManager.Player.Components[Component.Components.Location] as CLocation;
+      var l = entityManager.Player.Components[ComponentTypes.Location] as CLocation;
       Camera.Center((int)l.X, (int)l.Y);
     }
   }

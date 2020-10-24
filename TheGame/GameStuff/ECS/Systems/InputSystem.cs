@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using TheGame.GameStuff.Components;
-using TheGame.GameStuff.Entities;
+using TheGame.GameStuff.ECS.Components;
 using TheGame.Math;
 
-namespace TheGame.GameStuff.Systems
+namespace TheGame.GameStuff.ECS.Systems
 {
   class InputSystem : System
   {
@@ -11,9 +10,9 @@ namespace TheGame.GameStuff.Systems
     {
       foreach (Entity entity in CInput.entities)
       {
-        CInput input = entity.Components[Component.Components.Input] as CInput;
-        CMovement movement = entity.Components[Component.Components.Movement] as CMovement;
-        CLocation location = entity.Components[Component.Components.Location] as CLocation;
+        CInput input = entity.Components[ComponentTypes.Input] as CInput;
+        CMovement movement = entity.Components[ComponentTypes.Movement] as CMovement;
+        CLocation location = entity.Components[ComponentTypes.Location] as CLocation;
 
         Vector2 Velocity = new Vector2(0, 0);
 

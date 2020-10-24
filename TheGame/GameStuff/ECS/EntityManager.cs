@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using TheGame.GameStuff.Components;
-using TheGame.GameStuff.Entities;
-using TheGame.GameStuff.Systems;
+using TheGame.GameStuff.ECS.Components;
+using TheGame.GameStuff.ECS.Systems;
 
-namespace TheGame.GameStuff
+namespace TheGame.GameStuff.ECS
 {
   class EntityManager : IGameComponent
   {

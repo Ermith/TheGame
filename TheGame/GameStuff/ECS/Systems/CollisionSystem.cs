@@ -1,8 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using TheGame.GameStuff.Components;
-using TheGame.GameStuff.Entities;
+using TheGame.GameStuff.ECS.Components;
 
-namespace TheGame.GameStuff.Systems
+namespace TheGame.GameStuff.ECS.Systems
 {
   class CollisionSystem : System
   {
@@ -17,8 +16,8 @@ namespace TheGame.GameStuff.Systems
     {
       foreach (Entity entity in CMovement.entities)
       {
-        CMovement movement = entity.Components[Component.Components.Movement] as CMovement;
-        CLocation location = entity.Components[Component.Components.Location] as CLocation;
+        CMovement movement = entity.Components[ComponentTypes.Movement] as CMovement;
+        CLocation location = entity.Components[ComponentTypes.Location] as CLocation;
 
         float newX = location.X;
         float newY = location.Y;

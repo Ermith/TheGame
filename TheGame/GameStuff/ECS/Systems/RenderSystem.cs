@@ -1,8 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using TheGame.GameStuff.Components;
-using TheGame.GameStuff.Entities;
+using TheGame.GameStuff.ECS.Components;
 
-namespace TheGame.GameStuff.Systems
+namespace TheGame.GameStuff.ECS.Systems
 {
   class RenderSystem : System, IRenderable
   {
@@ -10,8 +9,8 @@ namespace TheGame.GameStuff.Systems
     {
       foreach (Entity entity in CRender.entities)
       {
-        CRender render = entity.Components[Component.Components.Render] as CRender;
-        CLocation location = entity.Components[Component.Components.Location] as CLocation;
+        CRender render = entity.Components[ComponentTypes.Render] as CRender;
+        CLocation location = entity.Components[ComponentTypes.Location] as CLocation;
 
         Camera.AbsoluteToRelative((int)location.X, (int)location.Y, out int lx, out int ly);
 
@@ -28,8 +27,8 @@ namespace TheGame.GameStuff.Systems
     {
       foreach (Entity entity in CRender.entities)
       {
-        CRender render = entity.Components[Component.Components.Render] as CRender;
-        CMovement movement = entity.Components[Component.Components.Movement] as CMovement;
+        CRender render = entity.Components[ComponentTypes.Render] as CRender;
+        CMovement movement = entity.Components[ComponentTypes.Movement] as CMovement;
         if (movement != null && movement.dX == 0 && movement.dY == 0)
         {
           render.delta = 0;

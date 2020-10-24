@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using TheGame.GameStuff.Entities;
+using TheGame.GameStuff.ECS;
 
-namespace TheGame.GameStuff.Components
+namespace TheGame.GameStuff.ECS.Components
 {
   class CRender : Component
   {
@@ -11,7 +11,7 @@ namespace TheGame.GameStuff.Components
     public static void AddRenderComponent(Entity entity, Texture2D sprite, float frequency, int frameCount, int wid, int hei, int defaultFrame = 0)
     {
       entities.Add(entity);
-      entity.Components[Components.Render] = new CRender(sprite, frequency, frameCount, wid, hei, defaultFrame);
+      entity.Components[ComponentTypes.Render] = new CRender(sprite, frequency, frameCount, wid, hei, defaultFrame);
     }
 
     public CRender(Texture2D sprite, float frequency, int frameCount, int wid, int hei, int defaultFrame = 0)
