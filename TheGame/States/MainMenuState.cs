@@ -37,7 +37,7 @@ namespace TheGame.States
         y += freeSpace;
         int x = screenSize.X / 2 - button.Rectangle.Width / 2;
 
-        button.Location = new Point(x, y);
+        button.Location = new Vector2(x, y);
         manager.AddControl(button);
 
         y += button.Rectangle.Height;

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TheGame.GameStuff.ECS.Components
 {
-  enum ComponentTypes { Location, Movement, Render, Input }
+  enum ComponentTypes { Spacial, Movement, Animation, Input }
   abstract class Component
   {
   }

@@ -47,12 +47,17 @@ namespace TheGame.GameStuff
 
   class World : IRenderable
   {
+    // private
     private MapGenerator mapGenerator;
     private TileFactory factory;
     private TileType[,] tiles;
+
+    // public
     public int Width = 100;
     public int Height = 100;
 
+    // Methods
+    //=================================
     public World()
     {
       mapGenerator = new MapGenerator(Width, Height, 1);
@@ -68,24 +73,24 @@ namespace TheGame.GameStuff
 
     public void Render(RenderArguments arguments)
     {
-      int xStart = Camera.OffsetX - (Camera.OffsetX % Utilities.Settings.tileSize);
-      int yStart = Camera.OffsetY - (Camera.OffsetY % Utilities.Settings.tileSize);
+      float xStart = Camera.OffsetX - (Camera.OffsetX % Utilities.Settings.tileSize);
+      float yStart = Camera.OffsetY - (Camera.OffsetY % Utilities.Settings.tileSize);
 
       Utilities.ForMatrix(
         Camera.Width / Utilities.Settings.tileSize + 1,
         Camera.Height / Utilities.Settings.tileSize + 1,
         (int x, int y) =>
         {
-          int xx = x * Utilities.Settings.tileSize + xStart;
-          int yy = y * Utilities.Settings.tileSize + yStart;
+          float xx = x * Utilities.Settings.tileSize + xStart;
+          float yy = y * Utilities.Settings.tileSize + yStart;
 
-          Camera.AbsoluteToRelative(xx, yy, out int ox, out int oy);
+          Camera.AbsoluteToRelative(xx, yy, out float ox, out float oy); ;
 
           arguments.SpriteBatch.Draw(
             factory.Get(
               tiles[
-              x + Camera.OffsetX / Utilities.Settings.tileSize,
-              y + Camera.OffsetY / Utilities.Settings.tileSize
+              (int)(x + Camera.OffsetX / Utilities.Settings.tileSize),
+              (int)(y + Camera.OffsetY / Utilities.Settings.tileSize)
               ]),
             new Vector2(ox, oy),
             Color.White

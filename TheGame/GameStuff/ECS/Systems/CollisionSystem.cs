@@ -17,36 +17,33 @@ namespace TheGame.GameStuff.ECS.Systems
       foreach (Entity entity in CMovement.entities)
       {
         CMovement movement = entity.Components[ComponentTypes.Movement] as CMovement;
-        CLocation location = entity.Components[ComponentTypes.Location] as CLocation;
+        CSpacial spacial = entity.Components[ComponentTypes.Spacial] as CSpacial;
 
-        float newX = location.X;
-        float newY = location.Y;
-        
+        Vector2 newPosition = spacial.Position;
 
         // Vertical movement
         if (World.CheckPosition(
           new Rectangle(
-            (int)(location.X + movement.dX),
-            (int)location.Y,
-            32,
-            32
+            (int)(spacial.Position.X + movement.Velocity.X),
+            (int)spacial.Position.Y,
+            spacial.Width,
+            spacial.Height
             )
           ))
-          newX += movement.dX;
+          newPosition.X += movement.Velocity.X;
 
         // Horizontal movement
         if (World.CheckPosition(
           new Rectangle(
-            (int)location.X,
-            (int)(location.Y + movement.dY),
-            32,
-            32
+            (int)spacial.Position.X,
+            (int)(spacial.Position.Y + movement.Velocity.Y),
+            spacial.Width,
+            spacial.Height
             )
           ))
-          newY += movement.dY;
+          newPosition.Y += movement.Velocity.Y;
 
-        location.X = (int)newX;
-        location.Y = (int)newY;
+        spacial.Position = newPosition;
       }
     }
   }

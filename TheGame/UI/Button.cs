@@ -6,39 +6,36 @@ using TheGame.States;
 
 namespace TheGame.UI
 {
-
-
   class Button : UIControl
   {
+    // private
     private MouseState previousMouse;
     private Color color;
     private bool focused;
 
-
+    // public
     public Func<bool> IsActive = () => true;
     public SpriteFont Font { get; set; }
     public string Text { get; set; }
-    public Rectangle Rectangle => new Rectangle(Location, Font.MeasureString(Text).ToPoint());
+    public Rectangle Rectangle => new Rectangle(Location.ToPoint(), Font.MeasureString(Text).ToPoint());
     public event Action Click;
 
     // Methods
-    public Button(Point location, string text, SpriteFont font) : base(location)
+    //=================================
+    public Button(Vector2 location, string text, SpriteFont font) : base(location)
     {
       Text = text;
       Font = font;
     }
-
-    public Button(int x, int y, string text, SpriteFont font) : base(x, y)
+    public Button(float x, float y, string text, SpriteFont font) : base(x, y)
     {
       Text = text;
       Font = font;
     }
-
     public override void Render(RenderArguments arguments)
     {
-      arguments.SpriteBatch.DrawString(Font, Text, Location.ToVector2(), color);
+      arguments.SpriteBatch.DrawString(Font, Text, Location, color);
     }
-
     public override void Update(UpdateArguments arguments)
     {
       color = Color.White;
@@ -65,37 +62,34 @@ namespace TheGame.UI
     }
 
     // Frequently used buttons
+    //=================================
     public static Button Exit()
     {
-      Button exit = new Button(new Point(), "Exit", Assets.testFont);
+      Button exit = new Button(new Vector2(), "Exit", Assets.testFont);
       exit.Click += Utilities.Exit;
 
       return exit;
     }
-
     public static Button NewGame()
     {
-      Button newGame = new Button(new Point(), "New Game", Assets.testFont);
+      Button newGame = new Button(new Vector2(), "New Game", Assets.testFont);
       newGame.Click += NewGame_Click; 
 
       return newGame;
     }
-
     private static void NewGame_Click()
     {
       State.GameState = new GameState();
       State.CurrentState = State.GameState;
     }
-
     public static Button ResumeGame()
     {
-      Button resumeGame = new Button(new Point(), "Resume Game", Assets.testFont);
+      Button resumeGame = new Button(new Vector2(), "Resume Game", Assets.testFont);
       resumeGame.Click += ResumeGame_Click;
       resumeGame.IsActive = () => { return State.GameState != null; };
 
       return resumeGame;
     }
-
     private static void ResumeGame_Click()
     {
       State.CurrentState = State.GameState;

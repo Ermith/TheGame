@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TheGame
 {
-  class Assets
+  static class Assets
   {
     public static Texture2D placeHolder;
     public static SpriteFont testFont;

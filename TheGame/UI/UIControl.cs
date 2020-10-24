@@ -4,16 +4,16 @@ namespace TheGame.UI
 {
   abstract class UIControl
   {
-    public Point Location;
+    public Vector2 Location;
 
-    public UIControl(Point location)
+    public UIControl(Vector2 location)
     {
       Location = location;
     }
 
-    public UIControl(int x, int y)
+    public UIControl(float x, float y)
     {
-      Location = new Point(x, y);
+      Location = new Vector2(x, y);
     }
 
     public abstract void Render(RenderArguments arguments);

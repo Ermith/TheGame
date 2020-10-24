@@ -1,6 +1,5 @@
-﻿
-using System.Collections.Generic;
-using TheGame.GameStuff.ECS;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 namespace TheGame.GameStuff.ECS.Components
 {
@@ -13,8 +12,7 @@ namespace TheGame.GameStuff.ECS.Components
       entities.Add(entity);
       entity.Components[ComponentTypes.Movement] = new CMovement();
     }
-    public float dX { get; set; }
-    public float dY { get; set; }
+    public Vector2 Velocity { get; set; }
     public float Speed { get; set; } = 0.2f;
   }
 }

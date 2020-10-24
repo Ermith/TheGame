@@ -1,9 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using TheGame.GameStuff;
+﻿using TheGame.GameStuff;
 using TheGame.GameStuff.ECS;
-using CaveGenerator;
 using Microsoft.Xna.Framework.Input;
 using TheGame.GameStuff.ECS.Components;
 
@@ -11,8 +7,8 @@ namespace TheGame.States
 {
   class GameState : State
   {
-    EntityManager entityManager;
-    World world;
+    private EntityManager entityManager;
+    private World world;
 
     public GameState()
     {
@@ -26,10 +22,8 @@ namespace TheGame.States
       Camera.MapHeight = world.Height * Utilities.Settings.tileSize;
 
       // entities
-      var spawnPoint = world.GenerateSpawnPoint();
-      CLocation location = entityManager.Player.Components[ComponentTypes.Location] as CLocation;
-      location.X = (int)spawnPoint.X;
-      location.Y = (int)spawnPoint.Y;
+      CSpacial spacial = entityManager.Player.Components[ComponentTypes.Spacial] as CSpacial;
+      spacial.Position = world.GenerateSpawnPoint();
     }
 
     public override void Render(RenderArguments arguments)
@@ -51,8 +45,8 @@ namespace TheGame.States
 
       // Entities
       entityManager.Update(arguments);
-      var l = entityManager.Player.Components[ComponentTypes.Location] as CLocation;
-      Camera.Center((int)l.X, (int)l.Y);
+      var spacial = entityManager.Player.Components[ComponentTypes.Spacial] as CSpacial;
+      Camera.Center(spacial.Position);
     }
   }
 }

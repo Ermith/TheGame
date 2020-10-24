@@ -24,9 +24,9 @@ namespace TheGame.GameStuff.ECS
 
       Player = new Entity();
       CInput.AddInputComponent(Player);
-      CLocation.AddLocationComponent(Player);
+      CSpacial.AddLocationComponent(Player);
       CMovement.AddMovementComponent(Player);
-      CRender.AddRenderComponent(Player, Assets.PlayerSprite, 85, 4, 32, 32, 1);
+      CAnimation.AddAnimationComponent(Player, Assets.PlayerSprite, 85, 4, 32, 32, 1);
     }
 
     public void Add(Entity entity) => entities.Add(entity);

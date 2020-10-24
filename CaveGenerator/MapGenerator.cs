@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Numerics;
 
 namespace CaveGenerator
 {
@@ -320,8 +319,8 @@ namespace CaveGenerator
       var visited = new HashSet<Point>();
       var parent = new Dictionary<Point, Point>();
 
-      TileType tile = map[start.X, start.Y];
-      contains[compArr[start.X, start.Y]] = true;
+      TileType tile = map[(int)start.X, (int)start.Y];
+      contains[compArr[(int)start.X, (int)start.Y]] = true;
       queue.Enqueue(start);
       visited.Add(start);
       parent.Add(start, start);
