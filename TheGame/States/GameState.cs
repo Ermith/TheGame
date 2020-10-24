@@ -5,6 +5,7 @@ using TheGame.GameStuff;
 using TheGame.GameStuff.Entities;
 using CaveGenerator;
 using Microsoft.Xna.Framework.Input;
+using TheGame.GameStuff.Components;
 
 namespace TheGame.States
 {
@@ -29,7 +30,7 @@ namespace TheGame.States
       Camera.MapWidth = mapWid * Utilities.Settings.tileSize;
       Camera.MapHeight = mapHei * Utilities.Settings.tileSize;
 
-      entityManager = new EntityManager();
+      entityManager = new EntityManager(world);
 
 
       for (int i = 0; i < mapWid; i++)
@@ -41,8 +42,10 @@ namespace TheGame.States
       }
 
       world.CreateNew();
-      entityManager.Player = new Player(world);
-      entityManager.Player.Position = world.GenerateSpawnPoint();
+      var spawnPoint = world.GenerateSpawnPoint();
+      CLocation location = entityManager.Player.Components[Component.Components.Location] as CLocation;
+      location.X = (int)spawnPoint.X;
+      location.Y = (int)spawnPoint.Y;
     }
 
     public override void Render(RenderArguments arguments)
@@ -64,6 +67,8 @@ namespace TheGame.States
       }
       // Entities
       entityManager.Update(arguments);
+      var l = entityManager.Player.Components[Component.Components.Location] as CLocation;
+      Camera.Center((int)l.X, (int)l.Y);
     }
   }
 }

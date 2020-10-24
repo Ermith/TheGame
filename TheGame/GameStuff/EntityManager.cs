@@ -1,38 +1,47 @@
 ﻿using System.Collections.Generic;
+using TheGame.GameStuff.Components;
 using TheGame.GameStuff.Entities;
+using TheGame.GameStuff.Systems;
 
 namespace TheGame.GameStuff
 {
   class EntityManager : IGameComponent
   {
-    public Player Player;
+    public Entity Player;
     private List<Entity> entities;
+    public InputSystem inputSystem;
+    public CollisionSystem collisionSystem;
+    public RenderSystem renderSystem;
 
-    public EntityManager()
+    public World World { get; }
+
+    public EntityManager(World world)
     {
       entities = new List<Entity>();
+      World = world;
+      inputSystem = new InputSystem();
+      collisionSystem = new CollisionSystem(World);
+      renderSystem = new RenderSystem();
+
+      Player = new Entity();
+      CInput.AddInputComponent(Player);
+      CLocation.AddLocationComponent(Player);
+      CMovement.AddMovementComponent(Player);
+      CRender.AddRenderComponent(Player, Assets.PlayerSprite, 85, 4, 32, 32, 1);
     }
 
     public void Add(Entity entity) => entities.Add(entity);
 
     public void Render(RenderArguments arguments)
     {
-      Player.Render(arguments);
-
-      foreach (Entity entity in entities)
-        entity.Render(arguments);
+      renderSystem.Render(arguments);
     }
 
     public void Update(UpdateArguments arguments)
     {
-      Player.Update(arguments);
-      Player.Action?.Execute();
-
-      foreach (Entity entity in entities)
-      {
-        entity.Update(arguments);
-        entity.Action?.Execute();
-      }
+      inputSystem.Update(arguments);
+      collisionSystem.Update(arguments);
+      renderSystem.Update(arguments);
     }
   }
 }

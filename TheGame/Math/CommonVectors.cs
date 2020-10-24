@@ -2,6 +2,7 @@
 
 namespace TheGame.Math
 {
+  enum Direction { Up, Left, Down, Right }
   static class CommonVectors
   {
     public static Vector2 Left => new Vector2(-1, 0);
