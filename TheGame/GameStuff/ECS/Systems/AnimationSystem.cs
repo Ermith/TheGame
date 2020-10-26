@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using TheGame.GameStuff.ECS.Components;
 
@@ -13,7 +14,7 @@ namespace TheGame.GameStuff.ECS.Systems
       this.animationEntities = animationEntities;
     }
 
-    public void Render(RenderArguments arguments)
+    public void Render(SpriteBatch batch)
     {
       foreach (Entity entity in animationEntities)
       {
@@ -22,7 +23,7 @@ namespace TheGame.GameStuff.ECS.Systems
 
         Vector2 relativePosition = Camera.AbsoluteToRelative(spacial.Position);
 
-        arguments.SpriteBatch.Draw(render.Sprite, relativePosition, 
+        batch.Draw(render.Sprite, relativePosition, 
           new Rectangle(
             render.CurrentFrameIndex * 32,
             render.Heigth * (int)spacial.Facing,
@@ -31,7 +32,7 @@ namespace TheGame.GameStuff.ECS.Systems
       }
     }
 
-    public override void Update(UpdateArguments arguments)
+    public override void Update(GameTime time)
     {
       foreach (Entity entity in animationEntities)
       {
@@ -44,7 +45,7 @@ namespace TheGame.GameStuff.ECS.Systems
           continue;
         }
 
-        animation.Delta += (float)arguments.Time.ElapsedGameTime.TotalMilliseconds;
+        animation.Delta += (float)time.ElapsedGameTime.TotalMilliseconds;
 
         if (animation.Delta >= animation.Frequency)
         {

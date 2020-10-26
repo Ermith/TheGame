@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace TheGame.UI
 {
@@ -13,16 +15,16 @@ namespace TheGame.UI
 
     public void AddControl(UIControl control) => Controls.Add(control);
 
-    public void Render(RenderArguments arguments)
+    public void Render(SpriteBatch batch)
     {
       foreach (var control in Controls)
-        control.Render(arguments);
+        control.Render(batch);
     }
 
-    public void Update(UpdateArguments arguments)
+    public void Update(GameTime time)
     {
       foreach (var control in Controls)
-        control.Update(arguments);
+        control.Update(time);
     }
   }
 }

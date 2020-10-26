@@ -1,7 +1,9 @@
-﻿namespace TheGame
+﻿using Microsoft.Xna.Framework.Graphics;
+
+namespace TheGame
 {
   interface IRenderable
   {
-    void Render(RenderArguments arguments);
+    void Render(SpriteBatch batch);
   }
 }

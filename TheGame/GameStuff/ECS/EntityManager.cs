@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using TheGame.GameStuff.ECS.Components;
 using TheGame.GameStuff.ECS.Systems;
 using TheGame.Math;
@@ -31,16 +33,16 @@ namespace TheGame.GameStuff.ECS
       renderSystem = new AnimationSystem(tracker.GetEntities<CAnimation>());
     }
 
-    public void Render(RenderArguments arguments)
+    public void Render(SpriteBatch batch)
     {
-      renderSystem.Render(arguments);
+      renderSystem.Render(batch);
     }
 
-    public void Update(UpdateArguments arguments)
+    public void Update(GameTime time)
     {
-      inputSystem.Update(arguments);
-      collisionSystem.Update(arguments);
-      renderSystem.Update(arguments);
+      inputSystem.Update(time);
+      collisionSystem.Update(time);
+      renderSystem.Update(time);
     }
   }
 }

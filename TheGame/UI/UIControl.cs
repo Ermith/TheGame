@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace TheGame.UI
 {
-  abstract class UIControl
+  abstract class UIControl : IGameComponent
   {
     public Vector2 Location;
 
@@ -16,7 +17,7 @@ namespace TheGame.UI
       Location = new Vector2(x, y);
     }
 
-    public abstract void Render(RenderArguments arguments);
-    public abstract void Update(UpdateArguments arguments);
+    public abstract void Render(SpriteBatch batch);
+    public abstract void Update(GameTime time);
   }
 }

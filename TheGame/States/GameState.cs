@@ -2,6 +2,8 @@
 using TheGame.GameStuff.ECS;
 using Microsoft.Xna.Framework.Input;
 using TheGame.GameStuff.ECS.Components;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace TheGame.States
 {
@@ -17,31 +19,28 @@ namespace TheGame.States
       world.CreateNew();
       Camera.MapWidth = world.Width * GameEnvironment.Settings.tileSize;
       Camera.MapHeight = world.Height * GameEnvironment.Settings.tileSize;
-      
+
       // entities
       entityManager = new EntityManager(world);
-
     }
 
-    public override void Render(RenderArguments arguments)
+    public override void Render(SpriteBatch batch)
     {
-      GameEnvironment.IsMouseVisible = false;
-
-      world.Render(arguments);
-      entityManager.Render(arguments);
+      world.Render(batch);
+      entityManager.Render(batch);
     }
 
-    public override void Update(UpdateArguments arguments)
+    public override void Update(GameTime time)
     {
       // Pause the game
-      if (arguments.Keyboard.IsKeyDown(Keys.Escape))
+      if (Keyboard.GetState().IsKeyDown(Keys.Escape))
       {
-        CurrentState = MenuState;
+        GameEnvironment.SwitchToMainMenu();
         return;
       }
 
       // Entities
-      entityManager.Update(arguments);
+      entityManager.Update(time);
       var spacial = entityManager.Player.Get<CSpacial>();
       Camera.Center(spacial.Position);
     }

@@ -19,22 +19,18 @@ namespace TheGame
 
     protected override void Initialize()
     {
-      // TODO: Add your initialization logic here
-      
-      GameEnvironment.Init(this);
-      
-
       base.Initialize();
+      // TODO: Add your initialization logic here
+
+      _spriteBatch = new SpriteBatch(GraphicsDevice);
+      Mouse.SetCursor(MouseCursor.FromTexture2D(Assets.placeHolder, 0, 0));
+
+      GameEnvironment.Init(this);
     }
 
     protected override void LoadContent()
     {
-      _spriteBatch = new SpriteBatch(GraphicsDevice);
       Assets.Load(Content);
-      Mouse.SetCursor(MouseCursor.FromTexture2D(Assets.placeHolder, 0, 0));
-      State.MenuState = new MainMenuState();
-      State.CurrentState = State.MenuState;
-
       // TODO: use this.Content to load your game content here
     }
 
@@ -44,13 +40,7 @@ namespace TheGame
         Exit();
 
       // TODO: Add your update logic here
-      State.CurrentState.Update(new UpdateArguments
-      {
-        Game = this,
-        Time = gameTime,
-        Mouse = Mouse.GetState(),
-        Keyboard = Keyboard.GetState()
-      });
+      GameEnvironment.GetCurrentState().Update(gameTime);
 
       base.Update(gameTime);
     }
@@ -64,13 +54,7 @@ namespace TheGame
 
       //var mouse = Mouse.GetState();
 
-      State.CurrentState.Render(new RenderArguments
-      {
-        Time = gameTime,
-        Graphics = GraphicsDevice,
-        GraphicsManager = Graphics,
-        SpriteBatch = _spriteBatch
-      });
+      GameEnvironment.GetCurrentState().Render(_spriteBatch);
 
       _spriteBatch.End();
 

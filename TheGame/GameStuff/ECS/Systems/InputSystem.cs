@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using TheGame.GameStuff.ECS.Components;
 using TheGame.Math;
@@ -13,8 +14,11 @@ namespace TheGame.GameStuff.ECS.Systems
     {
       this.inputEntities = inputEntities;
     }
-    public override void Update(UpdateArguments arguments)
+    public override void Update(GameTime time)
     {
+      MouseState mouse = Mouse.GetState();
+      KeyboardState keyboard = Keyboard.GetState();
+
       foreach (Entity entity in inputEntities)
       {
         CInput input = entity.Get<CInput>();
@@ -23,22 +27,22 @@ namespace TheGame.GameStuff.ECS.Systems
 
         Vector2 Velocity = new Vector2(0, 0);
 
-        if (arguments.Keyboard.IsKeyDown(input.Up))
+        if (keyboard.IsKeyDown(input.Up))
         {
           Velocity += CommonVectors.Up;
           location.Facing = Direction.Up;
         }
-        if (arguments.Keyboard.IsKeyDown(input.Down))
+        if (keyboard.IsKeyDown(input.Down))
         {
           Velocity += CommonVectors.Down;
           location.Facing = Direction.Down;
         }
-        if (arguments.Keyboard.IsKeyDown(input.Left))
+        if (keyboard.IsKeyDown(input.Left))
         {
           Velocity += CommonVectors.Left;
           location.Facing = Direction.Left;
         }
-        if (arguments.Keyboard.IsKeyDown(input.Right))
+        if (keyboard.IsKeyDown(input.Right))
         {
           Velocity += CommonVectors.Right;
           location.Facing = Direction.Right;
@@ -47,7 +51,7 @@ namespace TheGame.GameStuff.ECS.Systems
         if (Velocity.Length() != 0)
           Velocity.Normalize();
 
-        movement.Velocity = Velocity * movement.Speed * (float)arguments.Time.ElapsedGameTime.TotalMilliseconds;
+        movement.Velocity = Velocity * movement.Speed * (float)time.ElapsedGameTime.TotalMilliseconds;
       }
     }
   }

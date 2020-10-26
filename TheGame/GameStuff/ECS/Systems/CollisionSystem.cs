@@ -14,7 +14,7 @@ namespace TheGame.GameStuff.ECS.Systems
 
     public World World { get; }
     private List<Entity> movementEntities;
-    public override void Update(UpdateArguments arguments)
+    public override void Update(GameTime time)
     {
       foreach (Entity entity in movementEntities)
       {

@@ -1,7 +1,9 @@
-﻿namespace TheGame
+﻿using Microsoft.Xna.Framework;
+
+namespace TheGame
 {
   interface IUpdatable
   {
-    void Update(UpdateArguments arguments);
+    void Update(GameTime time);
   }
 }

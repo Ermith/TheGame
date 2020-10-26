@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using TheGame.UI;
 
@@ -44,12 +45,8 @@ namespace TheGame.States
       }
     }
 
-    public override void Render(RenderArguments arguments)
-    {
-      GameEnvironment.IsMouseVisible = true;
-      manager.Render(arguments);
-    }
-    public override void Update(UpdateArguments arguments) => manager.Update(arguments);
+    public override void Render(SpriteBatch batch) => manager.Render(batch);
+    public override void Update(GameTime time) => manager.Update(time);
 
   }
 }

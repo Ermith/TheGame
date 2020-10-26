@@ -32,22 +32,24 @@ namespace TheGame.UI
       Text = text;
       Font = font;
     }
-    public override void Render(RenderArguments arguments)
+    public override void Render(SpriteBatch batch)
     {
-      arguments.SpriteBatch.DrawString(Font, Text, Location, color);
+      batch.DrawString(Font, Text, Location, color);
     }
-    public override void Update(UpdateArguments arguments)
+    public override void Update(GameTime time)
     {
       color = Color.White;
       if (!IsActive()) return;
 
-      if (Rectangle.Contains(arguments.Mouse.Position))
+      MouseState mouse = Mouse.GetState();
+
+      if (Rectangle.Contains(mouse.Position))
       { // is Hovering
         color = Color.Gray;
         if (!focused) Assets.Click.Play(GameEnvironment.Settings.MenuVolume, 0.0f, 0.0f);
         focused = true;
 
-        if (previousMouse.LeftButton == ButtonState.Pressed && arguments.Mouse.LeftButton == ButtonState.Released)
+        if (previousMouse.LeftButton == ButtonState.Pressed && mouse.LeftButton == ButtonState.Released)
         {
           Click?.Invoke();
         }
@@ -57,8 +59,7 @@ namespace TheGame.UI
         focused = false;
       }
 
-      previousMouse = arguments.Mouse;
-
+      previousMouse = mouse;
     }
 
     // Frequently used buttons
@@ -79,20 +80,19 @@ namespace TheGame.UI
     }
     private static void NewGame_Click()
     {
-      State.GameState = new GameState();
-      State.CurrentState = State.GameState;
+      GameEnvironment.StartNewGame();
     }
     public static Button ResumeGame()
     {
       Button resumeGame = new Button(new Vector2(), "Resume Game", Assets.testFont);
       resumeGame.Click += ResumeGame_Click;
-      resumeGame.IsActive = () => { return State.GameState != null; };
+      resumeGame.IsActive = () => { return GameEnvironment.ExistsInGame(); };
 
       return resumeGame;
     }
     private static void ResumeGame_Click()
     {
-      State.CurrentState = State.GameState;
+      GameEnvironment.SwitchToInGame();
     }
   }
 }

@@ -7,11 +7,11 @@ using System.Collections.Generic;
 namespace TheGame.GameStuff
 {
 
-  class TileFactory
+  class TileTextureMapper
   {
     private readonly Dictionary<Type, Texture2D> textures = new Dictionary<Type, Texture2D>();
 
-    public TileFactory()
+    public TileTextureMapper()
     {
       Add<FloorTile>(Assets.FloorTileTexture);
       Add<RockTile>(Assets.RockTileTexture);
@@ -49,7 +49,7 @@ namespace TheGame.GameStuff
   {
     // private
     private MapGenerator mapGenerator;
-    private TileFactory factory;
+    private TileTextureMapper textureMapper;
     private TileType[,] tiles;
 
     // public
@@ -61,7 +61,7 @@ namespace TheGame.GameStuff
     public World()
     {
       mapGenerator = new MapGenerator(Width, Height, 1);
-      factory = new TileFactory();
+      textureMapper = new TileTextureMapper();
     }
 
     public void CreateNew()
@@ -71,23 +71,21 @@ namespace TheGame.GameStuff
       mapGenerator.LayWalls(tiles);
     }
 
-    public void Render(RenderArguments arguments)
+    public void Render(SpriteBatch batch)
     {
       float xStart = Camera.OffsetX - (Camera.OffsetX % GameEnvironment.Settings.tileSize);
       float yStart = Camera.OffsetY - (Camera.OffsetY % GameEnvironment.Settings.tileSize);
 
-      GameEnvironment.ForMatrix(
-        Camera.Width / GameEnvironment.Settings.tileSize + 1,
-        Camera.Height / GameEnvironment.Settings.tileSize + 1,
-        (int x, int y) =>
+      for (int x = 0; x < Camera.Width / GameEnvironment.Settings.tileSize + 1; x++)
+        for (int y = 0; y < Camera.Height / GameEnvironment.Settings.tileSize + 1; y++)
         {
           float xx = x * GameEnvironment.Settings.tileSize + xStart;
           float yy = y * GameEnvironment.Settings.tileSize + yStart;
 
           Camera.AbsoluteToRelative(xx, yy, out float ox, out float oy); ;
 
-          arguments.SpriteBatch.Draw(
-            factory.Get(
+          batch.Draw(
+            textureMapper.Get(
               tiles[
               (int)(x + Camera.OffsetX / GameEnvironment.Settings.tileSize),
               (int)(y + Camera.OffsetY / GameEnvironment.Settings.tileSize)
@@ -95,7 +93,7 @@ namespace TheGame.GameStuff
             new Vector2(ox, oy),
             Color.White
             );
-        });
+        }
     }
 
     public Vector2 GenerateSpawnPoint()
