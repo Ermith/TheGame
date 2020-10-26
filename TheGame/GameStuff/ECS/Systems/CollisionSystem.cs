@@ -1,23 +1,25 @@
 ﻿using Microsoft.Xna.Framework;
 using TheGame.GameStuff.ECS.Components;
+using System.Collections.Generic;
 
 namespace TheGame.GameStuff.ECS.Systems
 {
   class CollisionSystem : System
   {
-    public CollisionSystem(World world)
+    public CollisionSystem(World world, List<Entity> movementEntities)
     {
       World = world;
+      this.movementEntities = movementEntities;
     }
 
     public World World { get; }
-
+    private List<Entity> movementEntities;
     public override void Update(UpdateArguments arguments)
     {
-      foreach (Entity entity in CMovement.entities)
+      foreach (Entity entity in movementEntities)
       {
-        CMovement movement = entity.Components[ComponentTypes.Movement] as CMovement;
-        CSpacial spacial = entity.Components[ComponentTypes.Spacial] as CSpacial;
+        CMovement movement = entity.Get<CMovement>();
+        CSpacial spacial = entity.Get<CSpacial>();
 
         Vector2 newPosition = spacial.Position;
 

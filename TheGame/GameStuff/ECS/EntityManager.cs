@@ -1,35 +1,35 @@
 ﻿using System.Collections.Generic;
 using TheGame.GameStuff.ECS.Components;
 using TheGame.GameStuff.ECS.Systems;
+using TheGame.Math;
 
 namespace TheGame.GameStuff.ECS
 {
   class EntityManager : IGameComponent
   {
     public Entity Player;
-    private List<Entity> entities;
+    private ComponentTracker tracker;
+    private EntityFactory factory;
     public InputSystem inputSystem;
     public CollisionSystem collisionSystem;
-    public RenderSystem renderSystem;
+    public AnimationSystem renderSystem;
 
     public World World { get; }
 
     public EntityManager(World world)
     {
-      entities = new List<Entity>();
       World = world;
-      inputSystem = new InputSystem();
-      collisionSystem = new CollisionSystem(World);
-      renderSystem = new RenderSystem();
 
-      Player = new Entity();
-      CInput.AddInputComponent(Player);
-      CSpacial.AddLocationComponent(Player);
-      CMovement.AddMovementComponent(Player);
-      CAnimation.AddAnimationComponent(Player, Assets.PlayerSprite, 85, 4, 32, 32, 1);
+      // init Entities
+      tracker = new ComponentTracker();
+      factory = new EntityFactory(new ComponentBuilder(tracker));
+      Player = factory.Build("player", world.GenerateSpawnPoint());
+
+      // init systems
+      inputSystem = new InputSystem(tracker.GetEntities<CInput>());
+      collisionSystem = new CollisionSystem(World, tracker.GetEntities<CMovement>());
+      renderSystem = new AnimationSystem(tracker.GetEntities<CAnimation>());
     }
-
-    public void Add(Entity entity) => entities.Add(entity);
 
     public void Render(RenderArguments arguments)
     {

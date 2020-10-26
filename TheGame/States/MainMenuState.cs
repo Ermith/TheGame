@@ -25,7 +25,7 @@ namespace TheGame.States
         buttonsHeight += button.Rectangle.Height;
       }
 
-      Point screenSize = Utilities.ScreenSize();
+      Point screenSize = GameEnvironment.ScreenSize();
       int freeSpace = screenSize.Y - buttonsHeight;
 
       // divide into sufficient parts
@@ -46,7 +46,7 @@ namespace TheGame.States
 
     public override void Render(RenderArguments arguments)
     {
-      Utilities.IsMouseVisible = true;
+      GameEnvironment.IsMouseVisible = true;
       manager.Render(arguments);
     }
     public override void Update(UpdateArguments arguments) => manager.Update(arguments);

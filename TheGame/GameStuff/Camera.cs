@@ -9,9 +9,9 @@ namespace TheGame.GameStuff
 
     public static Vector2 Offset => new Vector2(OffsetX, OffsetY);
 
-    public static Rectangle Rectangle => new Rectangle(Offset.ToPoint(), Utilities.ScreenSize());
-    public static int Width => Utilities.ScreenSize().X;
-    public static int Height => Utilities.ScreenSize().Y;
+    public static Rectangle Rectangle => new Rectangle(Offset.ToPoint(), GameEnvironment.ScreenSize());
+    public static int Width => GameEnvironment.ScreenSize().X;
+    public static int Height => GameEnvironment.ScreenSize().Y;
 
     public static int MapWidth;
     public static int MapHeight;

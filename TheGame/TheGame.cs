@@ -21,7 +21,7 @@ namespace TheGame
     {
       // TODO: Add your initialization logic here
       
-      Utilities.Init(this);
+      GameEnvironment.Init(this);
       
 
       base.Initialize();

@@ -44,7 +44,7 @@ namespace TheGame.UI
       if (Rectangle.Contains(arguments.Mouse.Position))
       { // is Hovering
         color = Color.Gray;
-        if (!focused) Assets.Click.Play(Utilities.Settings.MenuVolume, 0.0f, 0.0f);
+        if (!focused) Assets.Click.Play(GameEnvironment.Settings.MenuVolume, 0.0f, 0.0f);
         focused = true;
 
         if (previousMouse.LeftButton == ButtonState.Pressed && arguments.Mouse.LeftButton == ButtonState.Released)
@@ -66,7 +66,7 @@ namespace TheGame.UI
     public static Button Exit()
     {
       Button exit = new Button(new Vector2(), "Exit", Assets.testFont);
-      exit.Click += Utilities.Exit;
+      exit.Click += GameEnvironment.Exit;
 
       return exit;
     }

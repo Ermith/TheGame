@@ -73,24 +73,24 @@ namespace TheGame.GameStuff
 
     public void Render(RenderArguments arguments)
     {
-      float xStart = Camera.OffsetX - (Camera.OffsetX % Utilities.Settings.tileSize);
-      float yStart = Camera.OffsetY - (Camera.OffsetY % Utilities.Settings.tileSize);
+      float xStart = Camera.OffsetX - (Camera.OffsetX % GameEnvironment.Settings.tileSize);
+      float yStart = Camera.OffsetY - (Camera.OffsetY % GameEnvironment.Settings.tileSize);
 
-      Utilities.ForMatrix(
-        Camera.Width / Utilities.Settings.tileSize + 1,
-        Camera.Height / Utilities.Settings.tileSize + 1,
+      GameEnvironment.ForMatrix(
+        Camera.Width / GameEnvironment.Settings.tileSize + 1,
+        Camera.Height / GameEnvironment.Settings.tileSize + 1,
         (int x, int y) =>
         {
-          float xx = x * Utilities.Settings.tileSize + xStart;
-          float yy = y * Utilities.Settings.tileSize + yStart;
+          float xx = x * GameEnvironment.Settings.tileSize + xStart;
+          float yy = y * GameEnvironment.Settings.tileSize + yStart;
 
           Camera.AbsoluteToRelative(xx, yy, out float ox, out float oy); ;
 
           arguments.SpriteBatch.Draw(
             factory.Get(
               tiles[
-              (int)(x + Camera.OffsetX / Utilities.Settings.tileSize),
-              (int)(y + Camera.OffsetY / Utilities.Settings.tileSize)
+              (int)(x + Camera.OffsetX / GameEnvironment.Settings.tileSize),
+              (int)(y + Camera.OffsetY / GameEnvironment.Settings.tileSize)
               ]),
             new Vector2(ox, oy),
             Color.White
@@ -101,12 +101,12 @@ namespace TheGame.GameStuff
     public Vector2 GenerateSpawnPoint()
     {
       mapGenerator.GenerateSpawn(out int x, out int y);
-      return new Vector2(x * Utilities.Settings.tileSize, y* Utilities.Settings.tileSize);
+      return new Vector2(x * GameEnvironment.Settings.tileSize, y* GameEnvironment.Settings.tileSize);
     }
 
     public bool CheckPosition(Rectangle rect)
     {
-      int tileSize = Utilities.Settings.tileSize;
+      int tileSize = GameEnvironment.Settings.tileSize;
 
       int xStart = rect.X / tileSize;
       int yStart = rect.Y / tileSize;

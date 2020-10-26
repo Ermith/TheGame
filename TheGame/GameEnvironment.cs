@@ -3,7 +3,7 @@ using System;
 
 namespace TheGame
 {
-  static class Utilities
+  static class GameEnvironment
   {
     private static TheGame _game;
 

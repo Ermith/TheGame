@@ -12,23 +12,20 @@ namespace TheGame.States
 
     public GameState()
     {
-      // constructors
+      // world and camera
       world = new World();
+      world.CreateNew();
+      Camera.MapWidth = world.Width * GameEnvironment.Settings.tileSize;
+      Camera.MapHeight = world.Height * GameEnvironment.Settings.tileSize;
+      
+      // entities
       entityManager = new EntityManager(world);
 
-      // world and camera
-      world.CreateNew();
-      Camera.MapWidth = world.Width * Utilities.Settings.tileSize;
-      Camera.MapHeight = world.Height * Utilities.Settings.tileSize;
-
-      // entities
-      CSpacial spacial = entityManager.Player.Components[ComponentTypes.Spacial] as CSpacial;
-      spacial.Position = world.GenerateSpawnPoint();
     }
 
     public override void Render(RenderArguments arguments)
     {
-      Utilities.IsMouseVisible = false;
+      GameEnvironment.IsMouseVisible = false;
 
       world.Render(arguments);
       entityManager.Render(arguments);
@@ -45,7 +42,7 @@ namespace TheGame.States
 
       // Entities
       entityManager.Update(arguments);
-      var spacial = entityManager.Player.Components[ComponentTypes.Spacial] as CSpacial;
+      var spacial = entityManager.Player.Get<CSpacial>();
       Camera.Center(spacial.Position);
     }
   }

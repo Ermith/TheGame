@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using TheGame.GameStuff.ECS.Components;
 using TheGame.Math;
 
@@ -6,13 +7,19 @@ namespace TheGame.GameStuff.ECS.Systems
 {
   class InputSystem : System
   {
+
+    private List<Entity> inputEntities;
+    public InputSystem(List<Entity> inputEntities)
+    {
+      this.inputEntities = inputEntities;
+    }
     public override void Update(UpdateArguments arguments)
     {
-      foreach (Entity entity in CInput.entities)
+      foreach (Entity entity in inputEntities)
       {
-        CInput input = entity.Components[ComponentTypes.Input] as CInput;
-        CMovement movement = entity.Components[ComponentTypes.Movement] as CMovement;
-        CSpacial location = entity.Components[ComponentTypes.Spacial] as CSpacial;
+        CInput input = entity.Get<CInput>();
+        CMovement movement = entity.Get<CMovement>();
+        CSpacial location = entity.Get<CSpacial>();
 
         Vector2 Velocity = new Vector2(0, 0);
 

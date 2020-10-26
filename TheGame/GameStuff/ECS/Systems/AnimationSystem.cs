@@ -1,16 +1,24 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using TheGame.GameStuff.ECS.Components;
 
 namespace TheGame.GameStuff.ECS.Systems
 {
-  class RenderSystem : System, IRenderable
+  class AnimationSystem : System, IRenderable
   {
+    private List<Entity> animationEntities;
+
+    public AnimationSystem(List<Entity> animationEntities)
+    {
+      this.animationEntities = animationEntities;
+    }
+
     public void Render(RenderArguments arguments)
     {
-      foreach (Entity entity in CAnimation.entities)
+      foreach (Entity entity in animationEntities)
       {
-        CAnimation render = entity.Components[ComponentTypes.Animation] as CAnimation;
-        CSpacial spacial = entity.Components[ComponentTypes.Spacial] as CSpacial;
+        CAnimation render = entity.Get<CAnimation>();
+        CSpacial spacial = entity.Get<CSpacial>();
 
         Vector2 relativePosition = Camera.AbsoluteToRelative(spacial.Position);
 
@@ -25,10 +33,10 @@ namespace TheGame.GameStuff.ECS.Systems
 
     public override void Update(UpdateArguments arguments)
     {
-      foreach (Entity entity in CAnimation.entities)
+      foreach (Entity entity in animationEntities)
       {
-        CAnimation animation = entity.Components[ComponentTypes.Animation] as CAnimation;
-        CMovement movement = entity.Components[ComponentTypes.Movement] as CMovement;
+        CAnimation animation = entity.Get<CAnimation>();
+        CMovement movement = entity.Get<CMovement>();
         if (movement != null && movement.Velocity.X == 0 && movement.Velocity.Y == 0)
         {
           animation.Delta = 0;
