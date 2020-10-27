@@ -1,12 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Xna.Framework.Input;
 using TheGame.Math;
 using Microsoft.Xna.Framework.Graphics;
+using TheGame.GameStuff.ECS.Components;
 
-namespace TheGame.GameStuff.ECS.Components
+namespace TheGame.GameStuff.ECS
 {
   class ComponentBuilder
   {

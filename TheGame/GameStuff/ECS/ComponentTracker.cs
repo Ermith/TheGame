@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using TheGame.GameStuff.ECS.Components;
 
-namespace TheGame.GameStuff.ECS.Components
+namespace TheGame.GameStuff.ECS
 {
   class ComponentTracker
   {
