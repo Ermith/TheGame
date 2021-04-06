@@ -1,11 +1,30 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using System;
+using System;
 
 namespace TheGame.GameStuff
 {
   class Camera
   {
-    public static float OffsetX { get; set; }
-    public static float OffsetY { get; set; }
+    private static Random rnd = new Random();
+    private static float intensity = 0;
+
+    private static float offsetX;
+
+    public static float OffsetX
+    {
+      get { return offsetX; }
+      set { offsetX = System.Math.Clamp(value, 0, MapWidth - Width - 1); }
+    }
+
+    private static float offsetY;
+
+    public static float OffsetY
+    {
+      get { return offsetY; }
+      set { offsetY = System.Math.Clamp(value, 0, MapHeight - Height - 1); }
+    }
 
     public static float X => OffsetX + Width / 2;
     public static float Y => OffsetY + Height / 2;
@@ -39,8 +58,28 @@ namespace TheGame.GameStuff
     {
       OffsetX = x - Width / 2;
       OffsetY = y - Height / 2;
-      OffsetX = System.Math.Clamp(OffsetX, 0, MapWidth - Width - 1);
-      OffsetY = System.Math.Clamp(OffsetY, 0, MapHeight - Height - 1);
+    }
+
+    public static void Update()
+    {
+      if (Keyboard.GetState().IsKeyDown(Keys.X))
+        intensity += 5;
+
+      if (intensity > 0)
+        Shake();
+    }
+
+    private static void Shake()
+    {
+      float shakeX = (float)rnd.NextDouble() * intensity - intensity / 2;
+      float shakeY = (float)rnd.NextDouble() * intensity - intensity / 2;
+
+      OffsetX += shakeX;
+      OffsetY += shakeY;
+
+      intensity *= 0.9f;
+      if (intensity < 0.3)
+        intensity = 0;
     }
   }
 }

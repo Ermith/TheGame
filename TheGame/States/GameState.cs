@@ -45,6 +45,7 @@ namespace TheGame.States
       entityManager.Update(time);
       var spacial = entityManager.Player.Get<CSpacial>();
       Camera.Center(spacial.Position);
+      Camera.Update();
     }
   }
 }
