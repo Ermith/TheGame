@@ -7,11 +7,17 @@ namespace TheGame.GameStuff
     public static float OffsetX { get; set; }
     public static float OffsetY { get; set; }
 
+    public static float X => OffsetX + Width / 2;
+    public static float Y => OffsetY + Height / 2;
+
+    public static float ScaleX => GameEnvironment.ScreenSize().X / Width;
+    public static float ScaleY => GameEnvironment.ScreenSize().Y / Height;
+
     public static Vector2 Offset => new Vector2(OffsetX, OffsetY);
 
-    public static Rectangle Rectangle => new Rectangle(Offset.ToPoint(), GameEnvironment.ScreenSize());
-    public static int Width => GameEnvironment.ScreenSize().X;
-    public static int Height => GameEnvironment.ScreenSize().Y;
+    public static Rectangle Rectangle => new Rectangle((int)Offset.X, (int)Offset.Y, Width, Height);
+    public static int Width { get; set; } = 800;
+    public static int Height { get; set; } = 480;
 
     public static int MapWidth;
     public static int MapHeight;

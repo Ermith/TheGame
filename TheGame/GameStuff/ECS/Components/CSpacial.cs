@@ -7,10 +7,18 @@ namespace TheGame.GameStuff.ECS.Components
 {
   class CSpacial : Component
   {
-    public Vector2 Position { get; set; }
+    public float X;
+    public float Y;
+    public Vector2 Position {
+      get => new Vector2(X, Y);
+      set {
+        X = value.X;
+        Y = value.Y;
+      }
+    }
     public Direction Facing { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
-    public Rectangle HitBox => new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
+    public Rectangle HitBox => new Rectangle((int)X - Width / 2, (int)Y - Height / 2, Width, Height);
   }
 }

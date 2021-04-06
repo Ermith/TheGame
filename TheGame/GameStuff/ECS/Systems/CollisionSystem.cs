@@ -21,31 +21,15 @@ namespace TheGame.GameStuff.ECS.Systems
         CMovement movement = entity.Get<CMovement>();
         CSpacial spacial = entity.Get<CSpacial>();
 
-        Vector2 newPosition = spacial.Position;
-
         // Vertical movement
-        if (World.CheckPosition(
-          new Rectangle(
-            (int)(spacial.Position.X + movement.Velocity.X),
-            (int)spacial.Position.Y,
-            spacial.Width,
-            spacial.Height
-            )
-          ))
-          newPosition.X += movement.Velocity.X;
+        spacial.X += movement.Velocity.X;
+        if (!World.CheckPosition(spacial.HitBox))
+          spacial.X -= movement.Velocity.X;
 
         // Horizontal movement
-        if (World.CheckPosition(
-          new Rectangle(
-            (int)spacial.Position.X,
-            (int)(spacial.Position.Y + movement.Velocity.Y),
-            spacial.Width,
-            spacial.Height
-            )
-          ))
-          newPosition.Y += movement.Velocity.Y;
-
-        spacial.Position = newPosition;
+        spacial.Y += movement.Velocity.Y;
+        if (!World.CheckPosition(spacial.HitBox))
+          spacial.Y -= movement.Velocity.Y;
       }
     }
   }

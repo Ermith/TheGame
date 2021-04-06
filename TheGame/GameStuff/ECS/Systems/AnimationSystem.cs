@@ -16,14 +16,23 @@ namespace TheGame.GameStuff.ECS.Systems
 
     public void Render(SpriteBatch batch)
     {
+      int scale = (int)GameEnvironment.Settings.scale;
+
       foreach (Entity entity in animationEntities)
       {
         CAnimation render = entity.Get<CAnimation>();
         CSpacial spacial = entity.Get<CSpacial>();
 
-        Vector2 relativePosition = Camera.AbsoluteToRelative(spacial.Position);
+        Rectangle r = spacial.HitBox;
+        Camera.AbsoluteToRelative(r.X, r.Y, out float x, out float y);
+        r.X = (int)(x * Camera.ScaleX);
+        r.Y = (int)(y * Camera.ScaleY);
+        r.Width = (int)(r.Width * Camera.ScaleX);
+        r.Height = (int)(r.Height * Camera.ScaleY);
 
-        batch.Draw(render.Sprite, relativePosition, 
+        batch.Draw(
+          render.Sprite,
+          r,
           new Rectangle(
             render.CurrentFrameIndex * 32,
             render.Heigth * (int)spacial.Facing,

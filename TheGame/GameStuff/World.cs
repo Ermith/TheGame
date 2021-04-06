@@ -73,26 +73,33 @@ namespace TheGame.GameStuff
 
     public void Render(SpriteBatch batch)
     {
-      float xStart = Camera.OffsetX - (Camera.OffsetX % GameEnvironment.Settings.tileSize);
-      float yStart = Camera.OffsetY - (Camera.OffsetY % GameEnvironment.Settings.tileSize);
+      float scaleX = Camera.ScaleX;
+      float scaleY = Camera.ScaleY;
+      int tileSize = GameEnvironment.Settings.tileSize;
+      float startX = Camera.OffsetX - Camera.OffsetX % tileSize;
+      float startY = Camera.OffsetY - Camera.OffsetY % tileSize;
 
-      for (int x = 0; x < Camera.Width / GameEnvironment.Settings.tileSize + 1; x++)
-        for (int y = 0; y < Camera.Height / GameEnvironment.Settings.tileSize + 1; y++)
+      for (float x = startX; x < Camera.OffsetX + Camera.Width; x += tileSize)
+        for (float y = startY; y < Camera.OffsetY + Camera.Height; y += tileSize)
         {
-          float xx = x * GameEnvironment.Settings.tileSize + xStart;
-          float yy = y * GameEnvironment.Settings.tileSize + yStart;
+          int tileX = (int)(x / tileSize);
+          int tileY = (int)(y / tileSize);
 
-          Camera.AbsoluteToRelative(xx, yy, out float ox, out float oy); ;
+          Texture2D texture = textureMapper.Get(tiles[tileX, tileY]);
+
+          Camera.AbsoluteToRelative(x, y, out float xRelative, out float yRelative);
+
 
           batch.Draw(
-            textureMapper.Get(
-              tiles[
-              (int)(x + Camera.OffsetX / GameEnvironment.Settings.tileSize),
-              (int)(y + Camera.OffsetY / GameEnvironment.Settings.tileSize)
-              ]),
-            new Vector2(ox, oy),
+            texture,
+            new Rectangle(
+              (int)xRelative,
+              (int)yRelative,
+              (int)(texture.Width * scaleX),
+              (int)(texture.Height * scaleY)),
             Color.White
             );
+
         }
     }
 

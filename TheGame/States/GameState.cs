@@ -39,6 +39,8 @@ namespace TheGame.States
         return;
       }
 
+      GameEnvironment.Settings.scale = Mouse.GetState().ScrollWheelValue / 64 + 1;
+
       // Entities
       entityManager.Update(time);
       var spacial = entityManager.Player.Get<CSpacial>();

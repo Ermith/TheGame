@@ -57,6 +57,7 @@ namespace TheGame
       public static float EffectsVolume = 0.5f;
       public static float VoiceVolume = 0.5f;
       public static int tileSize = 32;
+      public static float scale = 1;
     }
 
   }
