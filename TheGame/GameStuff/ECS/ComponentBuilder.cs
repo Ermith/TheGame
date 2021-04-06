@@ -17,7 +17,7 @@ namespace TheGame.GameStuff.ECS
       Target = target;
     }
 
-    public ComponentBuilder Spacial(Vector2 position, Direction facing = Direction.Up, int wid = 32, int hei = 32)
+    public ComponentBuilder Spacial(Vector2 position, Direction facing = Direction.Up, int wid = 28, int hei = 28)
     {
       CSpacial spacial = new CSpacial();
       spacial.Position = position;
