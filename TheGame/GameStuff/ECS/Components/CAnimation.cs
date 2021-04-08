@@ -1,32 +1,50 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
-using TheGame.GameStuff.ECS;
+using System;
 
 namespace TheGame.GameStuff.ECS.Components
 {
-  class CAnimation : Component
+  static class AnimationEffects
   {
-    public Texture2D Sprite { get; set; }
-    public bool Active { get;  set; }
-    public float Delta { get; set; }
-    public float Frequency { get; set; }
-    public int DefaultFrame { get; set; }
-    public int CurrentFrameIndex { get; set; }
-    public int Width { get; set; }
-    public int Heigth { get; set; }
-    public int FrameCount { get; set; }
-
-    public CAnimation(Texture2D sprite, float frequency, int frameCount, int wid, int hei, int defaultFrame = 0)
+    public static void Empty(CAnimation anim, float t) { }
+    public static void FadeIn(CAnimation anim, float t)
     {
-      Sprite = sprite;
-      Frequency = frequency;
-      FrameCount = frameCount;
-      Width = wid;
-      Heigth = hei;
-      Active = false;
-      DefaultFrame = defaultFrame;
-      CurrentFrameIndex = defaultFrame;
+      anim.Opacity = t;
     }
 
+    public static void FadeOut(CAnimation anim, float t)
+    {
+      anim.Opacity = 1 - t;
+    }
+  }
+  enum AnimtaionState { Stopped, Starting, Playing, Ending, Inactive }
+  enum AnimationSource { Frames, Sprite }
+  class CAnimation : Component
+  {
+    // necessary
+    public float Delta = 0f;
+    public int Index = 0;
+    public float Frequency = 0.5f;
+    public float StartupTime = 0f;
+    public float EndTime = 0f;
+    public float AnimationTime = 0f;
+    public float Opacity = 1f;
+    public bool StaticEnding = true;
+    public bool StaticStart = false;
+    public Action<CAnimation, float> startingEffect = AnimationEffects.Empty;
+    public Action<CAnimation, float> endingEffect = AnimationEffects.Empty;
+    public Action<CAnimation, float> playingEffect = AnimationEffects.Empty;
+    public AnimtaionState State = AnimtaionState.Stopped;
+    public AnimationSource source;
+
+    // Frames specific
+    public Texture2D[] Frames;
+
+    // Sprite Specific
+    public int Row = 0;
+    public int Height = 0;
+    public int Width = 0;
+    public int FrameCount = 0;
+    public int DefaultFrame = 0;
+    public Texture2D Sprite;
   }
 }

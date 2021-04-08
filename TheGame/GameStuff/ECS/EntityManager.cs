@@ -10,11 +10,12 @@ namespace TheGame.GameStuff.ECS
   class EntityManager : IGameComponent
   {
     public Entity Player;
-    private ComponentTracker tracker;
-    private EntityFactory factory;
+    private readonly ComponentTracker tracker;
+    private readonly EntityFactory factory;
     public InputSystem inputSystem;
     public CollisionSystem collisionSystem;
-    public AnimationSystem renderSystem;
+    public RenderSystem renderSystem;
+    public AnimationSystem animationSystem;
 
     public World World { get; }
 
@@ -30,7 +31,8 @@ namespace TheGame.GameStuff.ECS
       // init systems
       inputSystem = new InputSystem(tracker.GetEntities<CInput>());
       collisionSystem = new CollisionSystem(World, tracker.GetEntities<CMovement>());
-      renderSystem = new AnimationSystem(tracker.GetEntities<CAnimation>());
+      animationSystem = new AnimationSystem(tracker.GetEntities<CAnimation>());
+      renderSystem = new RenderSystem(tracker.GetEntities<CAnimation>());
     }
 
     public void Render(SpriteBatch batch)
@@ -42,7 +44,7 @@ namespace TheGame.GameStuff.ECS
     {
       inputSystem.Update(time);
       collisionSystem.Update(time);
-      renderSystem.Update(time);
+      animationSystem.Update(time);
     }
   }
 }

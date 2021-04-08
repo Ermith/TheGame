@@ -19,6 +19,7 @@ namespace TheGame.States
       world.CreateNew();
       Camera.MapWidth = world.Width * GameEnvironment.Settings.tileSize;
       Camera.MapHeight = world.Height * GameEnvironment.Settings.tileSize;
+      Camera.FireFrames = Assets.ShadowOverlay;
 
       // entities
       entityManager = new EntityManager(world);
@@ -45,7 +46,7 @@ namespace TheGame.States
       entityManager.Update(time);
       var spacial = entityManager.Player.Get<CSpacial>();
       Camera.Center(spacial.Position);
-      Camera.Update();
+      Camera.Update(time);
     }
   }
 }

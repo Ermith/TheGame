@@ -23,6 +23,9 @@ namespace TheGame
       // TODO: Add your initialization logic here
 
       _spriteBatch = new SpriteBatch(GraphicsDevice);
+      Graphics.PreferredBackBufferWidth = 1280;
+      Graphics.PreferredBackBufferHeight = 960;
+      Graphics.ApplyChanges();
       Mouse.SetCursor(MouseCursor.FromTexture2D(Assets.placeHolder, 0, 0));
 
       GameEnvironment.Init(this);

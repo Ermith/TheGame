@@ -25,6 +25,8 @@ namespace TheGame
     public static Texture2D FleshFloorTileTexture;
 
     public static Texture2D PlayerSprite;
+    public static Texture2D[] FireOverlay;
+    public static Texture2D[] ShadowOverlay;
 
 
     static public void Load(ContentManager content)
@@ -48,6 +50,14 @@ namespace TheGame
       FleshFloorTileTexture = content.Load<Texture2D>("Tiles\\FleshFloorTile");
 
       PlayerSprite = content.Load<Texture2D>("PlayerSprite");
+
+      FireOverlay = new Texture2D[46];
+      for (int i = 0; i < 46; i++)
+        FireOverlay[i] = content.Load<Texture2D>($"Fire/fire_{i}");
+
+      ShadowOverlay = new Texture2D[46];
+      for (int i = 0; i < 46; i++)
+        ShadowOverlay[i] = content.Load<Texture2D>($"Shadow/shadow_{i}");
     }
   }
 }

@@ -7,7 +7,7 @@ namespace TheGame.States
 {
   class MainMenuState : State
   {
-    private UIControlManager manager;
+    private readonly UIControlManager manager;
 
     public MainMenuState()
     {

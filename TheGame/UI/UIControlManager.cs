@@ -8,10 +8,7 @@ namespace TheGame.UI
   {
     List<UIControl> Controls;
 
-    public UIControlManager()
-    {
-      Controls = new List<UIControl>();
-    }
+    public UIControlManager() => Controls = new List<UIControl>();
 
     public void AddControl(UIControl control) => Controls.Add(control);
 

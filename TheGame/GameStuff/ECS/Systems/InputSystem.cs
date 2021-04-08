@@ -24,8 +24,13 @@ namespace TheGame.GameStuff.ECS.Systems
         CInput input = entity.Get<CInput>();
         CMovement movement = entity.Get<CMovement>();
         CSpacial location = entity.Get<CSpacial>();
+        CAnimation animation = entity.Get<CAnimation>();
 
         Vector2 Velocity = new Vector2(0, 0);
+
+        if (keyboard.IsKeyDown(Keys.G))
+          animation.State = AnimtaionState.Inactive;
+
 
         if (keyboard.IsKeyDown(input.Up))
         {
@@ -48,8 +53,20 @@ namespace TheGame.GameStuff.ECS.Systems
           location.Facing = Direction.Right;
         }
 
+        animation.Row = (int)location.Facing;
+
         if (Velocity.Length() != 0)
+        {
           Velocity.Normalize();
+          if (animation.State == AnimtaionState.Stopped)
+            animation.State = AnimtaionState.Starting;
+        }
+        else if (animation.State == AnimtaionState.Starting || animation.State == AnimtaionState.Playing)
+        {
+          animation.State = AnimtaionState.Ending;
+          animation.AnimationTime = 0;
+        }
+
 
         movement.Velocity = Velocity * movement.Speed * (float)time.ElapsedGameTime.TotalMilliseconds;
       }

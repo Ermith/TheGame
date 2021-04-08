@@ -48,8 +48,8 @@ namespace TheGame.GameStuff
   class World : IRenderable
   {
     // private
-    private MapGenerator mapGenerator;
-    private TileTextureMapper textureMapper;
+    private readonly MapGenerator mapGenerator;
+    private readonly TileTextureMapper textureMapper;
     private TileType[,] tiles;
 
     // public
@@ -85,21 +85,22 @@ namespace TheGame.GameStuff
           int tileX = (int)(x / tileSize);
           int tileY = (int)(y / tileSize);
 
-          Texture2D texture = textureMapper.Get(tiles[tileX, tileY]);
+          if (tileX >= Width || tileY >= Height)
+            continue;
 
           Camera.AbsoluteToRelative(x, y, out float xRelative, out float yRelative);
 
-
           batch.Draw(
-            texture,
-            new Rectangle(
-              (int)xRelative,
-              (int)yRelative,
-              (int)(texture.Width * scaleX),
-              (int)(texture.Height * scaleY)),
-            Color.White
+            texture: textureMapper.Get(tiles[tileX, tileY]),
+            position: new Vector2(xRelative * scaleX, yRelative * scaleY),
+            sourceRectangle: null,
+            color: Color.White,
+            rotation: 0,
+            origin: Vector2.Zero,
+            scale: new Vector2(scaleX, scaleY),
+            effects: SpriteEffects.None,
+            layerDepth: 0
             );
-
         }
     }
 

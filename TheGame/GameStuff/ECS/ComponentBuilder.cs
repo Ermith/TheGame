@@ -3,13 +3,14 @@ using Microsoft.Xna.Framework.Input;
 using TheGame.Math;
 using Microsoft.Xna.Framework.Graphics;
 using TheGame.GameStuff.ECS.Components;
+using System;
 
 namespace TheGame.GameStuff.ECS
 {
   class ComponentBuilder
   {
     public Entity Target { get; set; }
-    private ComponentTracker tracker;
+    private readonly ComponentTracker tracker;
 
     public ComponentBuilder(ComponentTracker tracker, Entity target = null)
     {
@@ -19,13 +20,14 @@ namespace TheGame.GameStuff.ECS
 
     public ComponentBuilder Spacial(Vector2 position, Direction facing = Direction.Up, int wid = 28, int hei = 28)
     {
-      CSpacial spacial = new CSpacial();
-      spacial.Position = position;
-      spacial.Facing = facing;
-      spacial.Width = wid;
-      spacial.Height = hei;
+      CSpacial spacial = new CSpacial
+      {
+        Position = position,
+        Facing = facing,
+        Width = wid,
+        Height = hei
+      };
 
-      Target.Add(spacial);
       tracker.Add(Target, spacial);
 
       return this;
@@ -33,11 +35,12 @@ namespace TheGame.GameStuff.ECS
 
     public ComponentBuilder Movement(float speed = 0.2f)
     {
-      CMovement movement = new CMovement();
-      movement.Speed = speed;
-      movement.Velocity = Vector2.Zero;
+      CMovement movement = new CMovement
+      {
+        Speed = speed,
+        Velocity = Vector2.Zero
+      };
 
-      Target.Add(movement);
       tracker.Add(Target, movement);
       return this;
     }
@@ -49,14 +52,15 @@ namespace TheGame.GameStuff.ECS
       Keys right = Keys.D,
       Keys attack = Keys.Space)
     {
-      CInput input = new CInput();
-      input.Up = up;
-      input.Left = left;
-      input.Down = down;
-      input.Right = right;
-      input.Attack = attack;
+      CInput input = new CInput
+      {
+        Up = up,
+        Left = left,
+        Down = down,
+        Right = right,
+        Attack = attack
+      };
 
-      Target.Add(input);
       tracker.Add(Target, input);
       return this;
     }
@@ -67,17 +71,53 @@ namespace TheGame.GameStuff.ECS
       int wid,
       int hei,
       float frequency = 100,
-      bool active = false,
       int defaultFrame = 0,
-      float delta = 0
+      float opacity = 1f,
+      float startupTime = 0f,
+      float endTime = 0f,
+      Action<CAnimation, float> startingEffect = null,
+      Action<CAnimation, float> endingEffect = null
       )
     {
-      CAnimation anim = new CAnimation(sprite, frequency, framecount, wid, hei);
-      anim.Active = active;
-      anim.DefaultFrame = defaultFrame;
-      anim.Delta = delta;
+      CAnimation anim = new CAnimation
+      {
+        Sprite = sprite,
+        DefaultFrame = defaultFrame,
+        FrameCount = framecount,
+        Width = wid,
+        Height = hei,
+        Frequency = frequency,
+        source = AnimationSource.Sprite,
+        StartupTime = startupTime,
+        EndTime = endTime,
+        endingEffect = endingEffect ?? AnimationEffects.Empty,
+        startingEffect = startingEffect ?? AnimationEffects.FadeIn,
+        Opacity = opacity
+      };
 
-      Target.Add(anim);
+      tracker.Add(Target, anim);
+      return this;
+    }
+
+    public ComponentBuilder Animation(
+      Texture2D[] frames,
+      float frequency,
+      float opacity = 0f,
+      float startupTime = 0f,
+      float endTime = 0f
+      )
+    {
+      CAnimation anim = new CAnimation
+      {
+        Frames = frames,
+        FrameCount = frames.Length,
+        Frequency = frequency,
+        Opacity = opacity,
+        StartupTime = startupTime,
+        EndTime = endTime,
+        source = AnimationSource.Frames
+      };
+
       tracker.Add(Target, anim);
       return this;
     }

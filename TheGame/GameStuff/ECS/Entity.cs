@@ -6,7 +6,7 @@ namespace TheGame.GameStuff.ECS
 {
   class Entity
   {
-    private Dictionary<Type, Component> components = new Dictionary<Type, Component>();
+    private readonly Dictionary<Type, Component> components = new Dictionary<Type, Component>();
 
     public T Get<T>() where T : Component
     {
@@ -15,13 +15,18 @@ namespace TheGame.GameStuff.ECS
 
       return null;
     }
-    
+
     public void Add<T>(T component) where T : Component
     {
       if (components.ContainsKey(typeof(T)))
         components[typeof(T)] = component;
       else
         components.Add(typeof(T), component);
+    }
+
+    public void Remove<T>() where T : Component
+    {
+      components.Remove(typeof(T));
     }
   }
 }
