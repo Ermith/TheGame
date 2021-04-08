@@ -28,8 +28,11 @@ namespace TheGame.GameStuff.ECS.Systems
 
         Vector2 Velocity = new Vector2(0, 0);
 
-        if (keyboard.IsKeyDown(Keys.G))
-          animation.State = AnimtaionState.Inactive;
+        if (keyboard.IsKeyDown(Keys.F))
+        {
+          Camera.ShakeEffect(10f);
+          Camera.ZoomEffect(20);
+        }
 
 
         if (keyboard.IsKeyDown(input.Up))

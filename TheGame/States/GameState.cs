@@ -17,9 +17,10 @@ namespace TheGame.States
       // world and camera
       world = new World();
       world.CreateNew();
-      Camera.MapWidth = world.Width * GameEnvironment.Settings.tileSize;
-      Camera.MapHeight = world.Height * GameEnvironment.Settings.tileSize;
-      Camera.FireFrames = Assets.ShadowOverlay;
+      Camera.Init(
+        900, 675,
+        world.Width * GameEnvironment.Settings.tileSize,
+        world.Height * GameEnvironment.Settings.tileSize);
 
       // entities
       entityManager = new EntityManager(world);

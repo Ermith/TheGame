@@ -26,8 +26,9 @@ namespace TheGame.States
         buttonsHeight += button.Rectangle.Height;
       }
 
-      Point screenSize = GameEnvironment.ScreenSize();
-      int freeSpace = screenSize.Y - buttonsHeight;
+      int screenWid = GameEnvironment.ScreenWidth;
+      int screeenHei = GameEnvironment.ScreenHeight;
+      int freeSpace = screeenHei - buttonsHeight;
 
       // divide into sufficient parts
       freeSpace /= buttons.Count + 1;
@@ -36,7 +37,7 @@ namespace TheGame.States
       foreach (Button button in buttons)
       {
         y += freeSpace;
-        int x = screenSize.X / 2 - button.Rectangle.Width / 2;
+        int x = screenWid / 2 - button.Rectangle.Width / 2;
 
         button.Location = new Vector2(x, y);
         manager.AddControl(button);

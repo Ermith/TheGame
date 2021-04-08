@@ -7,21 +7,21 @@ namespace TheGame.GameStuff
 {
   class Camera
   {
-    public static Texture2D[] FireFrames;
     private static Random rnd = new Random();
     private static float intensity = 0;
     private static int zoom = 0;
-
     private static float offsetX;
+    private static float offsetY;
+    private static int defaultWidth;
+    private static int defaultHeight;
+    private static int MapWidth;
+    private static int MapHeight;
 
     public static float OffsetX
     {
       get { return offsetX; }
       set { offsetX = System.Math.Clamp(value, 0, MapWidth - Width - 1); }
     }
-
-    private static float offsetY;
-
     public static float OffsetY
     {
       get { return offsetY; }
@@ -31,21 +31,21 @@ namespace TheGame.GameStuff
     public static float X => OffsetX + Width / 2;
     public static float Y => OffsetY + Height / 2;
 
-    public static float ScaleX => GameEnvironment.ScreenSize().X / (float)Width;
-    public static float ScaleY => GameEnvironment.ScreenSize().Y / (float)Height;
+    public static int Width { get; set; }
+    public static int Height { get; set; }
 
-    public static Vector2 Offset => new Vector2(OffsetX, OffsetY);
+    public static float ScaleX => GameEnvironment.ScreenWidth/ (float)Width;
+    public static float ScaleY => GameEnvironment.ScreenHeight / (float)Height;
 
-    public static Rectangle Rectangle => new Rectangle((int)Offset.X, (int)Offset.Y, Width, Height);
+    public static void Init(int defaultWidth, int defaultHeight, int mapWidth, int mapHeight)
+    {
+      Camera.defaultWidth = defaultWidth;
+      Camera.defaultHeight = defaultHeight;
+      MapWidth = mapWidth;
+      MapHeight = mapHeight;
+      ResetDimensions();
+    }
 
-    private static int defaultWidth = 900;
-    private static int defaultHeight = 675;
-
-    public static int Width { get; set; } = 900;
-    public static int Height { get; set; } = 675;
-
-    public static int MapWidth;
-    public static int MapHeight;
     public static Vector2 AbsoluteToRelative(Vector2 absolute)
     {
       AbsoluteToRelative(absolute.X, absolute.Y, out float ox, out float oy);
@@ -74,14 +74,6 @@ namespace TheGame.GameStuff
 
     public static void Update(GameTime time)
     {
-      bool firePressed = Keyboard.GetState().IsKeyDown(Keys.LeftShift);
-
-      if (Keyboard.GetState().IsKeyDown(Keys.F))
-      {
-        intensity = 5;
-        zoom = 20;
-      }
-
       if (intensity > 0)
         Shake();
 
@@ -90,6 +82,9 @@ namespace TheGame.GameStuff
       if (zoom > 0)
         Zoom();
     }
+
+    public static void ShakeEffect(float intensity) => Camera.intensity = intensity;
+    public static void ZoomEffect(int zoom) => Camera.zoom = zoom;
 
     private static void Shake()
     {
@@ -103,7 +98,6 @@ namespace TheGame.GameStuff
       if (intensity < 0.3)
         intensity = 0;
     }
-
     private static void Zoom()
     {
       Width += zoom;

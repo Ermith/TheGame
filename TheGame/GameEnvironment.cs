@@ -42,13 +42,8 @@ namespace TheGame
     }
     public static State GetCurrentState() => stateManager.CurrentState;
     public static bool ExistsInGame() => stateManager.InGame != null;
-    public static Point ScreenSize()
-    {
-      return new Point(
-        _game.Graphics.PreferredBackBufferWidth,
-        _game.Graphics.PreferredBackBufferHeight
-        );
-    }
+    public static int ScreenWidth => _game.Graphics.PreferredBackBufferWidth;
+    public static int ScreenHeight => _game.Graphics.PreferredBackBufferHeight;
 
     public static class Settings
     {
