@@ -2,20 +2,48 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
+using TheGame.GameStuff.ECS.Components;
+using TheGame.MyMath;
 
 namespace TheGame.GameStuff
 {
+  static class CameraOverlays
+  {
+    public static CAnimation Shadow(float frequency)
+    {
+      var shadow = new CAnimation();
+      shadow.endingEffect = AnimationEffects.FadeOut;
+      shadow.startingEffect = AnimationEffects.FadeIn;
+      shadow.StartupTime = 100f;
+      shadow.EndTime = 100f;
+      shadow.Frequency = frequency;
+      shadow.source = AnimationSource.Frames;
+      shadow.Frames = Assets.ShadowOverlay;
+      shadow.Width = Camera.Width;
+      shadow.Height = Camera.Height;
+      shadow.FrameCount = shadow.Frames.Length;
+
+      return shadow;
+    }
+  }
+
   class Camera
   {
     private static Random rnd = new Random();
     private static float intensity = 0;
-    private static int zoom = 0;
+    private static float zoom = 0;
+    private static float zoomingTime = 400f;
+    private static float zoomTime = 0f;
+    private static bool zoomingOut = false;
+    private static Func<float, float> zoomTween;
     private static float offsetX;
     private static float offsetY;
     private static int defaultWidth;
     private static int defaultHeight;
     private static int MapWidth;
     private static int MapHeight;
+    private static CAnimation shadowOverlay;
 
     public static float OffsetX
     {
@@ -34,8 +62,10 @@ namespace TheGame.GameStuff
     public static int Width { get; set; }
     public static int Height { get; set; }
 
-    public static float ScaleX => GameEnvironment.ScreenWidth/ (float)Width;
+    public static float ScaleX => GameEnvironment.ScreenWidth / (float)Width;
     public static float ScaleY => GameEnvironment.ScreenHeight / (float)Height;
+
+    public static List<CAnimation> Overlays = new List<CAnimation>();
 
     public static void Init(int defaultWidth, int defaultHeight, int mapWidth, int mapHeight)
     {
@@ -79,12 +109,47 @@ namespace TheGame.GameStuff
 
       ResetDimensions();
 
-      if (zoom > 0)
-        Zoom();
+      if (zoom != 0)
+        Zoom(time);
     }
 
     public static void ShakeEffect(float intensity) => Camera.intensity = intensity;
-    public static void ZoomEffect(int zoom) => Camera.zoom = zoom;
+    public static void ZoomEffect(float zoom)
+    {
+      zoomTween = Tweens.SmoothStep4;
+      Camera.zoom = zoom;
+      zoomingOut = false;
+    }
+
+    public static void ZoomStop()
+    {
+      if (zoomingOut)
+        return;
+
+      zoomingOut = true;
+      zoomTween = (float t) => Tweens.SmoothStep4(Tweens.Reverse(t)); 
+      zoomTime = 0f;
+    }
+    public static void FireOverlayStart()
+    {
+      if (shadowOverlay == null)
+      {
+        shadowOverlay = CameraOverlays.Shadow(50f);
+        Overlays.Add(shadowOverlay);
+      }
+
+      if (shadowOverlay.State == AnimtaionState.Stopped)
+        shadowOverlay.State = AnimtaionState.Starting;
+    }
+
+    public static void FireOverlayStop()
+    {
+      if (shadowOverlay == null)
+        return;
+
+      if (shadowOverlay.State == AnimtaionState.Playing || shadowOverlay.State == AnimtaionState.Starting)
+        shadowOverlay.State = AnimtaionState.Ending;
+    }
 
     private static void Shake()
     {
@@ -98,12 +163,20 @@ namespace TheGame.GameStuff
       if (intensity < 0.3)
         intensity = 0;
     }
-    private static void Zoom()
+    private static void Zoom(GameTime time)
     {
-      Width += zoom;
-      Height += zoom;
+      zoomTime += (float)time.ElapsedGameTime.TotalMilliseconds;
+      float t = zoomTime / zoomingTime;
+      t = zoomTween(MathF.Min(t, 1));
+      t = 1 + zoom * t;
 
-      zoom = (int)(zoom * 0.3f);
+      Width = (int)(defaultWidth * t);
+      Height = (int)(defaultHeight * t);
+      if (t == 1)
+      {
+        zoom = 0f;
+        zoomTime = 0f;
+      }
     }
   }
 }

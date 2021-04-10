@@ -28,10 +28,17 @@ namespace TheGame.GameStuff.ECS.Systems
 
         Vector2 Velocity = new Vector2(0, 0);
 
-        if (keyboard.IsKeyDown(Keys.F))
+        if (keyboard.IsKeyDown(Keys.LeftShift))
         {
-          Camera.ShakeEffect(10f);
-          Camera.ZoomEffect(20);
+          //Camera.ShakeEffect(50f);
+          Camera.ZoomEffect(-0.15f);
+          Camera.FireOverlayStart();
+          movement.Speed = 0.1f;
+        } else
+        {
+          Camera.ZoomStop();
+          Camera.FireOverlayStop();
+          movement.Speed = 0.2f;
         }
 
 
