@@ -109,16 +109,20 @@ namespace TheGame.GameStuff
 
       ResetDimensions();
 
-      if (zoom != 0)
+      if (zoomTime >= 0)
         Zoom(time);
     }
 
     public static void ShakeEffect(float intensity) => Camera.intensity = intensity;
     public static void ZoomEffect(float zoom)
     {
+      if (!zoomingOut)
+        return;
+
       zoomTween = Tweens.SmoothStep4;
       Camera.zoom = zoom;
       zoomingOut = false;
+      zoomTime = zoomingTime - zoomTime;
     }
 
     public static void ZoomStop()
@@ -128,7 +132,7 @@ namespace TheGame.GameStuff
 
       zoomingOut = true;
       zoomTween = (float t) => Tweens.SmoothStep4(Tweens.Reverse(t)); 
-      zoomTime = 0f;
+      zoomTime = zoomingTime - zoomTime;
     }
     public static void FireOverlayStart()
     {
@@ -165,18 +169,13 @@ namespace TheGame.GameStuff
     }
     private static void Zoom(GameTime time)
     {
-      zoomTime += (float)time.ElapsedGameTime.TotalMilliseconds;
-      float t = zoomTime / zoomingTime;
+      zoomTime = MathF.Max(zoomTime - (float)time.ElapsedGameTime.TotalMilliseconds, 0);
+      float t = 1 - zoomTime / zoomingTime;
       t = zoomTween(MathF.Min(t, 1));
       t = 1 + zoom * t;
 
       Width = (int)(defaultWidth * t);
       Height = (int)(defaultHeight * t);
-      if (t == 1)
-      {
-        zoom = 0f;
-        zoomTime = 0f;
-      }
     }
   }
 }
