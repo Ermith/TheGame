@@ -67,7 +67,7 @@ namespace TheGame.GameStuff.ECS.Systems
     private void HandleAttackWindup(KeyboardState keyboard, CInput input, CBehavior behavior, CAnimation animation, CMovement movement, float time)
     {
       animation.loop = false;
-      animation.dir = Direction.Up;
+      movement.Velocity = Vector2.Zero;
       if (animation.finished && !keyboard.IsKeyDown(input.Attack))
       {
         Camera.ShakeEffect(2f);
@@ -78,7 +78,6 @@ namespace TheGame.GameStuff.ECS.Systems
       if (!animation.finished && !keyboard.IsKeyDown(input.Attack))
       {
         animation.loop = true;
-        animation.dir = Direction.Down;
         EnterState(animation, behavior, State.Standing);
       }
     }
@@ -87,7 +86,6 @@ namespace TheGame.GameStuff.ECS.Systems
       if (animation.finished)
       {
         animation.loop = true;
-        animation.dir = Direction.Down;
         EnterState(animation, behavior, State.Standing);
         Stand(movement);
         return;
@@ -137,7 +135,6 @@ namespace TheGame.GameStuff.ECS.Systems
 
       if (!IsMoving(keyboard, input))
       {
-        animation.dir = Direction.Up;
         EnterState(animation, behavior, State.Crouching);
         Crouch(movement);
         return;

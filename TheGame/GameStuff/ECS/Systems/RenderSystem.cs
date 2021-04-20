@@ -21,8 +21,6 @@ namespace TheGame.GameStuff.ECS.Systems
 
       foreach (CAnimation animation in Camera.Overlays)
       {
-        //animation.Width = Camera.Width;
-        //animation.Height = Camera.Height;
         RenderAnimation(animation, new CSpacial() { X = Camera.OffsetX + animation.Width / 2, Y = Camera.OffsetY + animation.Height / 2 }, batch);
       }
     }

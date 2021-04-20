@@ -100,8 +100,8 @@ namespace TheGame.GameStuff.ECS
       anim.frameCoords[State.Standing] = (0, 0);
       anim.frameCoords[State.Sneaking] = (0, 4);
       anim.frameCoords[State.Crouching] = (0, 4);
-      anim.frameCoords[State.AttackWindup] = (0, 5);
-      anim.frameCoords[State.Attacking] = (9, 5);
+      anim.frameCoords[State.AttackWindup] = (0, 8);
+      anim.frameCoords[State.Attacking] = (9, 8);
 
       anim.frameCounts[State.Moving] = 14;
       anim.frameCounts[State.Standing] = 1;
