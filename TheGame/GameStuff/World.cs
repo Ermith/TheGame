@@ -66,8 +66,10 @@ namespace TheGame.GameStuff
 
     public void CreateNew()
     {
-      tiles = mapGenerator.Generate(GeneratorOption.BasicRock1);
-      mapGenerator.Fill(tiles, 0, 0, GeneratorOption.Ice);
+      var option = GeneratorOption.BasicRock1;
+      option.CAIterations += 4;
+      tiles = mapGenerator.Generate(option);
+      mapGenerator.Fill(tiles, 0, 0, GeneratorOption.FewMushrooms);
       mapGenerator.LayWalls(tiles);
     }
 

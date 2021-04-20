@@ -12,5 +12,6 @@ namespace TheGame.GameStuff.ECS.Components
     public Keys Down = Keys.S;
     public Keys Right = Keys.D;
     public Keys Attack = Keys.Space;
+    public Keys Sneak = Keys.LeftShift;
   }
 }

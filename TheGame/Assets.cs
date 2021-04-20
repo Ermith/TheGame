@@ -25,6 +25,7 @@ namespace TheGame
     public static Texture2D FleshFloorTileTexture;
 
     public static Texture2D PlayerSprite;
+    public static Texture2D RogueSprite;
     public static Texture2D[] FireOverlay;
     public static Texture2D[] ShadowOverlay;
 
@@ -50,6 +51,7 @@ namespace TheGame
       FleshFloorTileTexture = content.Load<Texture2D>("Tiles\\FleshFloorTile");
 
       PlayerSprite = content.Load<Texture2D>("PlayerSprite");
+      RogueSprite = content.Load<Texture2D>("RogueSpriteSheet");
 
       FireOverlay = new Texture2D[46];
       for (int i = 0; i < 46; i++)

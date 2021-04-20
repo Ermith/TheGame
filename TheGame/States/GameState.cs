@@ -18,7 +18,7 @@ namespace TheGame.States
       world = new World();
       world.CreateNew();
       Camera.Init(
-        900, 675,
+        16*20, 9*20,
         world.Width * GameEnvironment.Settings.tileSize,
         world.Height * GameEnvironment.Settings.tileSize);
 

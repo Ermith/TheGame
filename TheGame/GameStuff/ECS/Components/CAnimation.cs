@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 
 namespace TheGame.GameStuff.ECS.Components
 {
@@ -30,21 +31,28 @@ namespace TheGame.GameStuff.ECS.Components
     public float Opacity = 1f;
     public bool StaticEnding = true;
     public bool StaticStart = false;
+    public bool loop = true;
+    public bool finished = false;
     public Action<CAnimation, float> startingEffect = AnimationEffects.Empty;
     public Action<CAnimation, float> endingEffect = AnimationEffects.Empty;
     public Action<CAnimation, float> playingEffect = AnimationEffects.Empty;
     public AnimtaionState State = AnimtaionState.Stopped;
     public AnimationSource source;
+    public State BehaviorState = Components.State.Moving;
+    public Direction dir = Direction.Up;
+    public Dictionary<State, int> frameCounts;
 
     // Frames specific
     public Texture2D[] Frames;
 
     // Sprite Specific
-    public int Row = 0;
+    public int X = 0;
+    public int Y = 0;
     public int Height = 0;
     public int Width = 0;
     public int FrameCount = 0;
     public int DefaultFrame = 0;
     public Texture2D Sprite;
+    public Dictionary<State, (int, int)> frameCoords;
   }
 }

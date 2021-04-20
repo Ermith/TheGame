@@ -24,7 +24,7 @@ namespace TheGame
 
       _spriteBatch = new SpriteBatch(GraphicsDevice);
       Graphics.PreferredBackBufferWidth = 1280;
-      Graphics.PreferredBackBufferHeight = 960;
+      Graphics.PreferredBackBufferHeight = 720;
       Graphics.ApplyChanges();
       Mouse.SetCursor(MouseCursor.FromTexture2D(Assets.placeHolder, 0, 0));
 
@@ -53,7 +53,7 @@ namespace TheGame
       GraphicsDevice.Clear(Color.Black);
 
       // TODO: Add your drawing code here
-      _spriteBatch.Begin();
+      _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
       //var mouse = Mouse.GetState();
 

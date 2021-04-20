@@ -20,9 +20,10 @@ namespace TheGame.GameStuff
       shadow.Frequency = frequency;
       shadow.source = AnimationSource.Frames;
       shadow.Frames = Assets.ShadowOverlay;
-      shadow.Width = Camera.Width;
-      shadow.Height = Camera.Height;
+      shadow.Width = GameEnvironment.ScreenWidth;
+      shadow.Height = GameEnvironment.ScreenHeight;
       shadow.FrameCount = shadow.Frames.Length;
+      shadow.loop = true;
 
       return shadow;
     }
@@ -36,7 +37,7 @@ namespace TheGame.GameStuff
     private static float zoomingTime = 400f;
     private static float zoomTime = 0f;
     private static bool zoomingOut = false;
-    private static Func<float, float> zoomTween;
+    private static Func<float, float> zoomTween = Tweens.SmoothStep4;
     private static float offsetX;
     private static float offsetY;
     private static int defaultWidth;
@@ -44,6 +45,9 @@ namespace TheGame.GameStuff
     private static int MapWidth;
     private static int MapHeight;
     private static CAnimation shadowOverlay;
+    public static Func<float, float> shadowTween = Tweens.SmoothStep4;
+    private static float shadowFadeTime = 400f;
+    private static float shadowTime = 0f;
 
     public static float OffsetX
     {
@@ -108,9 +112,24 @@ namespace TheGame.GameStuff
         Shake();
 
       ResetDimensions();
+      Zoom(time);
+      Shadow(time);
+    }
 
-      if (zoomTime >= 0)
-        Zoom(time);
+    private static void Shadow(GameTime time)
+    {
+      if (shadowOverlay == null)
+        return;
+      if (shadowOverlay.finished)
+        return;
+
+      shadowTime = MathF.Max(shadowTime - (float)time.ElapsedGameTime.TotalMilliseconds, 0);
+      float t = 1 - shadowTime / shadowFadeTime;
+      t = shadowTween(MathF.Min(t, 1));
+
+      shadowOverlay.Opacity = t;
+      if (t == 0)
+        shadowOverlay.finished = true;
     }
 
     public static void ShakeEffect(float intensity) => Camera.intensity = intensity;
@@ -134,7 +153,7 @@ namespace TheGame.GameStuff
       zoomTween = (float t) => Tweens.SmoothStep4(Tweens.Reverse(t)); 
       zoomTime = zoomingTime - zoomTime;
     }
-    public static void FireOverlayStart()
+    public static void ShadowOverlayStart()
     {
       if (shadowOverlay == null)
       {
@@ -142,17 +161,18 @@ namespace TheGame.GameStuff
         Overlays.Add(shadowOverlay);
       }
 
-      if (shadowOverlay.State == AnimtaionState.Stopped)
-        shadowOverlay.State = AnimtaionState.Starting;
+      shadowOverlay.finished = false;
+      shadowTween = Tweens.SmoothStep4;
+      shadowTime = shadowFadeTime - shadowTime;
     }
 
-    public static void FireOverlayStop()
+    public static void ShadowOverlayStop()
     {
       if (shadowOverlay == null)
         return;
 
-      if (shadowOverlay.State == AnimtaionState.Playing || shadowOverlay.State == AnimtaionState.Starting)
-        shadowOverlay.State = AnimtaionState.Ending;
+      shadowTween = (float t) => Tweens.SmoothStep4(Tweens.Reverse(t));
+      shadowTime = shadowFadeTime - shadowTime;
     }
 
     private static void Shake()
@@ -176,6 +196,9 @@ namespace TheGame.GameStuff
 
       Width = (int)(defaultWidth * t);
       Height = (int)(defaultHeight * t);
+
+      if (Width == defaultWidth)
+        zoom = 0;
     }
   }
 }

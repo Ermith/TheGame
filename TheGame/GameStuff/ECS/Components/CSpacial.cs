@@ -16,7 +16,6 @@ namespace TheGame.GameStuff.ECS.Components
         Y = value.Y;
       }
     }
-    public Direction Facing { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
     public Rectangle HitBox => new Rectangle((int)X - Width / 2, (int)Y - Height / 2, Width, Height);

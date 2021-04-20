@@ -23,7 +23,6 @@ namespace TheGame.GameStuff.ECS
       CSpacial spacial = new CSpacial
       {
         Position = position,
-        Facing = facing,
         Width = wid,
         Height = hei
       };
@@ -90,10 +89,26 @@ namespace TheGame.GameStuff.ECS
         source = AnimationSource.Sprite,
         StartupTime = startupTime,
         EndTime = endTime,
-        endingEffect = endingEffect ?? AnimationEffects.Empty,
-        startingEffect = startingEffect ?? AnimationEffects.FadeIn,
-        Opacity = opacity
+        endingEffect = endingEffect,
+        startingEffect = startingEffect,
+        Opacity = opacity,
+        frameCoords = new System.Collections.Generic.Dictionary<State, (int, int)>(),
+        frameCounts = new System.Collections.Generic.Dictionary<State, int>()
       };
+
+      anim.frameCoords[State.Moving] = (0, 0);
+      anim.frameCoords[State.Standing] = (0, 0);
+      anim.frameCoords[State.Sneaking] = (0, 4);
+      anim.frameCoords[State.Crouching] = (0, 4);
+      anim.frameCoords[State.AttackWindup] = (0, 5);
+      anim.frameCoords[State.Attacking] = (9, 5);
+
+      anim.frameCounts[State.Moving] = 14;
+      anim.frameCounts[State.Standing] = 1;
+      anim.frameCounts[State.Sneaking] = 14;
+      anim.frameCounts[State.Crouching] = 1;
+      anim.frameCounts[State.AttackWindup] = 9;
+      anim.frameCounts[State.Attacking] = 5;
 
       tracker.Add(Target, anim);
       return this;
@@ -119,6 +134,17 @@ namespace TheGame.GameStuff.ECS
       };
 
       tracker.Add(Target, anim);
+      return this;
+    }
+
+    public ComponentBuilder Behavior()
+    {
+      var behavior = new CBehavior();
+
+      behavior.Direction = Direction.Up;
+      behavior.State = State.Moving;
+
+      tracker.Add(Target, behavior);
       return this;
     }
   }

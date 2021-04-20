@@ -21,9 +21,9 @@ namespace TheGame.GameStuff.ECS.Systems
 
       foreach (CAnimation animation in Camera.Overlays)
       {
-        animation.Width = Camera.Width;
-        animation.Height = Camera.Height;
-        RenderAnimation(animation, new CSpacial() { X = Camera.OffsetX, Y = Camera.OffsetY }, batch);
+        //animation.Width = Camera.Width;
+        //animation.Height = Camera.Height;
+        RenderAnimation(animation, new CSpacial() { X = Camera.OffsetX + animation.Width / 2, Y = Camera.OffsetY + animation.Height / 2 }, batch);
       }
     }
 
@@ -34,7 +34,7 @@ namespace TheGame.GameStuff.ECS.Systems
 
       batch.Draw(
       texture: texture,
-      position: GetPosition(spacial, scale),
+      position: GetPosition(spacial, scale, animation),
       sourceRectangle: GetSourceRectangle(animation),
       scale: scale,
       color: Color.FromNonPremultiplied(255, 255, 255, (int)(animation.Opacity * 255)),
@@ -48,8 +48,8 @@ namespace TheGame.GameStuff.ECS.Systems
     private Rectangle? GetSourceRectangle(CAnimation animation) => animation.source switch
     {
       AnimationSource.Sprite => new Rectangle(
-        animation.Index * 32,
-        animation.Height * animation.Row,
+        animation.Index * 32 + animation.X * 32,
+        32 * animation.Y + (int)animation.dir * 32,
         animation.Width, animation.Height),
       _ => null
     };
@@ -61,9 +61,9 @@ namespace TheGame.GameStuff.ECS.Systems
       _ => null
     };
 
-    private Vector2 GetPosition(CSpacial spacial, Vector2 scale)
+    private Vector2 GetPosition(CSpacial spacial, Vector2 scale, CAnimation animation)
     {
-      Vector2 position = spacial.HitBox.Location.ToVector2();
+      Vector2 position = spacial.Position - new Vector2(animation.Width / 2, animation.Height / 2);
       position = Camera.AbsoluteToRelative(position);
       return position * scale;
     }
@@ -74,8 +74,9 @@ namespace TheGame.GameStuff.ECS.Systems
         return new Vector2(Camera.ScaleX, Camera.ScaleY);
 
       var scale = new Vector2();
-      scale.X = (float)animation.Width / texture.Width * Camera.ScaleX;
-      scale.Y = (float)animation.Height / texture.Height * Camera.ScaleY;
+      scale.X = (float)animation.Width / texture.Width;// * Camera.ScaleX;
+      scale.Y = (float)animation.Height / texture.Height;// * Camera.ScaleY;
+
       return scale;
     }
   }
