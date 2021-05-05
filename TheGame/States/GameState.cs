@@ -9,7 +9,7 @@ namespace TheGame.States
 {
   class GameState : State
   {
-    private EntityManager entityManager;
+    private SystemManager systemManager;
     private World world;
 
     public GameState()
@@ -18,18 +18,18 @@ namespace TheGame.States
       world = new World();
       world.CreateNew();
       Camera.Init(
-        16*20, 9*20,
+        16*25, 9*25,
         world.Width * GameEnvironment.Settings.tileSize,
         world.Height * GameEnvironment.Settings.tileSize);
 
       // entities
-      entityManager = new EntityManager(world);
+      systemManager = new SystemManager(world);
     }
 
     public override void Render(SpriteBatch batch)
     {
       world.Render(batch);
-      entityManager.Render(batch);
+      systemManager.Render(batch);
     }
 
     public override void Update(GameTime time)
@@ -41,11 +41,10 @@ namespace TheGame.States
         return;
       }
 
-      GameEnvironment.Settings.scale = Mouse.GetState().ScrollWheelValue / 64 + 1;
+      systemManager.Update(time);
 
-      // Entities
-      entityManager.Update(time);
-      var spacial = entityManager.Player.Get<CSpacial>();
+      // Center the camera on player
+      var spacial = systemManager.Player.Get<CSpacial>();
       Camera.Center(spacial.Position);
       Camera.Update(time);
     }

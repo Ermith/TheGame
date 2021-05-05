@@ -133,11 +133,12 @@ namespace TheGame.GameStuff
     }
 
     public static void ShakeEffect(float intensity) => Camera.intensity = intensity;
-    public static void ZoomEffect(float zoom)
+    public static void ZoomEffect(float zoom, float time)
     {
       if (!zoomingOut)
         return;
 
+      zoomingTime = time;
       zoomTween = Tweens.SmoothStep4;
       Camera.zoom = zoom;
       zoomingOut = false;
