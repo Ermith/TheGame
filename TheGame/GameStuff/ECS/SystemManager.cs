@@ -7,7 +7,7 @@ using TheGame.Math;
 
 namespace TheGame.GameStuff.ECS
 {
-  class EntityManager : IGameComponent
+  class SystemManager : IGameComponent
   {
     public Entity Player;
     private readonly ComponentTracker tracker;
@@ -19,7 +19,7 @@ namespace TheGame.GameStuff.ECS
 
     public World World { get; }
 
-    public EntityManager(World world)
+    public SystemManager(World world)
     {
       World = world;
 

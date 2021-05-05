@@ -69,7 +69,7 @@ namespace TheGame.GameStuff
       var option = GeneratorOption.BasicRock1;
       option.CAIterations += 4;
       tiles = mapGenerator.Generate(option);
-      mapGenerator.Fill(tiles, 0, 0, GeneratorOption.FewMushrooms);
+      mapGenerator.Fill(tiles, 0, 0, GeneratorOption.BigMagmaPools);
       mapGenerator.LayWalls(tiles);
     }
 
@@ -80,6 +80,9 @@ namespace TheGame.GameStuff
       int tileSize = GameEnvironment.Settings.tileSize;
       float startX = Camera.OffsetX - Camera.OffsetX % tileSize;
       float startY = Camera.OffsetY - Camera.OffsetY % tileSize;
+      Vector2 mid = new Vector2(GameEnvironment.ScreenWidth / 2, GameEnvironment.ScreenHeight / 2);
+      float maxDist = mid.Length();
+
 
       for (float x = startX; x < Camera.OffsetX + Camera.Width; x += tileSize)
         for (float y = startY; y < Camera.OffsetY + Camera.Height; y += tileSize)
@@ -92,17 +95,22 @@ namespace TheGame.GameStuff
 
           Camera.AbsoluteToRelative(x, y, out float xRelative, out float yRelative);
 
+          Vector2 pos = new Vector2(xRelative * scaleX, yRelative * scaleY);
+          float t = 1 - Vector2.Distance(pos, mid) / maxDist;
+
+          
           batch.Draw(
             texture: textureMapper.Get(tiles[tileX, tileY]),
-            position: new Vector2(xRelative * scaleX, yRelative * scaleY),
+            position: pos,
             sourceRectangle: null,
+            //color: Color.FromNonPremultiplied((int)(t * 255), (int)(t * 255), (int)(t * 255), 255),
             color: Color.White,
             rotation: 0,
             origin: Vector2.Zero,
             scale: new Vector2(scaleX, scaleY),
             effects: SpriteEffects.None,
             layerDepth: 0
-            );
+            ); ;
         }
     }
 

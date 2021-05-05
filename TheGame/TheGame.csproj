@@ -29,6 +29,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CaveGenerator\CaveGenerator.csproj" />
-    <ProjectReference Include="..\TheGame.Common\TheGame.Common.csproj" />
   </ItemGroup>
 </Project>

@@ -89,7 +89,6 @@ namespace TheGame.GameStuff.ECS.Systems
         EnterState(animation, behavior, State.Standing);
         Stand(movement);
         return;
-
       }
 
       Attack();
@@ -262,7 +261,8 @@ namespace TheGame.GameStuff.ECS.Systems
         animation.dir = Direction.Right;
       }
 
-      Velocity.Normalize();
+      if (Velocity.Length() != 0)
+        Velocity.Normalize();
       movement.Velocity = Velocity * movement.Speed * (float)time;
     }
 
@@ -282,13 +282,11 @@ namespace TheGame.GameStuff.ECS.Systems
     }
     private void BeginSneak()
     {
-      Camera.ZoomEffect(-0.3f);
-      Camera.ShadowOverlayStart();
+      Camera.ZoomEffect(-0.1f, 200f);
     }
     private void EndSneak()
     {
       Camera.ZoomStop();
-      Camera.ShadowOverlayStop();
     }
   }
 }

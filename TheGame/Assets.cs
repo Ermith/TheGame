@@ -29,6 +29,8 @@ namespace TheGame
     public static Texture2D[] FireOverlay;
     public static Texture2D[] ShadowOverlay;
 
+    public static Effect LightEffect;
+    public static Effect LightingEffect;
 
     static public void Load(ContentManager content)
     {
@@ -60,6 +62,9 @@ namespace TheGame
       ShadowOverlay = new Texture2D[46];
       for (int i = 0; i < 46; i++)
         ShadowOverlay[i] = content.Load<Texture2D>($"Shadow/shadow_{i}");
+
+      LightEffect = content.Load<Effect>("Light");
+      LightingEffect = content.Load<Effect>("Lighting");
     }
   }
 }

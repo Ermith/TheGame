@@ -19,21 +19,18 @@ namespace TheGame.GameStuff.ECS.Systems
       foreach (Entity entity in animationEntities)
       {
         var animation = entity.Get<CAnimation>();
-        var behavior = entity.Get<CBehavior>();
-        UpdateAnimation(animation, t, behavior);
+        UpdateAnimation(animation, t);
       }
 
       foreach (CAnimation animation in Camera.Overlays)
-        UpdateAnimation(animation, t, new CBehavior());
+        UpdateAnimation(animation, t);
     }
 
-    private void UpdateAnimation(CAnimation animation, float time, CBehavior behavior)
+    private void UpdateAnimation(CAnimation animation, float time)
     {
-      if (!animation.finished)
-        UpdateOnTime(animation, time);
-    }
-    private void UpdateOnTime(CAnimation animation, float time)
-    {
+      if (animation.finished)
+        return;
+
       animation.Delta += time;
       animation.AnimationTime += time;
 
@@ -49,6 +46,6 @@ namespace TheGame.GameStuff.ECS.Systems
         }
         animation.Delta -= animation.Frequency;
       }
-    } 
+    }
   }
 }
