@@ -64,6 +64,12 @@ namespace TheGame.GameStuff.ECS
       return this;
     }
 
+    public ComponentBuilder Animation(Texture2D sprite, string animationData)
+    {
+
+      return this;
+    }
+
     public ComponentBuilder Animation(
       Texture2D sprite,
       int framecount,
@@ -80,13 +86,13 @@ namespace TheGame.GameStuff.ECS
     {
       CAnimation anim = new CAnimation
       {
-        Sprite = sprite,
+        SpriteSheet = sprite,
         DefaultFrame = defaultFrame,
         FrameCount = framecount,
         Width = wid,
         Height = hei,
         Frequency = frequency,
-        source = AnimationSource.Sprite,
+        source = AnimationSource.SpriteSheet,
         StartupTime = startupTime,
         EndTime = endTime,
         endingEffect = endingEffect,
@@ -113,6 +119,44 @@ namespace TheGame.GameStuff.ECS
       tracker.Add(Target, anim);
       return this;
     }
+
+    public ComponentBuilder Animation(CAnimation anim)
+    {
+      CAnimation newAnim = new CAnimation
+      {
+        Delta = anim.Delta,
+        Index = anim.Index,
+        Frequency = anim.Frequency,
+        StartupTime = anim.StartupTime,
+        EndTime = anim.EndTime,
+        AnimationTime = anim.AnimationTime,
+        Opacity = anim.Opacity,
+        StaticEnding = anim.StaticEnding,
+        StaticStart = anim.StaticStart,
+        loop = anim.loop,
+        finished = anim.finished,
+        startingEffect = anim.startingEffect,
+        endingEffect = anim.endingEffect,
+        playingEffect = anim.playingEffect,
+        State = anim.State,
+        source = anim.source,
+        BehaviorState = anim.BehaviorState,
+        dir = anim.dir,
+        frameCounts = anim.frameCounts,
+        Frames = anim.Frames,
+        X = anim.X,
+        Y = anim.Y,
+        Height = anim.Height,
+        Width = anim.Width,
+        FrameCount = anim.FrameCount,
+        DefaultFrame = anim.DefaultFrame,
+        SpriteSheet = anim.SpriteSheet,
+        frameCoords = anim.frameCoords
+      };
+
+      tracker.Add(Target, newAnim);
+      return this;
+    } 
 
     public ComponentBuilder Animation(
       Texture2D[] frames,

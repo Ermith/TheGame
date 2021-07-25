@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using TheGame.GameStuff.ECS;
+using TheGame.GameStuff.ECS.Components;
 
 namespace TheGame
 {
@@ -29,6 +31,8 @@ namespace TheGame
     public static Texture2D[] FireOverlay;
     public static Texture2D[] ShadowOverlay;
 
+    public static CAnimation RogueAnimataion;
+
     public static Effect LightEffect;
     public static Effect LightingEffect;
 
@@ -54,6 +58,7 @@ namespace TheGame
 
       PlayerSprite = content.Load<Texture2D>("PlayerSprite");
       RogueSprite = content.Load<Texture2D>("RogueSpriteSheet");
+      RogueAnimataion = AnimationParser.ParseSettings("RogueInfo.txt", RogueSprite);
 
       FireOverlay = new Texture2D[46];
       for (int i = 0; i < 46; i++)

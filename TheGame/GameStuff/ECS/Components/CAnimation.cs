@@ -18,13 +18,19 @@ namespace TheGame.GameStuff.ECS.Components
     }
   }
   enum AnimtaionState { Stopped, Starting, Playing, Ending, Inactive }
-  enum AnimationSource { Frames, Sprite }
+  enum AnimationSource { Frames, SpriteSheet }
   class CAnimation : Component
   {
+    public CAnimation()
+    {
+      frameCoords = new Dictionary<State, (int, int)>();
+      frameCounts = new Dictionary<State, int>();
+    }
+
     // necessary
     public float Delta = 0f;
     public int Index = 0;
-    public float Frequency = 0.5f;
+    public float Frequency = 75f;
     public float StartupTime = 0f;
     public float EndTime = 0f;
     public float AnimationTime = 0f;
@@ -33,26 +39,19 @@ namespace TheGame.GameStuff.ECS.Components
     public bool StaticStart = false;
     public bool loop = true;
     public bool finished = false;
-    public Action<CAnimation, float> startingEffect = AnimationEffects.Empty;
-    public Action<CAnimation, float> endingEffect = AnimationEffects.Empty;
-    public Action<CAnimation, float> playingEffect = AnimationEffects.Empty;
     public AnimtaionState State = AnimtaionState.Stopped;
-    public AnimationSource source;
     public State BehaviorState = Components.State.Moving;
     public Direction dir = Direction.Up;
     public Dictionary<State, int> frameCounts;
 
-    // Frames specific
-    public Texture2D[] Frames;
-
     // Sprite Specific
     public int X = 0;
     public int Y = 0;
-    public int Height = 0;
-    public int Width = 0;
+    public int Height = 32;
+    public int Width = 32;
     public int FrameCount = 0;
     public int DefaultFrame = 0;
-    public Texture2D Sprite;
+    public Texture2D SpriteSheet;
     public Dictionary<State, (int, int)> frameCoords;
   }
 }

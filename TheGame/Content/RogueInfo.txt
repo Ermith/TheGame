@@ -1,0 +1,6 @@
+State=Moving X=0 Y=0 FrameCount=14
+State=Standing X=0 Y=0 FrameCount=1
+State=Sneaking X=0 Y=4 FrameCount=14
+State=Crouching X=0 Y=4 FrameCount=1
+State=AttackWindup X=0 Y=8 FrameCount=9
+State=Attacking X=9 Y=8 FrameCount=5

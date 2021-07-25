@@ -24,7 +24,7 @@ namespace TheGame.GameStuff.ECS
       {
         ent = new Entity();
         builder.Target = ent;
-        builder.Spacial(position).Movement(0.075f).Input().Animation(Assets.RogueSprite, 14, 32, 32, frequency:75f, defaultFrame: 1).Behavior();
+        builder.Spacial(position).Movement(0.075f).Input().Animation(Assets.RogueAnimataion).Behavior();
       }
 
       builder.Target = null;
