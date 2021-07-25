@@ -92,11 +92,8 @@ namespace TheGame.GameStuff.ECS
         Width = wid,
         Height = hei,
         Frequency = frequency,
-        source = AnimationSource.SpriteSheet,
         StartupTime = startupTime,
         EndTime = endTime,
-        endingEffect = endingEffect,
-        startingEffect = startingEffect,
         Opacity = opacity,
         frameCoords = new System.Collections.Generic.Dictionary<State, (int, int)>(),
         frameCounts = new System.Collections.Generic.Dictionary<State, int>()
@@ -135,15 +132,10 @@ namespace TheGame.GameStuff.ECS
         StaticStart = anim.StaticStart,
         loop = anim.loop,
         finished = anim.finished,
-        startingEffect = anim.startingEffect,
-        endingEffect = anim.endingEffect,
-        playingEffect = anim.playingEffect,
         State = anim.State,
-        source = anim.source,
         BehaviorState = anim.BehaviorState,
         dir = anim.dir,
         frameCounts = anim.frameCounts,
-        Frames = anim.Frames,
         X = anim.X,
         Y = anim.Y,
         Height = anim.Height,
@@ -168,13 +160,11 @@ namespace TheGame.GameStuff.ECS
     {
       CAnimation anim = new CAnimation
       {
-        Frames = frames,
         FrameCount = frames.Length,
         Frequency = frequency,
         Opacity = opacity,
         StartupTime = startupTime,
-        EndTime = endTime,
-        source = AnimationSource.Frames
+        EndTime = endTime
       };
 
       tracker.Add(Target, anim);

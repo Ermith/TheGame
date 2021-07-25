@@ -10,10 +10,12 @@ namespace TheGame.GameStuff.ECS.Systems
   class InputSystem : System
   {
     private List<Entity> inputEntities;
-    KeyboardState lastKeyboard = Keyboard.GetState();
-    public InputSystem(List<Entity> inputEntities)
+    private KeyboardState lastKeyboard = Keyboard.GetState();
+    private Camera camera;
+    public InputSystem(List<Entity> inputEntities, Camera camera)
     {
       this.inputEntities = inputEntities;
+      this.camera = camera;
     }
     public override void Update(GameTime time)
     {
@@ -70,7 +72,7 @@ namespace TheGame.GameStuff.ECS.Systems
       movement.Velocity = Vector2.Zero;
       if (animation.finished && !keyboard.IsKeyDown(input.Attack))
       {
-        Camera.ShakeEffect(2f);
+        camera.ShakeEffect(2f);
         EnterState(animation, behavior, State.Attacking);
         return;
       }
@@ -282,11 +284,11 @@ namespace TheGame.GameStuff.ECS.Systems
     }
     private void BeginSneak()
     {
-      Camera.ZoomEffect(-0.1f, 200f);
+      camera.ZoomEffect(-0.1f, 200f);
     }
     private void EndSneak()
     {
-      Camera.ZoomStop();
+      camera.ZoomStop();
     }
   }
 }

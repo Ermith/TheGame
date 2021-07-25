@@ -8,10 +8,12 @@ namespace TheGame.GameStuff.ECS.Systems
   class RenderSystem : IRenderable
   {
     private List<Entity> animationEntities;
+    private Camera camera;
 
-    public RenderSystem(List<Entity> animationEntities)
+    public RenderSystem(List<Entity> animationEntities, Camera camera)
     {
       this.animationEntities = animationEntities;
+      this.camera = camera;
     }
 
     public void Render(SpriteBatch batch)
@@ -23,7 +25,7 @@ namespace TheGame.GameStuff.ECS.Systems
     private void RenderAnimation(CAnimation animation, CSpacial spacial, SpriteBatch batch)
     {
       Texture2D texture = animation.SpriteSheet;
-      Vector2 scale = new Vector2(Camera.ScaleX, Camera.ScaleY);
+      Vector2 scale = new Vector2(camera.ScaleX, camera.ScaleY);
 
       batch.Draw(
       texture: texture,
@@ -49,7 +51,7 @@ namespace TheGame.GameStuff.ECS.Systems
     private Vector2 GetPosition(CSpacial spacial, Vector2 scale, CAnimation animation)
     {
       Vector2 position = spacial.Position - new Vector2(animation.Width / 2, animation.Height / 2);
-      position = Camera.AbsoluteToRelative(position);
+      position = camera.AbsoluteToRelative(position);
       return position * scale;
     }
   }

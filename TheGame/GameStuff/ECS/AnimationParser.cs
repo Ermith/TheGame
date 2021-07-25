@@ -37,7 +37,6 @@ namespace TheGame.GameStuff.ECS
       var reader = new StreamReader(infoFile);
       string line;
       var dict = new Dictionary<string, string>();
-      animation.source = AnimationSource.SpriteSheet;
       animation.SpriteSheet = spriteSheet;
 
       while((line = reader.ReadLine()) != string.Empty && line != null)

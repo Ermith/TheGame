@@ -11,19 +11,22 @@ namespace TheGame.States
   {
     private SystemManager systemManager;
     private World world;
+    private Camera camera;
 
     public GameState()
     {
       // world and camera
-      world = new World();
+      int width = 100;
+      int height = 100;
+
+      camera = new Camera(16 * 25, 9 * 25,
+        width * GameEnvironment.Settings.tileSize,
+        height * GameEnvironment.Settings.tileSize);
+      world = new World(camera, width, height);
       world.CreateNew();
-      Camera.Init(
-        16*25, 9*25,
-        world.Width * GameEnvironment.Settings.tileSize,
-        world.Height * GameEnvironment.Settings.tileSize);
 
       // entities
-      systemManager = new SystemManager(world);
+      systemManager = new SystemManager(world, camera);
     }
 
     public override void Render(SpriteBatch batch)
@@ -45,8 +48,8 @@ namespace TheGame.States
 
       // Center the camera on player
       var spacial = systemManager.Player.Get<CSpacial>();
-      Camera.Center(spacial.Position);
-      Camera.Update(time);
+      camera.Center(spacial.Position);
+      camera.Update(time);
     }
   }
 }

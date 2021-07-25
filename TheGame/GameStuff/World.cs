@@ -51,17 +51,21 @@ namespace TheGame.GameStuff
     private readonly MapGenerator mapGenerator;
     private readonly TileTextureMapper textureMapper;
     private TileType[,] tiles;
+    private Camera camera;
 
     // public
-    public int Width = 100;
-    public int Height = 100;
+    public int Width;
+    public int Height;
 
     // Methods
     //=================================
-    public World()
+    public World(Camera camera, int width, int height)
     {
-      mapGenerator = new MapGenerator(Width, Height, 1);
+      mapGenerator = new MapGenerator(width, height, 1);
       textureMapper = new TileTextureMapper();
+      this.camera = camera;
+      Width = width;
+      Height = height;
     }
 
     public void CreateNew()
@@ -75,17 +79,17 @@ namespace TheGame.GameStuff
 
     public void Render(SpriteBatch batch)
     {
-      float scaleX = Camera.ScaleX;
-      float scaleY = Camera.ScaleY;
+      float scaleX = camera.ScaleX;
+      float scaleY = camera.ScaleY;
       int tileSize = GameEnvironment.Settings.tileSize;
-      float startX = Camera.OffsetX - Camera.OffsetX % tileSize;
-      float startY = Camera.OffsetY - Camera.OffsetY % tileSize;
+      float startX = camera.OffsetX - camera.OffsetX % tileSize;
+      float startY = camera.OffsetY - camera.OffsetY % tileSize;
       Vector2 mid = new Vector2(GameEnvironment.ScreenWidth / 2, GameEnvironment.ScreenHeight / 2);
       float maxDist = mid.Length();
 
 
-      for (float x = startX; x < Camera.OffsetX + Camera.Width; x += tileSize)
-        for (float y = startY; y < Camera.OffsetY + Camera.Height; y += tileSize)
+      for (float x = startX; x < camera.OffsetX + camera.Width; x += tileSize)
+        for (float y = startY; y < camera.OffsetY + camera.Height; y += tileSize)
         {
           int tileX = (int)(x / tileSize);
           int tileY = (int)(y / tileSize);
@@ -93,7 +97,7 @@ namespace TheGame.GameStuff
           if (tileX >= Width || tileY >= Height)
             continue;
 
-          Camera.AbsoluteToRelative(x, y, out float xRelative, out float yRelative);
+          camera.AbsoluteToRelative(x, y, out float xRelative, out float yRelative);
 
           Vector2 pos = new Vector2(xRelative * scaleX, yRelative * scaleY);
           float t = 1 - Vector2.Distance(pos, mid) / maxDist;

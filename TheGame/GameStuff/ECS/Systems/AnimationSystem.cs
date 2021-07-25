@@ -21,9 +21,6 @@ namespace TheGame.GameStuff.ECS.Systems
         var animation = entity.Get<CAnimation>();
         UpdateAnimation(animation, t);
       }
-
-      foreach (CAnimation animation in Camera.Overlays)
-        UpdateAnimation(animation, t);
     }
 
     private void UpdateAnimation(CAnimation animation, float time)
