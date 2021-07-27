@@ -181,5 +181,14 @@ namespace TheGame.GameStuff.ECS
       tracker.Add(Target, behavior);
       return this;
     }
+
+    public ComponentBuilder Light(float intensity = 1)
+    {
+      var light = new CLight();
+      light.Intensity = intensity;
+
+      tracker.Add(Target, light);
+      return this;
+    }
   }
 }

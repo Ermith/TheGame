@@ -46,7 +46,13 @@ namespace TheGame.States
       }
     }
 
-    public override void Render(SpriteBatch batch) => manager.Render(batch);
+    public override void Render(GraphicsDevice graphics, SpriteBatch batch)
+    {
+      graphics.Clear(Color.Black);
+      batch.Begin();
+      manager.Render(batch);
+      batch.End();
+    }
     public override void Update(GameTime time) => manager.Update(time);
 
   }

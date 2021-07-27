@@ -25,13 +25,15 @@ namespace TheGame
     public static Texture2D MagmaFloorTileTexture;
     public static Texture2D FleshTileTexture;
     public static Texture2D FleshFloorTileTexture;
+    public static Texture2D LightMask;
 
-    public static Texture2D PlayerSprite;
+    public static Texture2D KnightSprite;
     public static Texture2D RogueSprite;
     public static Texture2D[] FireOverlay;
     public static Texture2D[] ShadowOverlay;
 
     public static CAnimation RogueAnimataion;
+    public static CAnimation KnightAnimation;
 
     public static Effect LightEffect;
     public static Effect LightingEffect;
@@ -56,7 +58,9 @@ namespace TheGame
       FleshTileTexture = content.Load<Texture2D>("Tiles\\FleshTile");
       FleshFloorTileTexture = content.Load<Texture2D>("Tiles\\FleshFloorTile");
 
-      PlayerSprite = content.Load<Texture2D>("PlayerSprite");
+      KnightSprite = content.Load<Texture2D>("KnightSprite");
+      KnightAnimation = AnimationParser.ParseSettings("KnightInfo.txt", KnightSprite);
+      
       RogueSprite = content.Load<Texture2D>("RogueSpriteSheet");
       RogueAnimataion = AnimationParser.ParseSettings("RogueInfo.txt", RogueSprite);
 
@@ -70,6 +74,7 @@ namespace TheGame
 
       LightEffect = content.Load<Effect>("Light");
       LightingEffect = content.Load<Effect>("Lighting");
+      LightMask = content.Load<Texture2D>("lightmask");
     }
   }
 }

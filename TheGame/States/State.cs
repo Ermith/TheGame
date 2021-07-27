@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework;
 
 namespace TheGame.States
 {
-  abstract class State : IGameComponent
+  abstract class State
   {
-    public abstract void Render(SpriteBatch batch);
+    public abstract void Render(GraphicsDevice graphics, SpriteBatch batch);
     public abstract void Update(GameTime time);
   }
 }

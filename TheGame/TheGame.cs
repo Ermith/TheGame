@@ -10,10 +10,6 @@ namespace TheGame
   {
     public GraphicsDeviceManager Graphics;
     private SpriteBatch _spriteBatch;
-    private float strength = 0.5f;
-    RenderTarget2D lightMask;
-    RenderTarget2D mainCanvas;
-    RenderTarget2D white;
 
     public TheGame()
     {
@@ -40,15 +36,9 @@ namespace TheGame
       Graphics.PreferredBackBufferHeight = height;
       Graphics.ApplyChanges();
 
-      // Render setup
-      lightMask = new RenderTarget2D(GraphicsDevice, width, height);
-      mainCanvas = new RenderTarget2D(GraphicsDevice, width, height);
-      _spriteBatch = new SpriteBatch(GraphicsDevice);
-      white = new RenderTarget2D(GraphicsDevice, width, height);
-
-      DrawOnTarget(white, () => { GraphicsDevice.Clear(Color.White); });
       Mouse.SetCursor(MouseCursor.FromTexture2D(Assets.placeHolder, 0, 0));
       GameEnvironment.Init(this);
+      _spriteBatch = new SpriteBatch(GraphicsDevice);
     }
 
     protected override void Update(GameTime gameTime)
@@ -58,47 +48,12 @@ namespace TheGame
 
       GameEnvironment.GetCurrentState().Update(gameTime);
 
-      // Testing light effect
-      if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
-        strength = MathF.Max(strength - 0.05f, 0.5f);
-      else
-        strength = MathF.Min(strength + 0.05f, 0.85f);
-
       base.Update(gameTime);
-    }
-
-    private void DrawOnTarget(RenderTarget2D target, Action action)
-    {
-      GraphicsDevice.SetRenderTarget(target);
-      GraphicsDevice.Clear(Color.Black);
-      _spriteBatch.Begin(sortMode: SpriteSortMode.Immediate, blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp);
-      action();
-      _spriteBatch.End();
     }
 
     protected override void Draw(GameTime gameTime)
     {
-      // Draw light
-      DrawOnTarget(lightMask, () => {
-        Assets.LightEffect.CurrentTechnique.Passes[0].Apply();
-        var pp = Assets.LightEffect.Parameters["strength"];
-        pp.SetValue(strength);
-        _spriteBatch.Draw(white, Vector2.Zero, Color.White);
-      });
-
-      // Draw main stuff
-      DrawOnTarget(mainCanvas, () => {
-        GameEnvironment.GetCurrentState().Render(_spriteBatch);
-      });
-
-      // Mix it together
-      DrawOnTarget(null, () => {
-        Assets.LightingEffect.CurrentTechnique.Passes[0].Apply();
-        var p = Assets.LightingEffect.Parameters["light"];
-        p.SetValue(lightMask);
-        _spriteBatch.Draw(mainCanvas, Vector2.Zero, Color.White);
-      });
-
+      GameEnvironment.GetCurrentState().Render(GraphicsDevice, _spriteBatch);
       base.Draw(gameTime);
     }
   }

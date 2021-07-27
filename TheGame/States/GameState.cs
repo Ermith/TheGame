@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using TheGame.GameStuff.ECS.Components;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace TheGame.States
 {
@@ -12,6 +13,9 @@ namespace TheGame.States
     private SystemManager systemManager;
     private World world;
     private Camera camera;
+    private RenderTarget2D lightMask;
+    private RenderTarget2D mainCanvas;
+
 
     public GameState()
     {
@@ -29,10 +33,41 @@ namespace TheGame.States
       systemManager = new SystemManager(world, camera);
     }
 
-    public override void Render(SpriteBatch batch)
+
+    public override void Render(GraphicsDevice graphics, SpriteBatch batch)
     {
+      // Render setup
+      if (lightMask == null)
+        lightMask = new RenderTarget2D(graphics, GameEnvironment.ScreenWidth, GameEnvironment.ScreenHeight);
+
+      if (mainCanvas == null)
+        mainCanvas = new RenderTarget2D(graphics, GameEnvironment.ScreenWidth, GameEnvironment.ScreenHeight);
+
+
+      graphics.SetRenderTarget(mainCanvas);
+      graphics.Clear(Color.Black);
+      batch.Begin(samplerState: SamplerState.PointClamp);
       world.Render(batch);
       systemManager.Render(batch);
+      batch.End();
+
+      // Draw light
+      graphics.SetRenderTarget(lightMask);
+      graphics.Clear(Color.Black);
+      batch.Begin(blendState: BlendState.Additive);
+      systemManager.RenderLight(batch);
+      batch.End();
+
+
+      // Mix it together
+      graphics.SetRenderTarget(null);
+      graphics.Clear(Color.Black);
+      batch.Begin(sortMode: SpriteSortMode.Immediate, blendState: BlendState.AlphaBlend);
+      Assets.LightingEffect.CurrentTechnique.Passes[0].Apply();
+      var p = Assets.LightingEffect.Parameters["light"];
+      p.SetValue(lightMask);
+      batch.Draw(mainCanvas, Vector2.Zero, Color.White);
+      batch.End();
     }
 
     public override void Update(GameTime time)

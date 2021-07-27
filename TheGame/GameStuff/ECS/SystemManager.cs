@@ -16,25 +16,27 @@ namespace TheGame.GameStuff.ECS
     public CollisionSystem collisionSystem;
     public RenderSystem renderSystem;
     public AnimationSystem animationSystem;
-    private Camera camera;
+    public LightSystem lightSystem;
 
     public World World { get; }
 
     public SystemManager(World world, Camera camera)
     {
       World = world;
-      this.camera = camera;
 
       // init Entities
       tracker = new ComponentTracker();
       factory = new EntityFactory(new ComponentBuilder(tracker));
-      Player = factory.Build("player", world.GenerateSpawnPoint());
+      var pos = world.GenerateSpawnPoint();
+      Player = factory.Build("player", pos);
+      factory.Build("dummy", pos + new Vector2(40, 40));
 
       // init systems
       inputSystem = new InputSystem(tracker.GetEntities<CInput>(), camera);
       collisionSystem = new CollisionSystem(World, tracker.GetEntities<CMovement>());
       animationSystem = new AnimationSystem(tracker.GetEntities<CAnimation>());
-      renderSystem = new RenderSystem(tracker.GetEntities<CAnimation>(), camera);
+      renderSystem = new RenderSystem(tracker.GetEntities<CAnimation>(), tracker.GetEntities<CLight>(), camera);
+      lightSystem = new LightSystem(tracker.GetEntities<CLight>());
     }
 
     public void Render(SpriteBatch batch)
@@ -42,11 +44,17 @@ namespace TheGame.GameStuff.ECS
       renderSystem.Render(batch);
     }
 
+    public void RenderLight(SpriteBatch batch)
+    {
+      renderSystem.RenderLight(batch);
+    }
+
     public void Update(GameTime time)
     {
       inputSystem.Update(time);
       collisionSystem.Update(time);
       animationSystem.Update(time);
+      lightSystem.Update(time);
     }
   }
 }

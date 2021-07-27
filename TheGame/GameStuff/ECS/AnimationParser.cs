@@ -60,6 +60,7 @@ namespace TheGame.GameStuff.ECS
         if (!uint.TryParse(dict[FrameCountToken], out uint frameCount))
           throw new InvalidCastException($"Unknonw FrameCount value '{dict[FrameCountToken]}' in file '{infoFile}'.");
 
+        animation.FrameCount = 1;
         animation.frameCounts[state] = (int)frameCount;
         animation.frameCoords[state] = ((int)x, (int)y);
       }

@@ -8,11 +8,13 @@ namespace TheGame.GameStuff.ECS.Systems
   class RenderSystem : IRenderable
   {
     private List<Entity> animationEntities;
+    private List<Entity> lightEntities;
     private Camera camera;
 
-    public RenderSystem(List<Entity> animationEntities, Camera camera)
+    public RenderSystem(List<Entity> animationEntities, List<Entity> lightEntities, Camera camera)
     {
       this.animationEntities = animationEntities;
+      this.lightEntities = lightEntities;
       this.camera = camera;
     }
 
@@ -21,6 +23,33 @@ namespace TheGame.GameStuff.ECS.Systems
       foreach (Entity entity in animationEntities)
         RenderAnimation(entity.Get<CAnimation>(), entity.Get<CSpacial>(), batch);
     }
+
+    public void RenderLight(SpriteBatch batch)
+    {
+      foreach (Entity entity in lightEntities)
+      {
+        CLight light = entity.Get<CLight>();
+        Vector2 position = new Vector2(light.X, light.Y);
+        Vector2 scale = new Vector2(camera.ScaleX, camera.ScaleY);
+        position = camera.AbsoluteToRelative(position);
+        position *= scale;
+        position -= Assets.LightMask.Bounds.Center.ToVector2() * light.Intensity * scale ;
+
+
+        batch.Draw(
+          texture: Assets.LightMask,
+          position: position,
+          sourceRectangle: null,
+          color: Color.White,
+          rotation: 0,
+          origin: Vector2.Zero,
+          scale: light.Intensity * scale,
+          effects: SpriteEffects.None,
+          layerDepth: 0
+          );
+      }
+    }
+
 
     private void RenderAnimation(CAnimation animation, CSpacial spacial, SpriteBatch batch)
     {

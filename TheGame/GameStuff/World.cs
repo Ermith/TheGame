@@ -73,7 +73,7 @@ namespace TheGame.GameStuff
       var option = GeneratorOption.BasicRock1;
       option.CAIterations += 4;
       tiles = mapGenerator.Generate(option);
-      mapGenerator.Fill(tiles, 0, 0, GeneratorOption.BigMagmaPools);
+      mapGenerator.Fill(tiles, 0, 0, GeneratorOption.LittleMoss);
       mapGenerator.LayWalls(tiles);
     }
 

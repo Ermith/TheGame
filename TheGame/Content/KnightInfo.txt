@@ -1,0 +1,3 @@
+State=Moving X=0 Y=0 FrameCount=14
+State=Standing X=0 Y=0 FrameCount=1
+State=Sneaking X=0 Y=4 FrameCount=14
