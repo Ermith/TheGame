@@ -17,6 +17,8 @@ namespace TheGame.GameStuff.ECS
     public RenderSystem renderSystem;
     public AnimationSystem animationSystem;
     public LightSystem lightSystem;
+    public HealthSystem healthSystem;
+    public AttackSystem attackSystem;
 
     public World World { get; }
 
@@ -37,6 +39,8 @@ namespace TheGame.GameStuff.ECS
       animationSystem = new AnimationSystem(tracker.GetEntities<CAnimation>());
       renderSystem = new RenderSystem(tracker.GetEntities<CAnimation>(), tracker.GetEntities<CLight>(), camera);
       lightSystem = new LightSystem(tracker.GetEntities<CLight>());
+      healthSystem = new HealthSystem(tracker);
+      attackSystem = new AttackSystem(tracker.GetEntities<CAttack>(), tracker.GetEntities<CHealth>());
     }
 
     public void Render(SpriteBatch batch)
@@ -54,6 +58,8 @@ namespace TheGame.GameStuff.ECS
       inputSystem.Update(time);
       collisionSystem.Update(time);
       animationSystem.Update(time);
+      attackSystem.Update(time);
+      healthSystem.Update(time);
       lightSystem.Update(time);
     }
   }

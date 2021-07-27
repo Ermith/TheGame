@@ -32,6 +32,17 @@ namespace TheGame.GameStuff.ECS
       e.Remove<T>();
     }
 
+    public void Destroy(Entity e)
+    {
+      foreach (var (type, entities) in data)
+      {
+        if (entities.Contains(e))
+        {
+          entities.Remove(e);
+        }
+      }
+    }
+
     public List<Entity> GetEntities<T>()
     {
       return data.ContainsKey(typeof(T)) ? data[typeof(T)] : null;

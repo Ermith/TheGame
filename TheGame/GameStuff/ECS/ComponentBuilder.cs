@@ -4,6 +4,7 @@ using TheGame.Math;
 using Microsoft.Xna.Framework.Graphics;
 using TheGame.GameStuff.ECS.Components;
 using System;
+using System.Collections.Generic;
 
 namespace TheGame.GameStuff.ECS
 {
@@ -61,12 +62,6 @@ namespace TheGame.GameStuff.ECS
       };
 
       tracker.Add(Target, input);
-      return this;
-    }
-
-    public ComponentBuilder Animation(Texture2D sprite, string animationData)
-    {
-
       return this;
     }
 
@@ -188,6 +183,27 @@ namespace TheGame.GameStuff.ECS
       light.Intensity = intensity;
 
       tracker.Add(Target, light);
+      return this;
+    }
+
+    public ComponentBuilder Health(int hp = 100)
+    {
+      var health = new CHealth();
+      health.HealthPoints = hp;
+
+      tracker.Add(Target, health);
+      return this;
+    }
+
+    public ComponentBuilder Attack(int dmg = 50)
+    {
+      var attack = new CAttack();
+      attack.damage = dmg;
+      attack.attackWidth = 32;
+      attack.attackHeight = 32;
+      attack.attackedEntities = new HashSet<Entity>();
+
+      tracker.Add(Target, attack);
       return this;
     }
   }

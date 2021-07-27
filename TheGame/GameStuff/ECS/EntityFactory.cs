@@ -24,14 +24,22 @@ namespace TheGame.GameStuff.ECS
       {
         ent = new Entity();
         builder.Target = ent;
-        builder.Spacial(position).Movement(0.075f).Input().Animation(Assets.RogueAnimataion).Behavior().Light();
+        builder
+          .Spacial(position)
+          .Movement(0.075f)
+          .Input()
+          .Animation(Assets.RogueAnimataion)
+          .Behavior()
+          .Light()
+          .Health()
+          .Attack();
       }
 
       if (name == "dummy")
       {
         ent = new Entity();
         builder.Target = ent;
-        builder.Spacial(position).Movement().Animation(Assets.KnightAnimation).Behavior().Light();
+        builder.Spacial(position).Movement().Animation(Assets.KnightAnimation).Behavior().Light().Health();
       }
 
       builder.Target = null;

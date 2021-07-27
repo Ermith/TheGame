@@ -82,6 +82,12 @@ namespace TheGame.States
         return;
       }
 
+      if (systemManager.Player.Get<CHealth>().HealthPoints <= 0)
+      {
+        GameEnvironment.SwitchToMainMenu();
+        return;
+      }
+
       systemManager.Update(time);
 
       // Center the camera on player
