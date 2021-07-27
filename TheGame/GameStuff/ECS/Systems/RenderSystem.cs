@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using TheGame.GameStuff.ECS.Components;
 
@@ -20,6 +21,19 @@ namespace TheGame.GameStuff.ECS.Systems
 
     public void Render(SpriteBatch batch)
     {
+      animationEntities.Sort((Entity a, Entity b) =>
+      {
+        var aPos = a.Get<CSpacial>();
+        var bPos = b.Get<CSpacial>();
+
+        if (aPos.Y < bPos.Y)
+          return -1;
+        if (aPos.Y == bPos.Y)
+          return 0;
+
+        return 1;
+      });
+      
       foreach (Entity entity in animationEntities)
         RenderAnimation(entity.Get<CAnimation>(), entity.Get<CSpacial>(), batch);
     }
@@ -33,7 +47,7 @@ namespace TheGame.GameStuff.ECS.Systems
         Vector2 scale = new Vector2(camera.ScaleX, camera.ScaleY);
         position = camera.AbsoluteToRelative(position);
         position *= scale;
-        position -= Assets.LightMask.Bounds.Center.ToVector2() * light.Intensity * scale ;
+        position -= Assets.LightMask.Bounds.Center.ToVector2() * light.Intensity * scale;
 
 
         batch.Draw(
@@ -55,6 +69,7 @@ namespace TheGame.GameStuff.ECS.Systems
     {
       Texture2D texture = animation.SpriteSheet;
       Vector2 scale = new Vector2(camera.ScaleX, camera.ScaleY);
+      int y = (int)spacial.Y;
 
       batch.Draw(
       texture: texture,

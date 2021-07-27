@@ -114,7 +114,7 @@ namespace TheGame.GameStuff
             scale: new Vector2(scaleX, scaleY),
             effects: SpriteEffects.None,
             layerDepth: 0
-            ); ;
+            );
         }
     }
 

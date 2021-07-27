@@ -43,7 +43,7 @@ namespace TheGame.States
       if (mainCanvas == null)
         mainCanvas = new RenderTarget2D(graphics, GameEnvironment.ScreenWidth, GameEnvironment.ScreenHeight);
 
-
+      // Draw all the main stuff
       graphics.SetRenderTarget(mainCanvas);
       graphics.Clear(Color.Black);
       batch.Begin(samplerState: SamplerState.PointClamp);
@@ -52,14 +52,16 @@ namespace TheGame.States
       batch.End();
 
       // Draw light
+      /**/
       graphics.SetRenderTarget(lightMask);
       graphics.Clear(Color.Black);
       batch.Begin(blendState: BlendState.Additive);
       systemManager.RenderLight(batch);
       batch.End();
-
+      /**/
 
       // Mix it together
+      /**/
       graphics.SetRenderTarget(null);
       graphics.Clear(Color.Black);
       batch.Begin(sortMode: SpriteSortMode.Immediate, blendState: BlendState.AlphaBlend);
@@ -68,6 +70,7 @@ namespace TheGame.States
       p.SetValue(lightMask);
       batch.Draw(mainCanvas, Vector2.Zero, Color.White);
       batch.End();
+      /**/
     }
 
     public override void Update(GameTime time)
