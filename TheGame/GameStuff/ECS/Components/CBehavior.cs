@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TheGame.GameStuff.ECS.Components
 {
   enum Direction { Up, Left, Down, Right }
-  enum State { Attacking, Standing, Moving, Sneaking, Crouching, AttackWindup }
+  enum State { Attacking, Standing, Moving, Sneaking, Crouching, AttackWindup, AttackFinish }
   class CBehavior : Component
   {
     public Direction Direction;

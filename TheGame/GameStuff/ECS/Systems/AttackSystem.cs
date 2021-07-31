@@ -48,7 +48,7 @@ namespace TheGame.GameStuff.ECS.Systems
         hit.Location = loc.ToPoint() + CommonVectors.GetDirection(animation.dir).ToPoint() * offset.ToPoint();
 
         
-        if (behavior.State == State.Attacking && attack.attackFrames.Contains(animation.Index))
+        if (behavior.State == State.Attacking)// && attack.attackFrames.Contains(animation.Index))
         {
           foreach (Entity victim in healthEntities)
           {

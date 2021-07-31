@@ -28,12 +28,12 @@ namespace TheGame
     }
     public static void StartNewGame()
     {
-      IsMouseVisible = true;
+      IsMouseVisible = false;
       stateManager.StartNewGame();
     }
     public static void SwitchToInGame()
     {
-      IsMouseVisible = true;
+      IsMouseVisible = false;
       stateManager.SwitchToGame();
     }
     public static void SwitchToMainMenu()

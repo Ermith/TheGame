@@ -29,11 +29,12 @@ namespace TheGame.GameStuff.ECS.Systems
         var movement = entity.Get<CMovement>();
         var behavior = entity.Get<CBehavior>();
         var animation = entity.Get<CAnimation>();
+        var attack = entity.Get<CAttack>();
 
         switch (behavior.State)
         {
           case State.Attacking:
-            HandleAttacking(keyboard, input, behavior, animation, movement, t);
+            HandleAttacking(keyboard, input, behavior, animation, movement, attack, t);
             return;
 
           case State.Standing:
@@ -56,6 +57,10 @@ namespace TheGame.GameStuff.ECS.Systems
 
           case State.AttackWindup:
             HandleAttackWindup(keyboard, input, behavior, animation, movement, t);
+            return;
+
+          case State.AttackFinish:
+            HandleAttackFinish(animation, movement, behavior);
             return;
 
           default:
@@ -84,9 +89,15 @@ namespace TheGame.GameStuff.ECS.Systems
         EnterState(animation, behavior, State.Standing);
       }
     }
-    private void HandleAttacking(KeyboardState keyboard, CInput input, CBehavior behavior, CAnimation animation, CMovement movement, float time)
+    private void HandleAttacking(KeyboardState keyboard, CInput input, CBehavior behavior, CAnimation animation, CMovement movement, CAttack attack, float time)
     {
-      if (animation.finished)
+      if (animation.finished && attack.attackedEntities.Count != 0)
+      {
+        EnterState(animation, behavior, State.AttackFinish);
+        return;
+      }
+
+      if (animation.finished && attack.attackedEntities.Count == 0)
       {
         animation.loop = true;
         EnterState(animation, behavior, State.Standing);
@@ -96,6 +107,16 @@ namespace TheGame.GameStuff.ECS.Systems
 
       Attack();
       return;
+    }
+    private void HandleAttackFinish(CAnimation animation, CMovement movement, CBehavior behavior)
+    {
+      if (animation.finished)
+      {
+        animation.loop = true;
+        EnterState(animation, behavior, State.Standing);
+        Stand(movement);
+        return;
+      }
     }
 
     private void HandleCrouching(KeyboardState keyboard, CInput input, CBehavior behavior, CAnimation animation, CMovement movement, float time)
