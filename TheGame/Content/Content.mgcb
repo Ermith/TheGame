@@ -19,6 +19,24 @@
 /processorParam:Quality=Best
 /build:Click.wav
 
+#begin cursor.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:cursor.png
+
+#begin cut.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:cut.wav
+
 #begin Fire/fire_0.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -626,6 +644,18 @@
 /processorParam:TextureFormat=Color
 /build:PlaceHolder.png
 
+#begin rectangle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:rectangle.png
+
 #begin RogueSpriteSheet.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1189,6 +1219,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Shadow/shadow_9.png
+
+#begin swoosh.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:swoosh.wav
 
 #begin Tiles/FleshFloor.png
 /importer:TextureImporter

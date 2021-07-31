@@ -10,8 +10,8 @@ namespace TheGame.GameStuff.ECS
   class SystemManager : IGameComponent
   {
     public Entity Player;
-    private readonly ComponentTracker tracker;
-    private readonly EntityFactory factory;
+    public ComponentTracker tracker;
+    public EntityFactory factory;
     public InputSystem inputSystem;
     public CollisionSystem collisionSystem;
     public RenderSystem renderSystem;

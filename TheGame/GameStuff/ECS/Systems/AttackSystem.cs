@@ -31,9 +31,23 @@ namespace TheGame.GameStuff.ECS.Systems
         var animation = entity.Get<CAnimation>();
         var behavior = entity.Get<CBehavior>();
         Rectangle hit = attack.hitBox;
-        hit.Location = spacial.HitBox.Location;
-        hit.Location += CommonVectors.GetDirection(animation.dir).ToPoint() * hit.Size;
 
+
+        // Center on center
+        var loc = new Vector2(
+          spacial.X - hit.Width / 2,
+          spacial.Y - hit.Height / 2
+        );
+
+        // offset
+        var offset = new Vector2(
+          spacial.Width / 2 + hit.Width / 2,
+          spacial.Height / 2 + hit.Height / 2
+        );
+
+        hit.Location = loc.ToPoint() + CommonVectors.GetDirection(animation.dir).ToPoint() * offset.ToPoint();
+
+        
         if (behavior.State == State.Attacking && attack.attackFrames.Contains(animation.Index))
         {
           foreach (Entity victim in healthEntities)
@@ -42,9 +56,11 @@ namespace TheGame.GameStuff.ECS.Systems
             {
               victim.Get<CHealth>().HealthPoints -= attack.damage;
               attack.attackedEntities.Add(victim);
+              Assets.Cut.Play();
             }
           }
-        } else
+        }
+        else
         {
           attack.attackedEntities.Clear();
         }

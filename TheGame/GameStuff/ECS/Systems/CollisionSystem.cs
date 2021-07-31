@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿#define DEBUG
+using Microsoft.Xna.Framework;
 using TheGame.GameStuff.ECS.Components;
 using System.Collections.Generic;
 
@@ -18,7 +19,8 @@ namespace TheGame.GameStuff.ECS.Systems
     private bool CheckEntities(Entity entity)
     {
       Rectangle r = entity.Get<CSpacial>().HitBox;
-      Rectangle newR = new Rectangle(r.X + r.Width / 6, r.Y + r.Height / 6, r.Width / 3, r.Height / 3);
+      //Rectangle newR = new Rectangle(r.X + r.Width / 4, r.Y + r.Height / 4, r.Width / 2, r.Height / 2);
+
 
       foreach (Entity e in movementEntities)
       {
@@ -26,7 +28,7 @@ namespace TheGame.GameStuff.ECS.Systems
           continue;
 
         CSpacial s = e.Get<CSpacial>();
-        if (newR.Intersects(s.HitBox))
+        if (r.Intersects(s.HitBox))
           return false;
       }
       return true;

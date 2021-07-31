@@ -74,6 +74,7 @@ namespace TheGame.GameStuff.ECS.Systems
       {
         camera.ShakeEffect(2f);
         EnterState(animation, behavior, State.Attacking);
+        Assets.Swoosh.Play();
         return;
       }
 

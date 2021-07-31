@@ -5,6 +5,7 @@ using TheGame.GameStuff.ECS.Components;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
+using TheGame.Math;
 
 namespace TheGame.States
 {
@@ -71,6 +72,59 @@ namespace TheGame.States
       batch.Draw(mainCanvas, Vector2.Zero, Color.White);
       batch.End();
       /**/
+
+#if DEBUG
+      batch.Begin(sortMode: SpriteSortMode.Immediate);
+
+      foreach (Entity e in systemManager.tracker.GetEntities<CSpacial>())
+      {
+        Rectangle r = e.Get<CSpacial>().HitBox;
+        r.Location = camera.AbsoluteToRelative(r.Location.ToVector2()).ToPoint();
+        r.Location = new Point((int)(r.Location.X * camera.ScaleX), (int)(r.Location.Y * camera.ScaleY));
+        r.Width = (int)(camera.ScaleX * r.Width);
+        r.Height = (int)(camera.ScaleY * r.Height);
+
+        batch.Draw(Assets.Rectangle, r, Color.White);
+      }
+
+      foreach (Entity e in systemManager.tracker.GetEntities<CAttack>())
+      {
+        var attack = e.Get<CAttack>();
+        var behavior = e.Get<CBehavior>();
+        var spacial = e.Get<CSpacial>();
+        var anim = e.Get<CAnimation>();
+
+        if (behavior.State == GameStuff.ECS.Components.State.Attacking)
+        {
+
+          Rectangle r = attack.hitBox;
+          // Center on center
+          var loc = new Vector2(
+            spacial.X - r.Width / 2,
+            spacial.Y - r.Height / 2
+          );
+
+          // offset
+          var offset = new Vector2(
+            spacial.Width / 2 + r.Width / 2,
+            spacial.Height / 2 + r.Height / 2
+          );
+
+          r.Location = loc.ToPoint() + CommonVectors.GetDirection(anim.dir).ToPoint() * offset.ToPoint();
+          
+
+          r.Location = camera.AbsoluteToRelative(r.Location.ToVector2()).ToPoint();
+          r.X = (int)(r.X * camera.ScaleX);
+          r.Y = (int)(r.Y * camera.ScaleY);
+          r.Width = (int)(r.Width * camera.ScaleX);
+          r.Height = (int)(r.Height * camera.ScaleY);
+
+          batch.Draw(Assets.Rectangle, r, Color.Red);
+        }
+      }
+
+      batch.End();
+#endif
     }
 
     public override void Update(GameTime time)
@@ -94,6 +148,8 @@ namespace TheGame.States
       var spacial = systemManager.Player.Get<CSpacial>();
       camera.Center(spacial.Position);
       camera.Update(time);
+
+
     }
   }
 }

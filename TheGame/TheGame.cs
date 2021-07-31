@@ -36,7 +36,7 @@ namespace TheGame
       Graphics.PreferredBackBufferHeight = height;
       Graphics.ApplyChanges();
 
-      Mouse.SetCursor(MouseCursor.FromTexture2D(Assets.placeHolder, 0, 0));
+      Mouse.SetCursor(MouseCursor.FromTexture2D(Assets.Cursor, 0, 0));
       GameEnvironment.Init(this);
       _spriteBatch = new SpriteBatch(GraphicsDevice);
     }

@@ -11,6 +11,8 @@ namespace TheGame
     public static Texture2D placeHolder;
     public static SpriteFont testFont;
     public static SoundEffect Click;
+    public static SoundEffect Cut;
+    public static SoundEffect Swoosh;
 
     public static Texture2D FloorTileTexture;
     public static Texture2D RockTileTexture;
@@ -26,6 +28,8 @@ namespace TheGame
     public static Texture2D FleshTileTexture;
     public static Texture2D FleshFloorTileTexture;
     public static Texture2D LightMask;
+    public static Texture2D Rectangle;
+    public static Texture2D Cursor;
 
     public static Texture2D KnightSprite;
     public static Texture2D RogueSprite;
@@ -40,10 +44,7 @@ namespace TheGame
 
     static public void Load(ContentManager content)
     {
-      placeHolder = content.Load<Texture2D>("placeHolder");
-      testFont = content.Load<SpriteFont>("Font");
-      Click = content.Load<SoundEffect>("Click");
-
+      // Tiles
       FloorTileTexture = content.Load<Texture2D>("Tiles\\FloorTile");
       RockTileTexture = content.Load<Texture2D>("Tiles\\RockTile");
       WallTileTexture = content.Load<Texture2D>("Tiles\\WallTile");
@@ -58,12 +59,14 @@ namespace TheGame
       FleshTileTexture = content.Load<Texture2D>("Tiles\\FleshTile");
       FleshFloorTileTexture = content.Load<Texture2D>("Tiles\\FleshFloorTile");
 
+      // Character sprites and animations
       KnightSprite = content.Load<Texture2D>("KnightSprite");
       KnightAnimation = AnimationParser.ParseSettings("KnightInfo.txt", KnightSprite);
       
       RogueSprite = content.Load<Texture2D>("RogueSpriteSheet");
       RogueAnimataion = AnimationParser.ParseSettings("RogueInfo.txt", RogueSprite);
 
+      // Overlays
       FireOverlay = new Texture2D[46];
       for (int i = 0; i < 46; i++)
         FireOverlay[i] = content.Load<Texture2D>($"Fire/fire_{i}");
@@ -72,9 +75,25 @@ namespace TheGame
       for (int i = 0; i < 46; i++)
         ShadowOverlay[i] = content.Load<Texture2D>($"Shadow/shadow_{i}");
 
+      // Other textures
+      placeHolder = content.Load<Texture2D>("placeHolder");
+      Cursor = content.Load<Texture2D>("cursor");
+      Rectangle = content.Load<Texture2D>("rectangle");
+      LightMask = content.Load<Texture2D>("lightmask");
+
+      // Shaders
       LightEffect = content.Load<Effect>("Light");
       LightingEffect = content.Load<Effect>("Lighting");
-      LightMask = content.Load<Texture2D>("lightmask");
+
+      // Fonts
+      testFont = content.Load<SpriteFont>("Font");
+
+      // Sounds
+      Click = content.Load<SoundEffect>("Click");
+      Cut = content.Load<SoundEffect>("cut");
+      Swoosh = content.Load<SoundEffect>("swoosh");
+
+
     }
   }
 }
