@@ -30,7 +30,7 @@ namespace TheGame.GameStuff.ECS.Systems
         var spacial = entity.Get<CSpacial>();
         var animation = entity.Get<CAnimation>();
         var behavior = entity.Get<CBehavior>();
-        Rectangle hit = attack.hitBox;
+        Rectangle hit = attack.HitBox;
 
 
         // Center on center
@@ -48,13 +48,13 @@ namespace TheGame.GameStuff.ECS.Systems
         hit.Location = loc.ToPoint() + CommonVectors.GetDirection(animation.dir).ToPoint() * offset.ToPoint();
 
         
-        if (behavior.State == State.Attacking)// && attack.attackFrames.Contains(animation.Index))
+        if (behavior.State == State.Attacking)
         {
           foreach (Entity victim in healthEntities)
           {
             if (!attack.attackedEntities.Contains(victim) && victim.Get<CSpacial>().HitBox.Intersects(hit))
             {
-              victim.Get<CHealth>().HealthPoints -= attack.damage;
+              victim.Get<CHealth>().HealthPoints -= attack.Damage;
               attack.attackedEntities.Add(victim);
               Assets.Cut.Play();
             }

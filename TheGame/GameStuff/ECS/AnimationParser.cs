@@ -14,6 +14,7 @@ namespace TheGame.GameStuff.ECS
     private const string StateToken = "State";
     private const char SplitToken = '=';
     private static readonly char[] WhiteSpaces = {'\n', '\r', '\t', ' '};
+    private static readonly HashSet<State> AttackStates = new HashSet<State>(new []{ State.AttackWindup, State.Attacking, State.AttackFinish });
 
     private static void ParseLine(Dictionary<string, string> dict, string line)
     {
@@ -39,8 +40,11 @@ namespace TheGame.GameStuff.ECS
       var dict = new Dictionary<string, string>();
       animation.SpriteSheet = spriteSheet;
 
-      while((line = reader.ReadLine()) != string.Empty && line != null)
+      while((line = reader.ReadLine()) != null)
       {
+        if (line == string.Empty)
+          continue;
+
         dict.Clear();
         ParseLine(dict, line);
 
@@ -60,11 +64,22 @@ namespace TheGame.GameStuff.ECS
         if (!uint.TryParse(dict[FrameCountToken], out uint frameCount))
           throw new InvalidCastException($"Unknonw FrameCount value '{dict[FrameCountToken]}' in file '{infoFile}'.");
 
-        animation.FrameCount = 1;
-        animation.frameCounts[state] = (int)frameCount;
-        animation.frameCoords[state] = ((int)x, (int)y);
+        if (AttackStates.Contains(state))
+        {
+          if (state == State.AttackWindup) {
+            animation.attackFrameCounts.Add(new Dictionary<State, int>());
+            animation.attackFrameCoords.Add(new Dictionary<State, (int, int)>());
+          }
+          animation.attackFrameCounts[animation.attackFrameCounts.Count - 1][state] = ((int)frameCount);
+          animation.attackFrameCoords[animation.attackFrameCoords.Count - 1][state] = ((int)x, (int)y);
+        } else
+        {
+          animation.frameCounts[state] = (int)frameCount;
+          animation.frameCoords[state] = ((int)x, (int)y);
+        }
       }
 
+      animation.FrameCount = 1;
       return animation;
     }
   }

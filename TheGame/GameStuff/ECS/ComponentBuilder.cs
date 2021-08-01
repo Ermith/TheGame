@@ -138,7 +138,9 @@ namespace TheGame.GameStuff.ECS
         FrameCount = anim.FrameCount,
         DefaultFrame = anim.DefaultFrame,
         SpriteSheet = anim.SpriteSheet,
-        frameCoords = anim.frameCoords
+        frameCoords = anim.frameCoords,
+        attackFrameCoords = anim.attackFrameCoords,
+        attackFrameCounts = anim.attackFrameCounts
       };
 
       tracker.Add(Target, newAnim);
@@ -195,12 +197,28 @@ namespace TheGame.GameStuff.ECS
       return this;
     }
 
-    public ComponentBuilder Attack(int dmg = 50)
+    public ComponentBuilder Attack(int[] dmgs = null, (int, int)[] sizes = null, bool[] chargables = null)
     {
+      dmgs ??= new int[]{ 10, 10, 30};
       var attack = new CAttack();
-      attack.damage = dmg;
-      attack.attackWidth = 32;
-      attack.attackHeight = 32;
+      attack.Damages = new List<int>(dmgs);
+
+      attack.Sizes = new List<(int, int)>(dmgs.Length);
+      attack.Chargables = new List<bool>(dmgs.Length);
+
+      if (sizes == null)
+        for (int i = 0; i < dmgs.Length; i++)
+          attack.Sizes.Add((32, 32));
+      else
+        attack.Sizes = new List<(int, int)>(sizes);
+
+      if (chargables == null)
+        for (int i = 0; i < dmgs.Length; i++)
+          attack.Chargables.Add(true);
+      else
+        attack.Chargables = new List<bool>(chargables);
+
+
       attack.attackedEntities = new HashSet<Entity>();
 
       tracker.Add(Target, attack);

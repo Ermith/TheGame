@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Input;
 using TheGame.GameStuff.ECS.Components;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using System;
 using TheGame.Math;
 
 namespace TheGame.States
@@ -53,16 +52,13 @@ namespace TheGame.States
       batch.End();
 
       // Draw light
-      /**/
       graphics.SetRenderTarget(lightMask);
       graphics.Clear(Color.Black);
       batch.Begin(blendState: BlendState.Additive);
       systemManager.RenderLight(batch);
       batch.End();
-      /**/
-
+      
       // Mix it together
-      /**/
       graphics.SetRenderTarget(null);
       graphics.Clear(Color.Black);
       batch.Begin(sortMode: SpriteSortMode.Immediate, blendState: BlendState.AlphaBlend);
@@ -71,8 +67,7 @@ namespace TheGame.States
       p.SetValue(lightMask);
       batch.Draw(mainCanvas, Vector2.Zero, Color.White);
       batch.End();
-      /**/
-
+      
 #if DEBUG
       batch.Begin(sortMode: SpriteSortMode.Immediate);
 
@@ -97,7 +92,8 @@ namespace TheGame.States
         if (behavior.State == GameStuff.ECS.Components.State.Attacking)
         {
 
-          Rectangle r = attack.hitBox;
+          Rectangle r = attack.HitBox;
+
           // Center on center
           var loc = new Vector2(
             spacial.X - r.Width / 2,

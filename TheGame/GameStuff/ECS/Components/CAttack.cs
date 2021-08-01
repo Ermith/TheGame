@@ -9,12 +9,14 @@ namespace TheGame.GameStuff.ECS.Components
 {
   class CAttack : Component
   {
-    public int[] attackFrames = { 2, 3, 4};
-    public int damage;
-    public int attackWidth = 32;
-    public int attackHeight = 32;
-
-    public Rectangle hitBox => new Rectangle(0, 0, attackWidth, attackHeight);
+    public int CurrentAttack;
+    public List<int> Damages;
+    public List<(int, int)> Sizes;
+    public List<bool> Chargables;
+    public int AttacksCount => Damages.Count;
+    public Rectangle HitBox => new Rectangle(0, 0, Sizes[CurrentAttack].Item1, Sizes[CurrentAttack].Item2);
+    public int Damage => Damages[CurrentAttack];
+    public bool Chargable => Chargables[CurrentAttack];
     public HashSet<Entity> attackedEntities;
   }
 }

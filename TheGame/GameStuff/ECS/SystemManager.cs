@@ -31,7 +31,7 @@ namespace TheGame.GameStuff.ECS
       factory = new EntityFactory(new ComponentBuilder(tracker));
       var pos = world.GenerateSpawnPoint();
       Player = factory.Build("player", pos);
-      factory.Build("dummy", pos + new Vector2(40, 40));
+      factory.Build("controlable", pos + new Vector2(40, 40));
 
       // init systems
       inputSystem = new InputSystem(tracker.GetEntities<CInput>(), camera);

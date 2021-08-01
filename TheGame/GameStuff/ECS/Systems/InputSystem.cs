@@ -35,33 +35,33 @@ namespace TheGame.GameStuff.ECS.Systems
         {
           case State.Attacking:
             HandleAttacking(keyboard, input, behavior, animation, movement, attack, t);
-            return;
+            break;
 
           case State.Standing:
 
             HandleStanding(keyboard, input, behavior, animation, movement, t);
-            return;
+            break;
 
           case State.Moving:
 
             HandleMoving(keyboard, input, behavior, animation, movement, t);
-            return;
+            break;
 
           case State.Sneaking:
             HandleSneaking(keyboard, input, behavior, animation, movement, t);
-            return;
+            break;
 
           case State.Crouching:
             HandleCrouching(keyboard, input, behavior, animation, movement, t);
-            return;
+            break;
 
           case State.AttackWindup:
-            HandleAttackWindup(keyboard, input, behavior, animation, movement, t);
-            return;
+            HandleAttackWindup(keyboard, input, behavior, animation, movement, attack, t);
+            break;
 
           case State.AttackFinish:
-            HandleAttackFinish(animation, movement, behavior);
-            return;
+            HandleAttackFinish(keyboard, input, animation, movement, attack, behavior);
+            break;
 
           default:
             break;
@@ -71,50 +71,72 @@ namespace TheGame.GameStuff.ECS.Systems
       lastKeyboard = keyboard;
     }
 
-    private void HandleAttackWindup(KeyboardState keyboard, CInput input, CBehavior behavior, CAnimation animation, CMovement movement, float time)
+    private void HandleAttackWindup(KeyboardState keyboard, CInput input, CBehavior behavior, CAnimation animation, CMovement movement, CAttack attack, float time)
     {
       animation.loop = false;
       movement.Velocity = Vector2.Zero;
-      if (animation.finished && !keyboard.IsKeyDown(input.Attack))
+      if (animation.finished && (!attack.Chargable || !keyboard.IsKeyDown(input.Attack)))
       {
         camera.ShakeEffect(2f);
-        EnterState(animation, behavior, State.Attacking);
+        EnterState(animation, behavior, State.Attacking, attack.CurrentAttack);
         Assets.Swoosh.Play();
         return;
       }
 
-      if (!animation.finished && !keyboard.IsKeyDown(input.Attack))
+      if (!animation.finished && !keyboard.IsKeyDown(input.Attack) && attack.Chargable)
       {
         animation.loop = true;
         EnterState(animation, behavior, State.Standing);
+        attack.CurrentAttack = 0;
       }
     }
     private void HandleAttacking(KeyboardState keyboard, CInput input, CBehavior behavior, CAnimation animation, CMovement movement, CAttack attack, float time)
     {
       if (animation.finished && attack.attackedEntities.Count != 0)
       {
-        EnterState(animation, behavior, State.AttackFinish);
+        EnterState(animation, behavior, State.AttackFinish, attack.CurrentAttack);
         return;
       }
 
-      if (animation.finished && attack.attackedEntities.Count == 0)
+      if (animation.finished && keyboard.IsKeyDown(input.Attack) && attack.CurrentAttack < attack.AttacksCount - 1)
+      {
+        attack.CurrentAttack++;
+        EnterState(animation, behavior, State.AttackWindup, attack.CurrentAttack);
+        return;
+      }
+
+      if (animation.finished && (attack.attackedEntities.Count == 0 || attack.CurrentAttack == attack.AttacksCount - 1))
       {
         animation.loop = true;
+        attack.CurrentAttack = 0;
         EnterState(animation, behavior, State.Standing);
         Stand(movement);
         return;
       }
+
+
 
       Attack();
       return;
     }
-    private void HandleAttackFinish(CAnimation animation, CMovement movement, CBehavior behavior)
+    private void HandleAttackFinish(KeyboardState keyboard, CInput input, CAnimation animation, CMovement movement, CAttack attack, CBehavior behavior)
     {
-      if (animation.finished)
+      int i = attack.CurrentAttack;
+      /**/
+      if (animation.finished && (i == attack.AttacksCount - 1 || !keyboard.IsKeyDown(input.Attack)))
       {
+        attack.CurrentAttack = 0;
         animation.loop = true;
         EnterState(animation, behavior, State.Standing);
         Stand(movement);
+        return;
+      }
+      /**/
+
+      if (animation.finished && keyboard.IsKeyDown(input.Attack))
+      {
+        attack.CurrentAttack++;
+        EnterState(animation, behavior, State.AttackWindup, attack.CurrentAttack);
         return;
       }
     }
@@ -294,15 +316,25 @@ namespace TheGame.GameStuff.ECS.Systems
     {
       return (keyboard.IsKeyDown(input.Up) || keyboard.IsKeyDown(input.Left) || keyboard.IsKeyDown(input.Down) || keyboard.IsKeyDown(input.Right));
     }
-    private void EnterState(CAnimation animation, CBehavior behavior, State state)
+    private void EnterState(CAnimation animation, CBehavior behavior, State state, int attackIndex = 0)
     {
-      animation.Index = 0;
-      animation.FrameCount = animation.frameCounts[state];
-      (int x, int y) = animation.frameCoords[state];
+      int x, y, count;
+      if (CBehavior.AttackStates.Contains(state))
+      {
+        count = animation.attackFrameCounts[attackIndex][state];
+        (x, y) = animation.attackFrameCoords[attackIndex][state];
+      } else
+      {
+        count = animation.frameCounts[state];
+        (x, y) = animation.frameCoords[state];
+      }
+
+      animation.FrameCount = count;
       animation.X = x;
       animation.Y = y;
       animation.finished = false;
       behavior.State = state;
+      animation.Index = 0;
     }
     private void BeginSneak()
     {
