@@ -1,14 +1,14 @@
 State=Moving X=0 Y=0 FrameCount=14
 State=Standing X=0 Y=0 FrameCount=1
 
-State=AttackWindup X=0 Y=3 FrameCount=4
-State=Attacking X=4 Y=3 FrameCount=1
-State=AttackFinish X=5 Y=3 FrameCount=2
+State=AttackWindup X=0 Y=4 FrameCount=4
+State=Attacking X=4 Y=4 FrameCount=1
+State=AttackFinish X=5 Y=4 FrameCount=2
 
-State=AttackWindup X=6 Y=3 FrameCount=1
-State=Attacking X=7 Y=3 FrameCount=1
-State=AttackFinish X=8 Y=3 FrameCount=1
+State=AttackWindup X=6 Y=4 FrameCount=1
+State=Attacking X=7 Y=4 FrameCount=1
+State=AttackFinish X=8 Y=4 FrameCount=1
 
-State=AttackWindup X=9 Y=3 FrameCount=2
-State=Attacking X=11 Y=3 FrameCount=1
-State=AttackFinish X=12 Y=3 FrameCount=2
+State=AttackWindup X=9 Y=4 FrameCount=2
+State=Attacking X=11 Y=4 FrameCount=1
+State=AttackFinish X=12 Y=4 FrameCount=2

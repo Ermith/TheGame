@@ -51,13 +51,13 @@ namespace TheGame.GameStuff.ECS
       {
         ent = new Entity();
         builder.Target = ent;
-        builder.Spacial(position).Movement(0.075f).Animation(Assets.EnemyAnimation).Behavior().Light().Health().Input(
+        builder.Spacial(position).Movement(0.045f).Animation(Assets.EnemyAnimation).Behavior().Light().Health().Input(
           up: Keys.Up,
           left: Keys.Left,
           down: Keys.Down,
           right: Keys.Right,
           attack: Keys.P
-          ).Attack();
+          ).Attack(dmgs: new int[] { 1, 1, 1}, chargables: new bool[] { false, false, true });
       }
 
       builder.Target = null;

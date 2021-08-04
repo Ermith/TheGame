@@ -25,54 +25,30 @@ namespace TheGame.GameStuff.ECS.Systems
 
       foreach (Entity entity in inputEntities)
       {
-        var input = entity.Get<CInput>();
-        var movement = entity.Get<CMovement>();
-        var behavior = entity.Get<CBehavior>();
-        var animation = entity.Get<CAnimation>();
-        var attack = entity.Get<CAttack>();
-
-        switch (behavior.State)
+        switch (entity.Get<CBehavior>().State)
         {
-          case State.Attacking:
-            HandleAttacking(keyboard, input, behavior, animation, movement, attack, t);
-            break;
-
-          case State.Standing:
-
-            HandleStanding(keyboard, input, behavior, animation, movement, t);
-            break;
-
-          case State.Moving:
-
-            HandleMoving(keyboard, input, behavior, animation, movement, t);
-            break;
-
-          case State.Sneaking:
-            HandleSneaking(keyboard, input, behavior, animation, movement, t);
-            break;
-
-          case State.Crouching:
-            HandleCrouching(keyboard, input, behavior, animation, movement, t);
-            break;
-
-          case State.AttackWindup:
-            HandleAttackWindup(keyboard, input, behavior, animation, movement, attack, t);
-            break;
-
-          case State.AttackFinish:
-            HandleAttackFinish(keyboard, input, animation, movement, attack, behavior);
-            break;
-
-          default:
-            break;
+          case State.Attacking:     HandleAttacking(keyboard, entity, t);    break;
+          case State.Standing:      HandleStanding(keyboard, entity, t);     break;
+          case State.Moving:        HandleMoving(keyboard, entity, t);       break;
+          case State.Sneaking:      HandleSneaking(keyboard, entity, t);     break;
+          case State.Crouching:     HandleCrouching(keyboard, entity, t);    break;
+          case State.AttackWindup:  HandleAttackWindup(keyboard, entity, t); break;
+          case State.AttackFinish:  HandleAttackFinish(keyboard, entity, t); break;
+          default: break;
         }
       }
 
       lastKeyboard = keyboard;
     }
 
-    private void HandleAttackWindup(KeyboardState keyboard, CInput input, CBehavior behavior, CAnimation animation, CMovement movement, CAttack attack, float time)
+    private void HandleAttackWindup(KeyboardState keyboard, Entity entity, float time)
     {
+      var animation = entity.Get<CAnimation>();
+      var movement = entity.Get<CMovement>();
+      var attack = entity.Get<CAttack>();
+      var behavior = entity.Get<CBehavior>();
+      var input = entity.Get<CInput>();
+
       animation.loop = false;
       movement.Velocity = Vector2.Zero;
       if (animation.finished && (!attack.Chargable || !keyboard.IsKeyDown(input.Attack)))
@@ -90,8 +66,15 @@ namespace TheGame.GameStuff.ECS.Systems
         attack.CurrentAttack = 0;
       }
     }
-    private void HandleAttacking(KeyboardState keyboard, CInput input, CBehavior behavior, CAnimation animation, CMovement movement, CAttack attack, float time)
+    private void HandleAttacking(KeyboardState keyboard, Entity entity, float time)
     {
+      var animation = entity.Get<CAnimation>();
+      var attack = entity.Get<CAttack>();
+      var behavior = entity.Get<CBehavior>();
+      var input = entity.Get<CInput>();
+      var movement = entity.Get<CMovement>();
+
+
       if (animation.finished && attack.attackedEntities.Count != 0)
       {
         EnterState(animation, behavior, State.AttackFinish, attack.CurrentAttack);
@@ -119,8 +102,15 @@ namespace TheGame.GameStuff.ECS.Systems
       Attack();
       return;
     }
-    private void HandleAttackFinish(KeyboardState keyboard, CInput input, CAnimation animation, CMovement movement, CAttack attack, CBehavior behavior)
+    private void HandleAttackFinish(KeyboardState keyboard, Entity entity, float time)
     {
+      var attack = entity.Get<CAttack>();
+      var animation = entity.Get<CAnimation>();
+      var behavior = entity.Get<CBehavior>();
+      var movement = entity.Get<CMovement>();
+      var input = entity.Get<CInput>();
+
+
       int i = attack.CurrentAttack;
       /**/
       if (animation.finished && (i == attack.AttacksCount - 1 || !keyboard.IsKeyDown(input.Attack)))
@@ -141,8 +131,13 @@ namespace TheGame.GameStuff.ECS.Systems
       }
     }
 
-    private void HandleCrouching(KeyboardState keyboard, CInput input, CBehavior behavior, CAnimation animation, CMovement movement, float time)
+    private void HandleCrouching(KeyboardState keyboard, Entity entity, float time)
     {
+      var input = entity.Get<CInput>();
+      var animation = entity.Get<CAnimation>();
+      var behavior = entity.Get<CBehavior>();
+      var movement = entity.Get<CMovement>();
+
       if (keyboard.IsKeyDown(input.Attack))
       {
         EndSneak();
@@ -169,8 +164,14 @@ namespace TheGame.GameStuff.ECS.Systems
       return;
     }
 
-    private void HandleSneaking(KeyboardState keyboard, CInput input, CBehavior behavior, CAnimation animation, CMovement movement, float time)
+    private void HandleSneaking(KeyboardState keyboard, Entity entity, float time)
     {
+      var input = entity.Get<CInput>();
+      var animation = entity.Get<CAnimation>();
+      var behavior = entity.Get<CBehavior>();
+      var movement = entity.Get<CMovement>();
+
+
       if (keyboard.IsKeyDown(input.Attack))
       {
         EndSneak();
@@ -197,8 +198,13 @@ namespace TheGame.GameStuff.ECS.Systems
       return;
     }
 
-    private void HandleMoving(KeyboardState keyboard, CInput input, CBehavior behavior, CAnimation animation, CMovement movement, float time)
+    private void HandleMoving(KeyboardState keyboard, Entity entity, float time)
     {
+      var input = entity.Get<CInput>();
+      var animation = entity.Get<CAnimation>();
+      var behavior = entity.Get<CBehavior>();
+      var movement = entity.Get<CMovement>();
+
       if (keyboard.IsKeyDown(input.Attack))
       {
         EnterState(animation, behavior, State.AttackWindup);
@@ -225,8 +231,13 @@ namespace TheGame.GameStuff.ECS.Systems
       return;
     }
 
-    private void HandleStanding(KeyboardState keyboard, CInput input, CBehavior behavior, CAnimation animation, CMovement movement, float time)
+    private void HandleStanding(KeyboardState keyboard, Entity entity, float time)
     {
+      var input = entity.Get<CInput>();
+      var behavior = entity.Get<CBehavior>();
+      var animation = entity.Get<CAnimation>();
+      var movement = entity.Get<CMovement>();
+
       // space -> attack
       if (keyboard.IsKeyDown(input.Attack))
       {

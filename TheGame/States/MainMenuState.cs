@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using TheGame.UI;
 
@@ -53,7 +54,9 @@ namespace TheGame.States
       manager.Render(batch);
       batch.End();
     }
-    public override void Update(GameTime time) => manager.Update(time);
-
+    public override void Update(GameTime time)
+    {
+      manager.Update(time);
+    }
   }
 }

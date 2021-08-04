@@ -214,7 +214,7 @@ namespace TheGame.GameStuff.ECS
 
       if (chargables == null)
         for (int i = 0; i < dmgs.Length; i++)
-          attack.Chargables.Add(true);
+          attack.Chargables.Add(false);
       else
         attack.Chargables = new List<bool>(chargables);
 
