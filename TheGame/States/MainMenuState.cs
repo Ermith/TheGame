@@ -56,7 +56,7 @@ namespace TheGame.States
     }
     public override void Update(GameTime time)
     {
-      manager.Update(time);
+      manager.Update((float)time.ElapsedGameTime.TotalMilliseconds);
     }
   }
 }

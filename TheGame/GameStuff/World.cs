@@ -61,7 +61,7 @@ namespace TheGame.GameStuff
     //=================================
     public World(Camera camera, int width, int height)
     {
-      mapGenerator = new MapGenerator(width, height, 1);
+      mapGenerator = new MapGenerator(width, height, 1, 25);
       textureMapper = new TileTextureMapper();
       this.camera = camera;
       Width = width;
@@ -98,20 +98,19 @@ namespace TheGame.GameStuff
             continue;
 
           camera.AbsoluteToRelative(x, y, out float xRelative, out float yRelative);
+          var texture = textureMapper.Get(tiles[tileX, tileY]);
 
           Vector2 pos = new Vector2(xRelative * scaleX, yRelative * scaleY);
-          float t = 1 - Vector2.Distance(pos, mid) / maxDist;
-
+          
           
           batch.Draw(
-            texture: textureMapper.Get(tiles[tileX, tileY]),
+            texture: texture,
             position: pos,
             sourceRectangle: null,
-            //color: Color.FromNonPremultiplied((int)(t * 255), (int)(t * 255), (int)(t * 255), 255),
             color: Color.White,
             rotation: 0,
             origin: Vector2.Zero,
-            scale: new Vector2(scaleX, scaleY),
+            scale: new Vector2(scaleX * (GameEnvironment.Settings.tileSize / (float)texture.Width), scaleY * (GameEnvironment.Settings.tileSize / (float)texture.Height)),
             effects: SpriteEffects.None,
             layerDepth: 0
             );
@@ -131,8 +130,8 @@ namespace TheGame.GameStuff
       int xStart = rect.X / tileSize;
       int yStart = rect.Y / tileSize;
 
-      int xEnd = (rect.X + rect.Width) / tileSize;
-      int yEnd = (rect.Y + rect.Height) / tileSize;
+      int xEnd = (rect.X + rect.Width - 1) / tileSize;
+      int yEnd = (rect.Y + rect.Height - 1) / tileSize;
 
       for (int x = xStart; x <= xEnd; x++)
         for (int y = yStart; y <= yEnd; y++)

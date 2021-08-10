@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace TheGame.UI
 {
-  class UIControlManager : IGameComponent
+  public class UIControlManager
   {
     List<UIControl> Controls;
 
@@ -18,7 +18,7 @@ namespace TheGame.UI
         control.Render(batch);
     }
 
-    public void Update(GameTime time)
+    public void Update(float time)
     {
       foreach (var control in Controls)
         control.Update(time);
