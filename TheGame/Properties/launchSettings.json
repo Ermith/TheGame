@@ -1,8 +1,8 @@
 {
   "profiles": {
-    "TheGame": {
+    "Profile 1": {
       "commandName": "Project",
-      "workingDirectory": "C:\\My Program Files\\C#\\TheGame\\TheGame\\Content"
+      "workingDirectory": "$(SolutionDir)/TheGame/Content"
     }
   }
 }
